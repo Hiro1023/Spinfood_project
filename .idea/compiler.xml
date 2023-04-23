@@ -9,6 +9,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan" />
       </profile>
     </annotationProcessing>
   </component>
