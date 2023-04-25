@@ -39,8 +39,8 @@ public class readCSV {
         }
 
          */
-        String[] a = list.get(0);
-        System.out.println(a[1]);
+        String[] a = list.get(1);
+        System.out.println("test "+(a[13].equals("")));
         System.out.println(Arrays.toString(list.get(0)));
 
 
