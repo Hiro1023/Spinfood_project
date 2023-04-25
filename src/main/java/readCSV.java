@@ -17,6 +17,7 @@ public class readCSV {
 
 
     public static void main(String[] args) throws Exception {
+        /*
         // Create a file chooser dialog to select the CSV file
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
@@ -25,14 +26,18 @@ public class readCSV {
         }
         File selectedFile = fileChooser.getSelectedFile();
 
-        //String csvFile = "teilnehmerliste.csv";
+         */
 
-        List<String[]> list = readCSV(selectedFile);
+        String csvFile = "/Users/tommy/Desktop/SoftwarePraktikum23/teilnehmerliste.csv";
+
+        List<String[]> list = readCSV(new File(csvFile));
 
         //print out to the console the list of participant from csv file
         for (String[] teilnehmer : list) {
             System.out.println(Arrays.toString(teilnehmer));
         }
+
+        System.out.println(Arrays.toString(list.get(0)));
 
 
     }
