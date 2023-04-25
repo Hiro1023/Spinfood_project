@@ -33,11 +33,15 @@ public class readCSV {
         List<String[]> list = readCSV(new File(csvFile));
 
         //print out to the console the list of participant from csv file
+        /*
         for (String[] teilnehmer : list) {
             System.out.println(Arrays.toString(teilnehmer));
         }
 
-        System.out.println(Arrays.toString(list.get(1)));
+         */
+        String[] a = list.get(0);
+        System.out.println(a[1]);
+        System.out.println(Arrays.toString(list.get(0)));
 
 
     }
