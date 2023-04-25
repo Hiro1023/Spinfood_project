@@ -37,7 +37,7 @@ public class readCSV {
             System.out.println(Arrays.toString(teilnehmer));
         }
 
-        System.out.println(Arrays.toString(list.get(0)));
+        System.out.println(Arrays.toString(list.get(1)));
 
 
     }
