@@ -1,8 +1,37 @@
 public class Teilnehmer {
+    public enum FOOD_PREFERENCE {
+        MEAT("meat"),
+        NONE("none"),
+        VEGAN("vegan"),
+        VEGGIE("veggie");
+
+        private final String text;
+
+        FOOD_PREFERENCE(final String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+
+        public static FOOD_PREFERENCE fromString(String text) {
+            if (text != null) {
+                for (FOOD_PREFERENCE preference : FOOD_PREFERENCE.values()) {
+                    if (text.equalsIgnoreCase(preference.text)) {
+                        return preference;
+                    }
+                }
+            }
+            throw new IllegalArgumentException("No constant with text " + text + " found");
+        }
+    }
+
     Kitchen kitchen;
-    private int ID;
+    private String ID;
     private String name;
-    private int foodPreference;
+    private FOOD_PREFERENCE foodPreference;
     private int age;
     private int sex; //enum
     private int agerange; //enem
@@ -12,7 +41,8 @@ public class Teilnehmer {
     private int age_2;
     private int sex_2; //enum
 
-    public Teilnehmer(int ID, String name, int foodPreference, int age, int sex,boolean Kitchen, int Kitchen_Story,double Kitchen_Longitude, double Kitchen_Latitude, int ID_2, String name_2, int age_2, int sex_2) {
+
+    public Teilnehmer(String ID, String name, FOOD_PREFERENCE foodPreference, int age, int sex,boolean Kitchen, int Kitchen_Story,double Kitchen_Longitude, double Kitchen_Latitude, int ID_2, String name_2, int age_2, int sex_2) {
         this.ID = ID;
         this.name = name;
         this.foodPreference = foodPreference;
@@ -27,7 +57,7 @@ public class Teilnehmer {
         this.sex_2 = sex_2;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -35,7 +65,7 @@ public class Teilnehmer {
         this.name = name;
     }
 
-    public void setFoodPreference(int foodPreference) {
+    public void setFoodPreference(FOOD_PREFERENCE foodPreference) {
         this.foodPreference = foodPreference;
     }
 
@@ -74,4 +104,13 @@ public class Teilnehmer {
     public void setSex_2(int sex_2) {
         this.sex_2 = sex_2;
     }
+
+
+    public static void main(String[] args) {
+
+        //Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen,kitchenStory,kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
+
+    }
 }
+
+
