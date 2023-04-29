@@ -29,8 +29,9 @@ public class readCSV {
          */
 
         String csvFile = "/Users/tommy/Desktop/SoftwarePraktikum23/teilnehmerliste.csv"; //for mac
+        String csvFile_test = "/Users/tommy/Desktop/teilnehmerliste_test.csv";
         //String csvFile = "D:\\Informatik_Uni_Marburg\\Software_Praktikum\\SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan\\Dokumentation\\teilnehmerliste.csv";//for windows
-        List<String[]> list = readCSV(new File(csvFile));
+        List<String[]> list = readCSV(new File(csvFile_test));
 
         //print out to the console the list of participant from csv file
         /*
@@ -40,17 +41,17 @@ public class readCSV {
          */
 
         //get the data of the first person on file
-        String[] a = list.get(55);
+        //String[] a = list.get(55);
         //print test this person
-        System.out.println(Arrays.toString(a));
+        //System.out.println(Arrays.toString(a));
         //test if the criteria 13 qual ""
-        System.out.println("test "+(a[13].equals("")));
+        //System.out.println("test "+(a[13].equals("")));
 
         //print header
         System.out.println("header" + Arrays.toString(list.get(0)));
 
         System.out.println(list.remove(0));
-        System.out.println(Arrays.toString(list.get(0)));
+        System.out.println(Arrays.toString( list.get(0) ));
 
 
 
@@ -58,18 +59,18 @@ public class readCSV {
         for (String[] participant: list) {
             String ID = participant[1];
             String name = participant[2];
-            Teilnehmer.FOOD_PREFERENCE foodPreference = Teilnehmer.FOOD_PREFERENCE.fromString(participant[3]);
+            String foodPreference = participant[3];
             System.out.println("check " + foodPreference);
             int age = Integer.parseInt(participant[4]);
-            int sex = Integer.parseInt(participant[5]);
-            boolean kitchen = Boolean.parseBoolean(participant[6]);
-            int kitchenStory = Integer.parseInt(participant[7]);
+            String sex = participant[5];
+            String kitchen = participant[6];
+            double kitchenStory = Double.parseDouble(participant[7]);
             double kitchenLongitude = Double.parseDouble(participant[8]);
             double kitchenLatitude = Double.parseDouble(participant[9]);
-            int ID_2 = Integer.parseInt(participant[10]);
+            String ID_2 = participant[10];
             String name_2 = participant[11];
-            int age_2 = Integer.parseInt(participant[12]);
-            int sex_2 = Integer.parseInt(participant[13]);
+            int age_2 = (int) Double.parseDouble(participant[12]);
+            String sex_2 = participant[13];
             Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen,kitchenStory,kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
             teilnehmerList.add(teilnehmer);
         }

@@ -1,21 +1,21 @@
 public class Kitchen {
-    private boolean kitchen;
-    private int Kitchen_Story;
+    private String kitchen;
+    private double Kitchen_Story;
     private double Kitchen_Longitude;
     private double Kichen_Latitude;
 
-    public Kitchen(boolean kitchen, int Kitchen_Story, double Kitchen_Longitude, double Kichen_Latitude) {
+    public Kitchen(String kitchen, double Kitchen_Story, double Kitchen_Longitude, double Kichen_Latitude) {
         this.kitchen = kitchen;
         this.Kitchen_Story = Kitchen_Story;
         this.Kitchen_Longitude = Kitchen_Longitude;
         this.Kichen_Latitude = Kichen_Latitude;
     }
 
-    public boolean getKitchen() {
+    public String getKitchen() {
         return kitchen;
     }
 
-    public int getKitchen_Story() {
+    public double getKitchen_Story() {
         return Kitchen_Story;
     }
 
@@ -27,11 +27,11 @@ public class Kitchen {
         return Kichen_Latitude;
     }
 
-    public void setKitchen(boolean kitchen) {
+    public void setKitchen(String kitchen) {
         this.kitchen = kitchen;
     }
 
-    public void setKitchen_Story(int kitchen_Story) {
+    public void setKitchen_Story(double kitchen_Story) {
         this.Kitchen_Story = kitchen_Story;
     }
 

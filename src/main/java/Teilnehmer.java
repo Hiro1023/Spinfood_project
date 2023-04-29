@@ -27,34 +27,45 @@ public class Teilnehmer {
             throw new IllegalArgumentException("No constant with text " + text + " found");
         }
     }
+    public enum SEX {
+        male(0),
+        FEMALE(1),
+        OTHER(2);
+
+        private final int value;
+        SEX(int value) {
+            this.value = value;
+        }
+
+    }
 
     Kitchen kitchen;
     private String ID;
     private String name;
     private FOOD_PREFERENCE foodPreference;
     private int age;
-    private int sex; //enum
+    private SEX sex; //enum
     private int agerange; //enem
     private int count_WG;
-    private int ID_2;
+    private String ID_2;
     private String name_2;
     private int age_2;
-    private int sex_2; //enum
+    private SEX sex_2; //enum
 
 
-    public Teilnehmer(String ID, String name, FOOD_PREFERENCE foodPreference, int age, int sex,boolean Kitchen, int Kitchen_Story,double Kitchen_Longitude, double Kitchen_Latitude, int ID_2, String name_2, int age_2, int sex_2) {
+    public Teilnehmer(String ID, String name, String foodPreference, int age, String sex,String Kitchen, double Kitchen_Story,double Kitchen_Longitude, double Kitchen_Latitude, String ID_2, String name_2, int age_2, String sex_2) {
         this.ID = ID;
         this.name = name;
-        this.foodPreference = foodPreference;
+        this.foodPreference = FOOD_PREFERENCE.fromString(foodPreference);
         this.age = age;
-        this.sex = sex;
+        this.sex = SEX.valueOf(sex);
         Kitchen kitchen = new Kitchen(Kitchen,Kitchen_Story,Kitchen_Longitude,Kitchen_Longitude);
         this.agerange = agerange;
         this.count_WG = count_WG;
         this.ID_2 = ID_2;
         this.name_2 = name_2;
         this.age_2 = age_2;
-        this.sex_2 = sex_2;
+        this.sex_2 = SEX.valueOf(sex_2);
     }
 
     public void setID(String ID) {
@@ -73,7 +84,7 @@ public class Teilnehmer {
         this.age = age;
     }
 
-    public void setSex(int sex) {
+    public void setSex(SEX sex) {
         this.sex = sex;
     }
 
@@ -89,7 +100,7 @@ public class Teilnehmer {
         this.count_WG = count_WG;
     }
 
-    public void setID_2(int ID_2) {
+    public void setID_2(String ID_2) {
         this.ID_2 = ID_2;
     }
 
@@ -101,7 +112,7 @@ public class Teilnehmer {
         this.age_2 = age_2;
     }
 
-    public void setSex_2(int sex_2) {
+    public void setSex_2(SEX sex_2) {
         this.sex_2 = sex_2;
     }
 
