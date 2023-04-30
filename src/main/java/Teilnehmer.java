@@ -30,7 +30,8 @@ public class Teilnehmer {
     public enum SEX {
         male(0),
         female(1),
-        other(2);
+        other(2),
+        empty(-1);
 
         private final int value;
         SEX(int value) {
@@ -65,7 +66,7 @@ public class Teilnehmer {
         this.ID_2 = ID_2;
         this.name_2 = name_2;
         this.age_2 = age_2;
-        this.sex_2 = SEX.valueOf(sex_2);
+        this.sex_2 = (sex_2.equals(""))? SEX.empty: SEX.valueOf(sex_2);
     }
 
     public void setID(String ID) {
