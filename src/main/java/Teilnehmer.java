@@ -29,8 +29,8 @@ public class Teilnehmer {
     }
     public enum SEX {
         male(0),
-        FEMALE(1),
-        OTHER(2);
+        female(1),
+        other(2);
 
         private final int value;
         SEX(int value) {
@@ -116,6 +116,53 @@ public class Teilnehmer {
         this.sex_2 = sex_2;
     }
 
+    public Kitchen getKitchen() {
+        return kitchen;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public FOOD_PREFERENCE getFoodPreference() {
+        return foodPreference;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public SEX getSex() {
+        return sex;
+    }
+
+    public int getAgerange() {
+        return agerange;
+    }
+
+    public int getCount_WG() {
+        return count_WG;
+    }
+
+    public String getID_2() {
+        return ID_2;
+    }
+
+    public String getName_2() {
+        return name_2;
+    }
+
+    public int getAge_2() {
+        return age_2;
+    }
+
+    public SEX getSex_2() {
+        return sex_2;
+    }
 
     public static void main(String[] args) {
 

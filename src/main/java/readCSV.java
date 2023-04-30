@@ -50,17 +50,16 @@ public class readCSV {
         //print header
         System.out.println("header" + Arrays.toString(list.get(0)));
 
-        System.out.println(list.remove(0));
-        System.out.println(Arrays.toString( list.get(0) ));
-
-
-
+        System.out.println("remove"+Arrays.toString(list.remove(0)));
+        System.out.println(list.size());
+        //String[] par = list
         List<Teilnehmer> teilnehmerList = new ArrayList<>();
-        for (String[] participant: list) {
+        for (int i = 0; i< list.size()-2; i++) {
+            String[] participant = list.get(i);
             String ID = participant[1];
             String name = participant[2];
             String foodPreference = participant[3];
-            System.out.println("check " + foodPreference);
+            System.out.println(participant[4]);
             int age = Integer.parseInt(participant[4]);
             String sex = participant[5];
             String kitchen = participant[6];
@@ -73,11 +72,12 @@ public class readCSV {
             String sex_2 = participant[13];
             Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen,kitchenStory,kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
             teilnehmerList.add(teilnehmer);
+            System.out.println("end");
         }
 
 
 
-        System.out.println(teilnehmerList.get(0));
+        System.out.println(teilnehmerList.get(0).getSex());
 
 
 
