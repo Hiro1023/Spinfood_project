@@ -30,8 +30,7 @@ public class Teilnehmer {
     public enum SEX {
         male(0),
         female(1),
-        other(2),
-        empty(-1);
+        other(2);
 
         private final int value;
         SEX(int value) {
@@ -39,7 +38,6 @@ public class Teilnehmer {
         }
 
     }
-
     Kitchen kitchen;
     private String ID;
     private String name;
@@ -54,19 +52,22 @@ public class Teilnehmer {
     private SEX sex_2; //enum
 
 
-    public Teilnehmer(String ID, String name, String foodPreference, int age, String sex,String Kitchen, double Kitchen_Story,double Kitchen_Longitude, double Kitchen_Latitude, String ID_2, String name_2, int age_2, String sex_2) {
+    public Teilnehmer(String ID, String name, String foodPreference, String age, String sex, String Kitchen,
+                      String Kitchen_Story,String Kitchen_Longitude, String Kitchen_Latitude, String ID_2, String name_2,
+                      String age_2, String sex_2) {
         this.ID = ID;
         this.name = name;
         this.foodPreference = FOOD_PREFERENCE.fromString(foodPreference);
-        this.age = age;
-        this.sex = SEX.valueOf(sex);
-        Kitchen kitchen = new Kitchen(Kitchen,Kitchen_Story,Kitchen_Longitude,Kitchen_Longitude);
-        this.agerange = agerange;
-        this.count_WG = count_WG;
+        this.age = Integer.parseInt(age);
+        this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
+        Kitchen kitchen = new Kitchen(Kitchen,Double.parseDouble(Kitchen_Story),
+                Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
+        //this.agerange = agerange;
+        //this.count_WG = count_WG;
         this.ID_2 = ID_2;
         this.name_2 = name_2;
-        this.age_2 = age_2;
-        this.sex_2 = (sex_2.equals(""))? SEX.empty: SEX.valueOf(sex_2);
+        this.age_2 = (int) Double.parseDouble(age_2);
+        this.sex_2 = (sex_2.equals(""))? SEX.other: SEX.valueOf(sex_2);
     }
 
     public void setID(String ID) {
