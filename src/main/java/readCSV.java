@@ -48,13 +48,14 @@ public class readCSV {
 
         List<Teilnehmer> teilnehmerList = new ArrayList<>();
         List<String[]> alone_participant = new ArrayList<>();
+        List<Paerchen> paerchens = new ArrayList<>();
         System.out.println("remove"+Arrays.toString(list.remove(0)));
         for (int i = 0; i< list.size(); i++) {
             String[] participant = list.get(i);
             if(participant[1].equals("")||participant[2].equals("")||
                     participant[3].equals("")||participant[5].equals("")||participant[6].equals("")||
                     participant[7].equals("")||participant[8].equals("")||participant[9].equals("")){
-                System.out.println("missing infos participant: "+ Arrays.toString(participant));
+                //System.out.println("missing infos participant: "+ Arrays.toString(participant));
                 continue;
             }
             String ID = participant[1];
@@ -71,28 +72,37 @@ public class readCSV {
                     participant[12].equals("")){    //age_2
                 alone_participant.add(participant); //later this will be added to list of alone_registration Class
             }
-            else{
+            else{ //is Pair
                 String ID_2 = participant[10];
                 String name_2 = participant[11];
                 String age_2 = participant[12];  //convert string to double first and then to int, some age fields in csv file are in double
                 String sex_2 = participant[13];
-                Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
+                Teilnehmer teilnehmer1 = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
                         kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
-                teilnehmerList.add(teilnehmer);
+                Teilnehmer teilnehmer2 = new Teilnehmer(ID_2, name_2, foodPreference, age_2, sex_2, kitchen, kitchenStory,
+                        kitchenLongitude,kitchenLatitude , ID, name, age, sex);
+                teilnehmerList.add(teilnehmer1);
+                teilnehmerList.add(teilnehmer2);
+
+                //make Pairs
+                Paerchen paerchen = new Paerchen(teilnehmer1,teilnehmer2);
+                paerchens.add(paerchen);
+
             }
 
         }
 
-        System.out.println(teilnehmerList.get(0).getSex());
-
         //print out
+        /*
         System.out.println("print the alone Participants: ");
         for (String[] f_p : alone_participant) {
             System.out.println(Arrays.toString(f_p));
         }
 
-        for(Teilnehmer tei : teilnehmerList){
-            System.out.println(tei.getID_2());
+         */
+
+        for(Paerchen pair : paerchens){
+            System.out.println(pair.getPairID());
         }
         System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
 

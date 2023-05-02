@@ -49,15 +49,15 @@ public class Teilnehmer {
         this.ID = ID;
         this.name = name;
         this.foodPreference = FOOD_PREFERENCE.valueOf(foodPreference);
-        this.age = Integer.parseInt(age);
+        this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
         Kitchen kitchen = new Kitchen(Kitchen,Double.parseDouble(Kitchen_Story),
                 Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
         //this.agerange = agerange;
         //this.count_WG = count_WG;
-        this.ID_2 = ID_2;
+        this.ID_2 = (ID_2.equals(""))?  "" : ID_2;
         this.name_2 = name_2;
-        this.age_2 = (int) Double.parseDouble(age_2);
+        this.age_2 = (age_2.isEmpty())? 0: ((int) Double.parseDouble(age_2)) ;
         this.sex_2 = (sex_2.equals(""))? SEX.other: SEX.valueOf(sex_2);
     }
 
