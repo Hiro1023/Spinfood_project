@@ -50,7 +50,6 @@ public class readCSV {
         PaerchenList paerchenList = new PaerchenList();
         List<Teilnehmer> teilnehmerList = new ArrayList<>();
         List<String[]> alone_participant = new ArrayList<>();
-        List<Paerchen> paerchens = new ArrayList<>();
         System.out.println("remove"+Arrays.toString(list.remove(0)));
         for (int i = 0; i< list.size(); i++) {
             String[] participant = list.get(i);
@@ -91,9 +90,7 @@ public class readCSV {
                 //make Pairs
                 Paerchen paerchen = new Paerchen(teilnehmer1,teilnehmer2);
                 paerchenList.addPairToList(paerchen);
-
             }
-
         }
 
         //print out
@@ -104,13 +101,13 @@ public class readCSV {
         }
 
          */
-        /*
-        for(Paerchen pair : paerchens){
+
+        for(Paerchen pair : paerchenList.paerchenList){
             System.out.println(pair.getPairID());
         }
         System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
 
-         */
+
 
 
     }
