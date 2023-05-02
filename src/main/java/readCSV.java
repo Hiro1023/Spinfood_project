@@ -46,6 +46,8 @@ public class readCSV {
         }
          */
 
+        TeilnehmendeList teilnehmendeList = new TeilnehmendeList();
+        PaerchenList paerchenList = new PaerchenList();
         List<Teilnehmer> teilnehmerList = new ArrayList<>();
         List<String[]> alone_participant = new ArrayList<>();
         List<Paerchen> paerchens = new ArrayList<>();
@@ -71,6 +73,8 @@ public class readCSV {
                     participant[11].equals("")||    //name_2
                     participant[12].equals("")){    //age_2
                 alone_participant.add(participant); //later this will be added to list of alone_registration Class
+                Teilnehmer teilnehmer = new Teilnehmer(ID,name,foodPreference,age,sex,kitchen,kitchenStory,kitchenLongitude,kitchenLatitude,"","","","");
+                teilnehmendeList.addTeilnehmer(teilnehmer);
             }
             else{ //is Pair
                 String ID_2 = participant[10];
@@ -86,7 +90,7 @@ public class readCSV {
 
                 //make Pairs
                 Paerchen paerchen = new Paerchen(teilnehmer1,teilnehmer2);
-                paerchens.add(paerchen);
+                paerchenList.addPairToList(paerchen);
 
             }
 
@@ -100,11 +104,13 @@ public class readCSV {
         }
 
          */
-
+        /*
         for(Paerchen pair : paerchens){
             System.out.println(pair.getPairID());
         }
         System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
+
+         */
 
 
     }

@@ -6,6 +6,8 @@ public class TeilnehmendeList {
     private int anzahlTeilnehmer = 0;
     private int max;
 
+    public TeilnehmendeList(){};
+
     public TeilnehmendeList(int max){
         this.max = max;
     }
