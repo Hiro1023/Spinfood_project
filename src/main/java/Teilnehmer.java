@@ -1,9 +1,9 @@
 public class Teilnehmer {
     public enum FOOD_PREFERENCE {
-        MEAT("meat"),
-        NONE("none"),
-        VEGAN("vegan"),
-        VEGGIE("veggie");
+        meat("meat"),
+        none("none"),
+        vegan("vegan"),
+        veggie("veggie");
 
         private final String text;
 
@@ -16,16 +16,7 @@ public class Teilnehmer {
             return text;
         }
 
-        public static FOOD_PREFERENCE fromString(String text) {
-            if (text != null) {
-                for (FOOD_PREFERENCE preference : FOOD_PREFERENCE.values()) {
-                    if (text.equalsIgnoreCase(preference.text)) {
-                        return preference;
-                    }
-                }
-            }
-            throw new IllegalArgumentException("No constant with text " + text + " found");
-        }
+
     }
     public enum SEX {
         male(0),
@@ -57,7 +48,7 @@ public class Teilnehmer {
                       String age_2, String sex_2) {
         this.ID = ID;
         this.name = name;
-        this.foodPreference = FOOD_PREFERENCE.fromString(foodPreference);
+        this.foodPreference = FOOD_PREFERENCE.valueOf(foodPreference);
         this.age = Integer.parseInt(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
         Kitchen kitchen = new Kitchen(Kitchen,Double.parseDouble(Kitchen_Story),

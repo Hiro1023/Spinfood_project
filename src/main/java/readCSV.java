@@ -54,7 +54,7 @@ public class readCSV {
             if(participant[1].equals("")||participant[2].equals("")||
                     participant[3].equals("")||participant[5].equals("")||participant[6].equals("")||
                     participant[7].equals("")||participant[8].equals("")||participant[9].equals("")){
-                System.out.println("empty infos participant: "+Arrays.toString(participant));
+                System.out.println("missing infos participant: "+ Arrays.toString(participant));
                 continue;
             }
             String ID = participant[1];
@@ -78,12 +78,10 @@ public class readCSV {
                 String sex_2 = participant[13];
                 Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
                         kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
-
                 teilnehmerList.add(teilnehmer);
             }
 
         }
-
 
         System.out.println(teilnehmerList.get(0).getSex());
 
@@ -92,6 +90,11 @@ public class readCSV {
         for (String[] f_p : alone_participant) {
             System.out.println(Arrays.toString(f_p));
         }
+
+        for(Teilnehmer tei : teilnehmerList){
+            System.out.println(tei.getID_2());
+        }
+        System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
 
 
     }

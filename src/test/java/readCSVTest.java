@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class readCSVTest {
 
     final int participantLength = 237;
-    final String path = "/Users/tommy/Desktop/SoftwarePraktikum23/teilnehmerliste.csv";
+    final String path = "/Users/tommy/Desktop/SoftwarePraktikum23/Dokumentation/teilnehmerliste.csv";
 
     final String header = "[, ID, Name, FoodPreference, Age, Sex, Kitchen, Kitchen_Story, Kitchen_Longitude, Kitchen_Latitude, ID_2, Name_2, Age_2, Sex_2]";
     final String person01 = "[0, 004670cb-47f5-40a4-87d8-5276c18616ec, Person1, veggie, 21, male, maybe, 3.0, 8.673368271555807, 50.5941282715558, , , , ]";
