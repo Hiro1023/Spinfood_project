@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaerchenList {
-    List<Paerchen> paerchenList = new ArrayList();
+    private List<Paerchen> paerchenList = new ArrayList();
 
     public PaerchenList() {
     }
@@ -14,4 +14,6 @@ public class PaerchenList {
     public void removePairFromList(Paerchen paerchen) {
         this.paerchenList.remove(paerchen);
     }
+
+    public List<Paerchen> getpaerchenList(){return paerchenList;}
 }

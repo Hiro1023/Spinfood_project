@@ -102,7 +102,7 @@ public class readCSV {
 
          */
 
-        for(Paerchen pair : paerchenList.paerchenList){
+        for(Paerchen pair : paerchenList.getpaerchenList()){
             System.out.println(pair.getPairID());
         }
         System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
