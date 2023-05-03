@@ -1,69 +1,79 @@
+//package models;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.*;
-
 public class Paerchen {
-    private String pairID;
+    private String pairId;
     private boolean isTogether;
-    private int ageDiff ;
+    private int alterdifferenz;
     private double pathLength;
+    private List<Paerchen> getroffenePairs = new ArrayList<>();
+    private Teilnehmer teilnehmer1;
+    private Teilnehmer teilnehmer2;
 
-    private List<Paerchen> meetPairList = new ArrayList<>();
 
-    public Paerchen(Teilnehmer teilnehmer_1,Teilnehmer teilnehmer_2){
 
-        this.pairID = teilnehmer_1.getID()+"-"+teilnehmer_2.getID();
-        this.isTogether = (teilnehmer_1.getID_2().equals(teilnehmer_2.getID()));
-        this.ageDiff = calculateAgeDiff(teilnehmer_1,teilnehmer_2);
-        this.pathLength = (isTogether())? 0: calculatePathLength(teilnehmer_1,teilnehmer_2);
+    public Paerchen(Teilnehmer teilnehmer1, Teilnehmer teilnehmer2) {
+        this.teilnehmer1 = teilnehmer1;
+        this.teilnehmer2 = teilnehmer2;
+        this.isTogether = teilnehmer1.getID_2().equals(teilnehmer2.getID());
+        this.alterdifferenz = calculateAgeDiff(teilnehmer1, teilnehmer2);
+        this.pathLength = (isTogether) ? 0 : calculatePathLength(teilnehmer1, teilnehmer2);
+    }
+  
+
+    public int calculateAgeDiff(Teilnehmer teilnehmer1, Teilnehmer teilnehmer2) {
+        return Math.abs(teilnehmer1.getAge() - teilnehmer2.getAge());
     }
 
-    /**
-     * save the Paar, who this Paar has meeted
-     * @param paerchen
-     */
-    public void meetPair(Paerchen paerchen){
-        meetPairList.add(paerchen);
+    private double calculatePathLength(Teilnehmer teilnehmer1, Teilnehmer teilnehmer2) {
+        double x1 = teilnehmer1.getKitchen().getKitchenLatitude();
+        double y1 = teilnehmer1.getKitchen().getKitchenLongitude();
+        double x2 = teilnehmer2.getKitchen().getKitchenLatitude();
+        double y2 = teilnehmer2.getKitchen().getKitchenLongitude();
+    
+        double deltaX = x2 - x1;
+        double deltaY = y2 - y1;
+    
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
-
-    /**
-     * calculate AgeDifference of Paerchen
-     * @param teilnehmer_1
-     * @param teilnehmer_2
-     * @return Age Differece by int
-     */
-    public int calculateAgeDiff(Teilnehmer teilnehmer_1,Teilnehmer teilnehmer_2){
-        return abs(teilnehmer_1.getAge() - teilnehmer_2.getAge_2());
+    
+    public void meetPair(Paerchen pair) {
+        getroffenePairs.add(pair);
     }
+    
 
-    /**
-     * calculate distance of Paerchen
-     * @param teilnehmer_1
-     * @param teilnehmer_2
-     * @return distance of Paerchen with datatyp "double"
-     */
-    public double calculatePathLength(Teilnehmer teilnehmer_1,Teilnehmer teilnehmer_2){
-        double x1 = teilnehmer_1.getKitchen().getKichen_Latitude();
-        double y1 = teilnehmer_1.getKitchen().getKitchen_Longitude();
-        double x2 = teilnehmer_2.getKitchen().getKichen_Latitude();
-        double y2 = teilnehmer_2.getKitchen().getKitchen_Longitude();
-        return sqrt(pow(x2-x1,2) + pow((y2-y1),2));
-    }
 
-    public String getPairID() {
-        return pairID;
+    //getters
+
+    public String getPairId() {
+        return pairId;
     }
 
     public boolean isTogether() {
         return isTogether;
     }
 
-    public int getAgeDiff() {
-        return ageDiff;
+    public int getAlterdifferenz() {
+        return alterdifferenz;
     }
 
     public double getPathLength() {
         return pathLength;
     }
+
+    public List<Paerchen> getGetroffenePairs() {
+        return getroffenePairs;
+    }
+
+    public Teilnehmer getTeilnehmer1() {
+        return teilnehmer1;
+    }
+
+    public Teilnehmer getTeilnehmer2() {
+        return teilnehmer2;
+    }
+
+
 }
