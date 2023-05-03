@@ -6,11 +6,9 @@ public class Teilnehmer {
         veggie("veggie");
 
         private final String text;
-
         FOOD_PREFERENCE(final String text) {
             this.text = text;
         }
-
         @Override
         public String toString() {
             return text;
@@ -22,7 +20,6 @@ public class Teilnehmer {
         male(0),
         female(1),
         other(2);
-
         private final int value;
         SEX(int value) {
             this.value = value;
@@ -61,6 +58,7 @@ public class Teilnehmer {
         this.sex_2 = (sex_2.equals(""))? SEX.other: SEX.valueOf(sex_2);
     }
 
+    
     public void setID(String ID) {
         this.ID = ID;
     }
@@ -159,7 +157,6 @@ public class Teilnehmer {
 
     public static void main(String[] args) {
 
-        //Teilnehmer teilnehmer = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen,kitchenStory,kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
 
     }
 }

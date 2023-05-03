@@ -3,7 +3,6 @@ import java.util.List;
 
 public class TeilnehmendeList {
     private List<Teilnehmer> teilnehmerList = new ArrayList<>();
-    private int anzahlTeilnehmer = 0;
     private int max;
 
     public TeilnehmendeList(){};
@@ -17,7 +16,6 @@ public class TeilnehmendeList {
      */
     public void addTeilnehmer(Teilnehmer teilnehmer){
         teilnehmerList.add(teilnehmer);
-        anzahlTeilnehmer++;
     }
     /**
      * remove Teilnehmer from List
@@ -25,7 +23,6 @@ public class TeilnehmendeList {
      */
     public void removeTeilnehmer(Teilnehmer teilnehmer){
         teilnehmerList.remove(teilnehmer);
-        anzahlTeilnehmer--;
     }
 
     public List<Teilnehmer> getTeilnehmerList(){
@@ -36,7 +33,4 @@ public class TeilnehmendeList {
         return this.max;
     }
 
-    public int getAnzahlTeilnehmer(){
-        return anzahlTeilnehmer;
-    }
 }
