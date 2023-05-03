@@ -12,7 +12,7 @@ public class TeilnehmendeList {
 
 
         public void addTeilnehmer(Teilnehmer teilnehmer){
-            if(anzahlTeilnehmer <= maxTeilnehmer){
+            if(anzahlTeilnehmer < maxTeilnehmer){
                 teilnehmerList.add(teilnehmer);
                 anzahlTeilnehmer++;
             } else {
@@ -34,11 +34,11 @@ public class TeilnehmendeList {
 
 
         
-    public void incrementAnzahNachrueckende(int incrementValue) {
+    public void incrementAnzahlteilnehmer(int incrementValue) {
         anzahlTeilnehmer += incrementValue;
     }
 
-    public void decrementAnzahNachrueckende(int decrementValue) {
+    public void decrementAnzahlteilnehmer(int decrementValue) {
         anzahlTeilnehmer -= decrementValue;
     }
 
