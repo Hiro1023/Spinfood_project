@@ -7,8 +7,12 @@ public class NachrueckendeList {
     
     private List<Teilnehmer> nachrueckendeTeilnehmer = new ArrayList<>();
     private List<Paerchen> nachrueckendePaerchen = new ArrayList<>();
- 
     private int anzahNachrueckende;
+
+
+    public NachrueckendeList(){
+        
+    }
 
    
 

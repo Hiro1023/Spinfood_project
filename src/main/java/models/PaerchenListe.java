@@ -72,7 +72,7 @@ public class PaerchenListe {
     public void addPairToList(Paerchen paerchen) {
         if(teilnehmendeList.getAnzahlTeilnehmer() + 2 <= teilnehmendeList.getMaxTeilnehmer()){
             paerchenList.add(paerchen);
-            teilnehmendeList.incrementAnzahNachrueckende(2);
+            teilnehmendeList.incrementAnzahlteilnehmer(2);
         } else {
             nachrueckendeList.addPaerchen(paerchen);
         }
@@ -80,12 +80,12 @@ public class PaerchenListe {
 
     public void removePairFromList(Paerchen paerchen) {
         paerchenList.remove(paerchen);
-        teilnehmendeList.decrementAnzahNachrueckende(2);
+        teilnehmendeList.decrementAnzahlteilnehmer(2);
         if (teilnehmendeList.getAnzahlTeilnehmer() + 2 <= teilnehmendeList.getMaxTeilnehmer()) {
             if (!nachrueckendeList.getNachrueckendePaerchen().isEmpty()) {
                 Paerchen nachrueckendesPaerchen = nachrueckendeList.getNachrueckendePaerchen().remove(0);
                 paerchenList.add(nachrueckendesPaerchen);
-                teilnehmendeList.incrementAnzahNachrueckende(2);
+                teilnehmendeList.incrementAnzahlteilnehmer(2);
             }
         }
     }
