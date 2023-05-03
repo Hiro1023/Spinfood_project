@@ -1,45 +1,56 @@
+//package models;
+
 public class Kitchen {
+    //private boolean avaliablity;
     private String kitchen;
-    private double Kitchen_Story;
-    private double Kitchen_Longitude;
-    private double Kichen_Latitude;
+    private double kitchenStory;
+    private double kitchenLongitude;
+    private double kitchenLatitude;
 
-    public Kitchen(String kitchen, double Kitchen_Story, double Kitchen_Longitude, double Kichen_Latitude) {
+    public Kitchen(String kitchen, double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
         this.kitchen = kitchen;
-        this.Kitchen_Story = Kitchen_Story;
-        this.Kitchen_Longitude = Kitchen_Longitude;
-        this.Kichen_Latitude = Kichen_Latitude;
+        this.kitchenStory = kitchenStory;
+        this.kitchenLatitude = kitchenLatitude;
+        this.kitchenLongitude = kitchenLongitude;
+        //this.avaliablity = avalibility;
     }
-
+    
     public String getKitchen() {
         return kitchen;
-    }
-
-    public double getKitchen_Story() {
-        return Kitchen_Story;
-    }
-
-    public double getKitchen_Longitude() {
-        return Kitchen_Longitude;
-    }
-
-    public double getKichen_Latitude() {
-        return Kichen_Latitude;
     }
 
     public void setKitchen(String kitchen) {
         this.kitchen = kitchen;
     }
 
-    public void setKitchen_Story(double kitchen_Story) {
-        this.Kitchen_Story = kitchen_Story;
+    public double getKitchenStory() {
+        return kitchenStory;
     }
 
-    public void setKitchen_Longitude(double kitchen_Longitude) {
-        this.Kitchen_Longitude = kitchen_Longitude;
+    public void setKitchenStory(double kitchenStory) {
+        this.kitchenStory = kitchenStory;
     }
 
-    public void setKichen_Latitude(double kichen_Latitude) {
-        this.Kichen_Latitude = kichen_Latitude;
+    public double getKitchenLongitude() {
+        return kitchenLongitude;
     }
+
+    public void setKitchenLongitude(double kitchenLongitude) {
+        this.kitchenLongitude = kitchenLongitude;
+    }
+
+    public double getKitchenLatitude() {
+        return kitchenLatitude;
+    }
+
+    public void setKitchenLatitude(double kitchenLatitude) {
+        this.kitchenLatitude = kitchenLatitude;
+    } 
+
+    /*
+    public boolean getAvaliablity() {
+        return avaliablity;
+    }
+
+     */
 }

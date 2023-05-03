@@ -1,4 +1,7 @@
-package models;
+//package models;
+
+//import models.Paerchen;
+//import models.PaerchenListe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class Gruppe {
 
     
     public double calculateSexDiversity(Paerchen pair1, Paerchen pair2, Paerchen pair3) {
-        PaerchenListe pairList = new PaerchenListe();
+        PaerchenList pairList = new PaerchenList();
         pairList.addPairToList(pair1);
         pairList.addPairToList(pair2);
         pairList.addPairToList(pair3);
@@ -65,16 +68,9 @@ public class Gruppe {
         return false;
     }
 
-
-  
-
     public void meetGroup(Gruppe group){
         getroffeneGroups.add(group);
     }
-
-
-
-
 
 
     //getters

@@ -1,36 +1,64 @@
+//package models;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TeilnehmendeList {
-    private List<Teilnehmer> teilnehmerList = new ArrayList<>();
-    private int max;
+    List<Teilnehmer> teilnehmerList  = new ArrayList<Teilnehmer>();
+    public int anzahlTeilnehmer;
+    private int maxTeilnehmer;
+    private NachrueckendeList nachrueckendeList = new NachrueckendeList();
+    
 
-    public TeilnehmendeList(){};
 
-    public TeilnehmendeList(int max){
-        this.max = max;
-    }
-    /**
-     * add Teilnehmer in List
-     * @param teilnehmer
-     */
-    public void addTeilnehmer(Teilnehmer teilnehmer){
-        teilnehmerList.add(teilnehmer);
-    }
-    /**
-     * remove Teilnehmer from List
-     * @param teilnehmer
-     */
-    public void removeTeilnehmer(Teilnehmer teilnehmer){
-        teilnehmerList.remove(teilnehmer);
-    }
+        public void addTeilnehmer(Teilnehmer teilnehmer){
+            if(anzahlTeilnehmer < maxTeilnehmer){
+                teilnehmerList.add(teilnehmer);
+                anzahlTeilnehmer++;
+            } else {
+                nachrueckendeList.addteilnehmer(teilnehmer);
+            }
+        }
 
-    public List<Teilnehmer> getTeilnehmerList(){
-        return teilnehmerList;
+        public void removeTeilnehmer(Teilnehmer teilnehmer){
+            teilnehmerList.remove(teilnehmer);
+            anzahlTeilnehmer--;
+            if(anzahlTeilnehmer < maxTeilnehmer){
+                if (!nachrueckendeList.getNachrueckendeTeilnehmer().isEmpty()) {
+                    Teilnehmer nachrueckenderTeilnehmer = nachrueckendeList.getNachrueckendeTeilnehmer().remove(0);
+                    teilnehmerList.add(nachrueckenderTeilnehmer);
+                    anzahlTeilnehmer++;
+                }
+            }
     }
 
-    public int getMax(){
-        return this.max;
+
+        
+    public void incrementAnzahlteilnehmer(int incrementValue) {
+        anzahlTeilnehmer += incrementValue;
     }
+
+    public void decrementAnzahlteilnehmer(int decrementValue) {
+        anzahlTeilnehmer -= decrementValue;
+    }
+
+    //getters and setters
+    
+    public  int getAnzahlTeilnehmer() {
+        return anzahlTeilnehmer;
+    }
+    public void setAnzahlTeilnehmer(int anzahlTeilnehmer) {
+        this.anzahlTeilnehmer = anzahlTeilnehmer;
+    }
+
+    public int getMaxTeilnehmer() {
+        return maxTeilnehmer;
+    }
+
+    public void setMaxTeilnehmer(int maxTeilnehmer) {
+        this.maxTeilnehmer = maxTeilnehmer;
+    }
+
+
 
 }
