@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class CSVread {
 
     public static void main(String[] args) {
         String file = "Dokumentation/teilnehmerliste.csv";

@@ -17,7 +17,7 @@ class MainTest {
         String data = "Rname,RLname,Email\nSaif,Shahwan,Smooth.btc@outlook.com";
         Files.write(Paths.get("test.csv"), data.getBytes());
         //retrieve data from cvs into a list
-        List<String> lines = Main.readParticipants("test.csv");
+        List<String> lines = CSVread.readParticipants("test.csv");
         //list test
         assertEquals("Rname,RLname,Email",lines.get(0));
         assertEquals("Saif,Shahwan,Smooth.btc@outlook.com",lines.get(1));
