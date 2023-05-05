@@ -12,6 +12,12 @@ import java.util.List;
 
 public class readCSV {
 
+    /**
+     *
+     * @param csvFile
+     * @return list of participant in String[]
+     * @throws Exception
+     */
     public static List<String[]> readCSV(File csvFile) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(csvFile));
         List<String[]> list = reader.readAll();
@@ -20,14 +26,15 @@ public class readCSV {
     }
 
 
+
+
     public static void main(String[] args) throws Exception {
         /*
         // Create a file chooser dialog to select the CSV file
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) {
+        if (result != JFileChooser.APPROVE_OPTION)
             return; // User canceled or closed the dialog
-        }
         File selectedFile = fileChooser.getSelectedFile();
          */
 
@@ -36,12 +43,11 @@ public class readCSV {
         String csvFile_test = "Dokumentation/teilnehmerliste_test.csv";
         List<String[]> list = readCSV(new File(csvFile));
 
-
-        TeilnehmendeList teilnehmendeList = new TeilnehmendeList();
-        PaerchenList paerchenList = new PaerchenList();
+        //TeilnehmendeList teilnehmendeList = new TeilnehmendeList();
+        //PaerchenList paerchenList = new PaerchenList();
         List<Participant> participantList = new ArrayList<>();
         List<String[]> alone_participant = new ArrayList<>();
-        System.out.println("remove"+Arrays.toString(list.remove(0)));
+        System.out.println("removeFirst"+Arrays.toString(list.remove(0)));
         for (int i = 0; i< list.size(); i++) {
             String[] participant = list.get(i);
             if(participant[1].equals("")||participant[2].equals("")||
@@ -64,7 +70,7 @@ public class readCSV {
                     participant[12].equals("")){    //age_2
                 alone_participant.add(participant); //later this will be added to list of alone_registration Class
                 Participant teilnehmer = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,kitchenLongitude,kitchenLatitude);
-                teilnehmendeList.addTeilnehmer(teilnehmer);
+                //teilnehmendeList.addTeilnehmer(teilnehmer);
             }
             else{ //is Pair
                 String ID_2 = participant[10];
@@ -80,18 +86,16 @@ public class readCSV {
 
                 //make Pairs
                 Pair pair = new Pair(participant1, participant2);
-                paerchenList.addPairToList(pair);
+                //paerchenList.addPairToList(pair);
             }
         }
-
-
+/*
         for(Pair pair : paerchenList.getpaerchenList()){
             System.out.println(pair.getPairId());
         }
         System.out.println("size of teilnehmerList: "+ participantList.size());
 
-
-
+ */
 
     }
 }
