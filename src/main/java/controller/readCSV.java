@@ -12,6 +12,12 @@ import java.util.List;
 
 public class readCSV {
 
+    /**
+     *
+     * @param csvFile
+     * @return list of participant in String[]
+     * @throws Exception
+     */
     public static List<String[]> readCSV(File csvFile) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(csvFile));
         List<String[]> list = reader.readAll();
@@ -25,9 +31,8 @@ public class readCSV {
         // Create a file chooser dialog to select the CSV file
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) {
+        if (result != JFileChooser.APPROVE_OPTION)
             return; // User canceled or closed the dialog
-        }
         File selectedFile = fileChooser.getSelectedFile();
          */
 
@@ -35,7 +40,6 @@ public class readCSV {
         String csvFile = "Dokumentation/teilnehmerliste.csv"; //for mac
         String csvFile_test = "Dokumentation/teilnehmerliste_test.csv";
         List<String[]> list = readCSV(new File(csvFile));
-
 
         TeilnehmendeList teilnehmendeList = new TeilnehmendeList();
         PaerchenList paerchenList = new PaerchenList();
@@ -84,14 +88,10 @@ public class readCSV {
             }
         }
 
-
         for(Pair pair : paerchenList.getpaerchenList()){
             System.out.println(pair.getPairId());
         }
         System.out.println("size of teilnehmerList: "+ participantList.size());
-
-
-
 
     }
 }
