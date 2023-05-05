@@ -1,16 +1,7 @@
 package models;
 
 public class Participant {
-    public enum SEX {
-        male(0),
-        female(1),
-        other(2);
-        private final int value;
-        SEX(int value) {
-            this.value = value;
-        }
 
-    }
     private Kitchen kitchen;
     private String ID;
     private String name;
