@@ -1,26 +1,14 @@
-//package models;
+package models;//package models;
 
 public class Kitchen {
-    //private boolean avaliablity;
-    private String kitchen;
     private double kitchenStory;
     private double kitchenLongitude;
     private double kitchenLatitude;
 
-    public Kitchen(String kitchen, double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
-        this.kitchen = kitchen;
+    public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
         this.kitchenStory = kitchenStory;
         this.kitchenLatitude = kitchenLatitude;
         this.kitchenLongitude = kitchenLongitude;
-        //this.avaliablity = avalibility;
-    }
-    
-    public String getKitchen() {
-        return kitchen;
-    }
-
-    public void setKitchen(String kitchen) {
-        this.kitchen = kitchen;
     }
 
     public double getKitchenStory() {
@@ -45,12 +33,5 @@ public class Kitchen {
 
     public void setKitchenLatitude(double kitchenLatitude) {
         this.kitchenLatitude = kitchenLatitude;
-    } 
-
-    /*
-    public boolean getAvaliablity() {
-        return avaliablity;
     }
-
-     */
 }
