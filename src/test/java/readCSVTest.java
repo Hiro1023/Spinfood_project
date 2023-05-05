@@ -1,14 +1,13 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 class readCSVTest {
 
     final int participantLength = 237;
-    final String path = "/Users/tommy/Desktop/SoftwarePraktikum23/teilnehmerliste.csv";
+    final String path = "/Users/tommy/Desktop/SoftwarePraktikum23/Dokumentation/teilnehmerliste.csv";
 
     final String header = "[, ID, Name, FoodPreference, Age, Sex, Kitchen, Kitchen_Story, Kitchen_Longitude, Kitchen_Latitude, ID_2, Name_2, Age_2, Sex_2]";
     final String person01 = "[0, 004670cb-47f5-40a4-87d8-5276c18616ec, Person1, veggie, 21, male, maybe, 3.0, 8.673368271555807, 50.5941282715558, , , , ]";
@@ -23,13 +22,13 @@ class readCSVTest {
     }
 
     @org.junit.jupiter.api.Test
-    void readCSV() throws Exception {
+    void participantCSV() throws Exception {
         assertEquals(person01, Arrays.toString(readCSV.readCSV(new File(path)).get(1)));
         assertEquals(person50, Arrays.toString(readCSV.readCSV(new File(path)).get(51)));
         assertEquals(person123, Arrays.toString(readCSV.readCSV(new File(path)).get(124)));
     }
     @Test
-    void participantTest() throws Exception{
+    void participantLengthTest() throws Exception{
         assertEquals(participantLength,readCSV.readCSV(new File(path)).size()-1); //-1 header
     }
 
