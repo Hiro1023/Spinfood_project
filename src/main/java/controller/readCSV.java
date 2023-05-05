@@ -48,7 +48,7 @@ public class readCSV {
 
         TeilnehmendeList teilnehmendeList = new TeilnehmendeList();
         PaerchenList paerchenList = new PaerchenList();
-        List<Teilnehmer> teilnehmerList = new ArrayList<>();
+        List<Participant> participantList = new ArrayList<>();
         List<String[]> alone_participant = new ArrayList<>();
         System.out.println("remove"+Arrays.toString(list.remove(0)));
         for (int i = 0; i< list.size(); i++) {
@@ -72,7 +72,7 @@ public class readCSV {
                     participant[11].equals("")||    //name_2
                     participant[12].equals("")){    //age_2
                 alone_participant.add(participant); //later this will be added to list of alone_registration Class
-                Teilnehmer teilnehmer = new Teilnehmer(ID,name,foodPreference,age,sex,kitchen,kitchenStory,kitchenLongitude,kitchenLatitude,"","","","");
+                Participant teilnehmer = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,kitchenLongitude,kitchenLatitude,"","","","");
                 teilnehmendeList.addTeilnehmer(teilnehmer);
             }
             else{ //is Pair
@@ -80,16 +80,16 @@ public class readCSV {
                 String name_2 = participant[11];
                 String age_2 = participant[12];  //convert string to double first and then to int, some age fields in csv file are in double
                 String sex_2 = participant[13];
-                Teilnehmer teilnehmer1 = new Teilnehmer(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
+                Participant participant1 = new Participant(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
                         kitchenLongitude,kitchenLatitude , ID_2, name_2, age_2, sex_2);
-                Teilnehmer teilnehmer2 = new Teilnehmer(ID_2, name_2, foodPreference, age_2, sex_2, kitchen, kitchenStory,
+                Participant participant2 = new Participant(ID_2, name_2, foodPreference, age_2, sex_2, kitchen, kitchenStory,
                         kitchenLongitude,kitchenLatitude , ID, name, age, sex);
-                teilnehmerList.add(teilnehmer1);
-                teilnehmerList.add(teilnehmer2);
+                participantList.add(participant1);
+                participantList.add(participant2);
 
                 //make Pairs
-                Paerchen paerchen = new Paerchen(teilnehmer1,teilnehmer2);
-                paerchenList.addPairToList(paerchen);
+                Pair pair = new Pair(participant1, participant2);
+                paerchenList.addPairToList(pair);
             }
         }
 
@@ -102,10 +102,10 @@ public class readCSV {
 
          */
 
-        for(Paerchen pair : paerchenList.getpaerchenList()){
+        for(Pair pair : paerchenList.getpaerchenList()){
             System.out.println(pair.getPairId());
         }
-        System.out.println("size of teilnehmerList: "+ teilnehmerList.size());
+        System.out.println("size of teilnehmerList: "+ participantList.size());
 
 
 
