@@ -25,6 +25,15 @@ public class readCSV {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     * @return number of Participants
+     */
+    public static int ParticipantLength(List<String[]> list){
+        return list.size();
+    }
+
 
 
 

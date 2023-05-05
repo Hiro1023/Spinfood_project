@@ -43,10 +43,7 @@ public class Participant implements Utility {
         return false;
     }
 
-    @Override
-    public boolean equal(Participant participant_2) {
-        return this.foodPreference.equals(participant_2.foodPreference);
-    }
+
 
 
     public void setID(String ID) {

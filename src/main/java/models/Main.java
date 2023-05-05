@@ -7,19 +7,9 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
 
+import static controller.readCSV.readCSV;
+
 public class Main {
-
-    /**
-     * @param csvFile
-     * @return List of Participant with type String[]
-     * @throws Exception
-     */
-    public static List<String[]> readCSV(File csvFile) throws Exception {
-        CSVReader reader = new CSVReader(new FileReader(csvFile));
-        List<String[]> list = reader.readAll();
-
-        return list;
-    }
 
     /**
      * Description: main class is the entry point.
@@ -28,12 +18,11 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         /*
-        // Create a file chooser dialog to select the CSV file
+        //Create a file chooser dialog to select the CSV file
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
         if (result != JFileChooser.APPROVE_OPTION) return; // User canceled or closed the dialog
         File selectedFile = fileChooser.getSelectedFile();
-        
          */
 
         String csvFile = "Dokumentation/teilnehmerliste.csv";

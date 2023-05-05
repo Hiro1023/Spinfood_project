@@ -10,5 +10,5 @@ public interface Utility {
 
     public boolean equal(Object o);
 
-    boolean equal(Participant participant_2);
+
 }

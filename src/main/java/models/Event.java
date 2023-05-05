@@ -9,8 +9,37 @@ public class Event {
     private boolean isFull;
     private int maxParticipant;
 
+    DataList dataList = new DataList();
+    private ParticipantSuccessorList participantSuccessorList = new ParticipantSuccessorList();
     private PairSuccesorList pairSuccesorList = new PairSuccesorList();
-    private ParticipantSuccesorList participantSuccesorList = new ParticipantSuccesorList();
+
+    public int getEvent_ID() {
+        return Event_ID;
+    }
+
+    public java.util.Date getDate() {
+        return Date;
+    }
+
+    public String getPartyVenue() {
+        return partyVenue;
+    }
+
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public DataList getDataList() {
+        return dataList;
+    }
+
+    public ParticipantSuccessorList getParticipantSuccessorList() {
+        return participantSuccessorList;
+    }
+
+    public PairSuccesorList getPairSuccesorList() {
+        return pairSuccesorList;
+    }
 
 
     public Event(int event_ID, java.util.Date date, String partyVenue, int maxParticipant) {
@@ -18,5 +47,11 @@ public class Event {
         Date = date;
         this.partyVenue = partyVenue;
         this.maxParticipant = maxParticipant;
+    }
+
+    public Event(){}
+
+    public int getMaxParticipant(){
+        return maxParticipant;
     }
 }

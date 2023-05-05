@@ -8,36 +8,32 @@ public class DataList {
     //List(Participant + pair)
     List<Participant> participantList = new ArrayList<>();
     List<Pair> pairlist = new ArrayList<>();
-    public int numberOfParticipant;
-    private int maxParticipant;
+    Event event = new Event();
 
-    //SuccesorList (Participant + Pair)
-    private ParticipantSuccesorList participantSuccesorList = new ParticipantSuccesorList();
-    private PairSuccesorList pairSuccesorList = new PairSuccesorList();
+    //SuccessorList (Participant + Pair)
     public void addParticipantToList(Participant participant){
-        if(numberOfParticipant < maxParticipant){
+        if(participantList.size() < event.getMaxParticipant()){
             participantList.add(participant);
         } else {
-            participantSuccesorList.addParticipant(participant);
+            event.getParticipantSuccessorList().addParticipant(participant);
         }
     }
 
     public void addPairToList(Pair pair) {
-        if(participantList.size() + 2 <= maxParticipant){
+        if(participantList.size() + 2 <= event.getMaxParticipant()){
             pairlist.add(pair);
         } else {
-            pairSuccesorList.addPair(pair);
+            event.getPairSuccesorList().addPair(pair);
         }
     }
 
     public void removePairFromList(Pair pair,int index) {
         pairlist.remove(pair);
-
-        if (participantList.size() + 2 <= maxParticipant) {
-            if (!pairSuccesorList.isEmpty()) {
-                Pair par = pairSuccesorList.getFirst();
+        if (participantList.size() + 2 <= event.getMaxParticipant()) {
+            if (!event.getPairSuccesorList().isEmpty()) {
+                Pair par = event.getPairSuccesorList().getFirst();
                 pairlist.add(par);
-                pairSuccesorList.removeFirst();
+                event.getPairSuccesorList().removeFirst();
             }
         }
     }
