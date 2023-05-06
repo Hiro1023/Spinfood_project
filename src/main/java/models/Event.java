@@ -9,7 +9,7 @@ public class Event {
     private boolean isFull;
     private int maxParticipant;
 
-    DataList dataList = new DataList();
+    //DataList dataList = new DataList();
     private ParticipantSuccessorList participantSuccessorList = new ParticipantSuccessorList();
     private PairSuccesorList pairSuccesorList = new PairSuccesorList();
 
@@ -29,9 +29,12 @@ public class Event {
         return isFull;
     }
 
+    /*
     public DataList getDataList() {
         return dataList;
     }
+
+     */
 
     public ParticipantSuccessorList getParticipantSuccessorList() {
         return participantSuccessorList;
@@ -49,7 +52,12 @@ public class Event {
         this.maxParticipant = maxParticipant;
     }
 
-    public Event(){}
+    public Event(){
+        Event_ID = 0;
+        Date = new Date();
+        this.partyVenue = "test";
+        this.maxParticipant = 1000;
+    }
 
     public int getMaxParticipant(){
         return maxParticipant;

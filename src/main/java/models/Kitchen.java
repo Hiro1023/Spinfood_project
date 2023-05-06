@@ -7,8 +7,14 @@ public class Kitchen {
 
     public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
         this.kitchenStory = kitchenStory;
-        this.kitchenLatitude = kitchenLatitude;
         this.kitchenLongitude = kitchenLongitude;
+        this.kitchenLatitude = kitchenLatitude;
+    }
+
+    public Kitchen(){}
+
+    public String showKitchen(){
+        return "Kitchen Floor: "+this.kitchenStory+", "+"Kitchen kitchenLongitude: "+ this.kitchenLongitude+", "+"Kitchen kitchenLatitude: "+this.kitchenLatitude;
     }
 
     public double getKitchenStory() {

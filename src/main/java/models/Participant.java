@@ -14,14 +14,14 @@ public class Participant implements Utility {
     private int count_WG;
 
 
-    public Participant(String ID, String name, String foodPreference, String age, String sex, String Kitchen,
+    public Participant(String ID, String name, String foodPreference, String age, String sex, String availability,
                        String Kitchen_Story, String Kitchen_Longitude, String Kitchen_Latitude) {
         this.ID = ID;
         this.name = name;
         this.foodPreference = FOOD_PREFERENCE.valueOf(foodPreference);
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
-        Kitchen kitchen = new Kitchen ( Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
+        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class Participant implements Utility {
         System.out.println("Food Preference: " + this.foodPreference);
         System.out.println("Age: " + this.age);
         System.out.println("Sex: " + this.sex);
-        System.out.println("Kitchen: " + this.kitchen);
+        System.out.println("Kitchen: " + ((this.kitchen==null)?   "null":this.kitchen.showKitchen()) );
         System.out.println("Age Range: " + this.agerange);
         System.out.println("Count WG: " + this.count_WG);
     }
