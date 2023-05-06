@@ -1,7 +1,6 @@
 package controller;
 
 import com.opencsv.CSVReader;
-import models.DataList;
 import models.Event;
 import models.Pair;
 import models.Participant;
@@ -15,7 +14,7 @@ import java.util.List;
 public class readCSV {
     public static List<String[]> alone_participant = new ArrayList<>();
     public static List<String[]> not_alone_participant = new ArrayList<>();
-    public static Event event = new Event();
+    public static Event event = new Event(1000); //test Event
     public static DataList dataList = new DataList(event);
     public static Pair pair = null;
     public static int countParticipant = 0;
@@ -29,8 +28,7 @@ public class readCSV {
      */
     public static List<String[]> readCSV(File csvFile) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(csvFile));
-        List<String[]> list = reader.readAll();
-        return list;
+        return reader.readAll();
     }
 
     /**
@@ -59,7 +57,7 @@ public class readCSV {
             String kitchenLongitude = (participant_String[8].equals(""))? "0":participant_String[8];    //kitchen Longitude
             String kitchenLatitude = (participant_String[9].equals(""))? "0":participant_String[9];     //Kitchen Latitude
 
-            if (participant_String[10].equals("") &&
+            if (participant_String[10].equals("") && //ID_2
                     participant_String[11].equals("") &&
                     participant_String[12].equals("") &&
                     participant_String[13].equals("")) {
@@ -89,33 +87,6 @@ public class readCSV {
                 dataList.addPairToList(pair);
             }
         }
-
     }
-
-
-
-    public static void main(String[] args) throws Exception {
-        //csv file path
-        String csvFile = "Dokumentation/teilnehmerliste.csv"; //for mac
-        String csvFile_test = "Dokumentation/teilnehmerliste_test.csv";
-        List<String[]> list = readCSV(new File(csvFile));
-
-        addParticipantAndPair(list);
-
-        for (Participant parList: dataList.getParticipantList()) {
-            parList.show();
-            System.out.println("__________________________________");
-        }
-        System.out.println("check list length " + list.size ());
-        System.out.println("size of participant: "+ dataList.getParticipantList().size());
-        System.out.println("Alone Size: " + alone_participant.size());
-        System.out.println("Not alone Size: " + not_alone_participant.size());
-        System.out.println(countParticipant);
-
-
-    }
-
-
-
 
 }

@@ -1,4 +1,4 @@
-package models;//package models;
+package models;
 
 public class Kitchen {
     private double kitchenStory;

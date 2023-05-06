@@ -1,4 +1,8 @@
-package models;
+package controller;
+
+import models.Event;
+import models.Pair;
+import models.Participant;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,7 @@
 package models;
 
+import controller.DataList;
+
 import java.util.Date;
 
 public class Event {
@@ -9,7 +11,7 @@ public class Event {
     private boolean isFull;
     private int maxParticipant;
 
-    //DataList dataList = new DataList();
+    DataList dataList ;
     private ParticipantSuccessorList participantSuccessorList = new ParticipantSuccessorList();
     private PairSuccesorList pairSuccesorList = new PairSuccesorList();
 
@@ -52,11 +54,12 @@ public class Event {
         this.maxParticipant = maxParticipant;
     }
 
-    public Event(){
+    public Event(int max){
         Event_ID = 0;
         Date = new Date();
         this.partyVenue = "test";
-        this.maxParticipant = 1000;
+        this.maxParticipant = max;
+        this.dataList = new DataList(this);
     }
 
     public int getMaxParticipant(){
