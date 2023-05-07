@@ -11,7 +11,7 @@ public class DataList {
 
     //List(Participant + pair)
     private List<Participant> participantList;
-    private List<Pair> pairList = new ArrayList<>();
+    private List<Pair> pairList;
     private Event event ;
 
     //Constructor

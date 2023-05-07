@@ -15,7 +15,6 @@ public class readCSV {
     public List<String[]> alone_participant = new ArrayList<>();
     public List<String[]> not_alone_participant = new ArrayList<>();
     public Event event = new Event();
-    public Pair pair = null;
     public int countParticipant = 0;
     public int countPair = 0;
 
@@ -30,21 +29,13 @@ public class readCSV {
      * @param csvFile
      * @return list of participant in String[]
      * @throws Exception
-     */
+     **/
     public List<String[]> read_File(File csvFile) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(csvFile));
         List<String[]> list = reader.readAll();
         return list;
     }
 
-    /**
-     *
-     * @param list
-     * @return number of Participants
-     */
-    public int participantLength(List<String[]> list){
-        return list.size();
-    }
 
     public void addParticipantAndPair(List<String[]> list){
         System.out.println("removeFirst"+Arrays.toString(list.remove(0)));
@@ -90,7 +81,7 @@ public class readCSV {
                 countParticipant +=1;
 
                 //make Pairs
-                pair = new Pair(participant_1, participant_2);
+                Pair pair = new Pair(participant_1, participant_2);
                 event.getDataList().addPairToList(pair);
             }
         }
