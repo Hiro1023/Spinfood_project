@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class readCSVTest {
     readCSV test;
 
+    String[] p1 = {"0","004670cb-47f5-40a4-87d8-5276c18616ec","Person1","veggie","21","male","maybe","3.0","8.673368271555807","50.5941282715558","","","",""};
+
     public readCSVTest() throws Exception {
         test = new readCSV();
     }
@@ -21,10 +23,9 @@ class readCSVTest {
      * @throws Exception
      */
     @Test
-    void read_File() throws Exception{
-        assertEquals(6,test.read_File(new File("Dokumentation/teilnehmerliste_test.csv")).size());
-        String[] p1 = {"0","004670cb-47f5-40a4-87d8-5276c18616ec","Person1","veggie","21","male","maybe","3.0","8.673368271555807","50.5941282715558","","","",""};
-        assertArrayEquals(p1,test.read_File(new File("Dokumentation/teilnehmerliste_test.csv")).get(1));
+    void read_FileTest() throws Exception{
+        assertEquals(238,test.read_File(new File("Dokumentation/teilnehmerliste.csv")).size());
+        assertArrayEquals(p1,test.read_File(new File("Dokumentation/teilnehmerliste.csv")).get(1));
     }
 
 
@@ -35,10 +36,10 @@ class readCSVTest {
     @Test
     void addParticipantTest() throws Exception {
         test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
-        assertEquals(237, test.countParticipant);
+        assertEquals(310, test.countParticipant);
         assertEquals(164,test.alone_participant.size());
         assertEquals(73,test.countPair);
-        assertEquals(test.countParticipant,test.countPair+test.alone_participant.size());
+        assertEquals(test.countParticipant,2*(test.countPair)+test.alone_participant.size());
     }
 
 
