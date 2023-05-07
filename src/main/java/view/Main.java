@@ -1,13 +1,10 @@
-package models;
-import com.opencsv.CSVReader;
+package view;
 
-import javax.swing.*;
 import java.io.File;
-import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
 
-import static controller.readCSV.readCSV;
+import controller.readCSV;
 
 public class Main {
 
@@ -26,7 +23,8 @@ public class Main {
          */
 
         String csvFile = "Dokumentation/teilnehmerliste.csv";
-        List<String[]> list = readCSV(new File(csvFile));
+        readCSV readCSV = new readCSV(new File(csvFile));
+        List<String[]> list = readCSV.read_File(new File(csvFile));
         //print out to the console the list of participant from csv file
         for (String[] teilnehmer : list) {
             System.out.println(Arrays.toString(teilnehmer));

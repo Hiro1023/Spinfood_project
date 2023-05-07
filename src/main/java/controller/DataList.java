@@ -1,4 +1,8 @@
-package models;
+package controller;
+
+import models.Event;
+import models.Pair;
+import models.Participant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +10,9 @@ import java.util.List;
 public class DataList {
 
     //List(Participant + pair)
-    List<Participant> participantList;
-    List<Pair> pairList = new ArrayList<>();
-    Event event ;
+    private List<Participant> participantList;
+    private List<Pair> pairList = new ArrayList<>();
+    private Event event ;
 
     //Constructor
     public DataList (Event event){
@@ -60,4 +64,6 @@ public class DataList {
     public List<Pair> getPairList() {
         return pairList;
     }
+
+    public Event getEvent() {return event;}
 }
