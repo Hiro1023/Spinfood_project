@@ -1,44 +1,80 @@
-<mxfile host="app.diagrams.net" modified="2023-04-27T13:56:54.667Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0" etag="ySAGquEI6OdGVJujHzAL" version="21.2.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-05-08T17:56:33.366Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="I1L21tnFipbwrfX1dFyu" version="21.2.1" type="device">
   <diagram name="Page-1" id="TYmmPNF2BLm5hJys9Faa">
-    <mxGraphModel dx="1178" dy="593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1712" dy="372" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="60" width="320" height="70" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="34" width="320" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-7" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Vorbedigung :&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="34" y="60" width="140" height="30" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-7" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Precondition :&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="3.5" y="34" width="140" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-9" value="&lt;div align=&quot;left&quot;&gt;Eine .csv-Daten, die die persönlichen Daten von n Teilnehmern enthält,&amp;nbsp; ist verfügbar. Die Teilnehmerliste ist leer&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="84" width="319" height="40" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-9" value="&lt;div align=&quot;left&quot;&gt;A .csv file that is containing&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;personal data of 237 Participants is available&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="45" width="310" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-10" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="130" width="320" height="40" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-10" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="84" width="320" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-11" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Ablauf :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="23" y="129" width="107" height="30" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-11" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Process :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="0.5" y="78" width="107" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-12" value="&lt;div&gt;Der Nutzer liest die .csv-Daten mit der Funktion &quot;readCSV&quot;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="141" width="319" height="40" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-12" value="This csv file is read by read_File method&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="99" width="319" height="15" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-13" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Teilnehmerliste im .csv DatenFormat einlesen.&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="25" y="23" width="220" height="30" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-13" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;read_FileTest&amp;nbsp;&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1" y="12" width="140" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-15" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="170" width="320" height="60" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-15" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="114" width="320" height="66" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-16" value="&lt;div&gt;Die .csv-Daten hat eingelesen. Die Teilnehmerliste enthält&lt;/div&gt;&lt;div&gt;jetzt alle persönlichen Daten von n Teilnehmern.&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="190" width="319" height="40" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-16" value="This file is read succesfully and the data are saved as list of string array. The length of the list is 238, because the Header of the .csv data is also saved as a String array." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="9.5" y="132" width="319" height="43" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-17" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Erwartetes Verhalten :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="33" y="170" width="207" height="30" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-17" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Expected Behavior :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="6.5" y="109" width="185" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-18" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="230" width="320" height="40" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-18" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10.5" y="180" width="320" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="C8bRKrwIwBfJNR0NoLEV-20" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Tatsächliches Verhalten :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="31" y="230" width="238" height="30" as="geometry" />
+        <mxCell id="C8bRKrwIwBfJNR0NoLEV-20" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Actual Behavior :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1.5" y="180" width="173" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="wHKpd65QwjYDFyCoAMrG-4" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-0.5" y="210" width="332" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" y="26" width="320" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-2" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Precondition :&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="11" y="20" width="127" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-3" value="&lt;div align=&quot;left&quot;&gt;A csv file is read successfully and this data is saved as List of string array.&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;The List contains 237 personal data of 237&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Participants&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="13" y="46" width="319" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-4" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" y="90" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-5" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Process :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry y="85" width="107" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-6" value="&lt;br&gt;User calls function &quot;addParticipant&quot; with this list as input.&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" y="101" width="310" height="19" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-7" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;addParticipantTest&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" width="161.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-8" value="&lt;br&gt;A participant List that contains 310 Participants, a pair List that contains 73 Pairs is created. 164 Participants that is not in any pair are recorded. There is no duplicate in participant List as the total number of Participants is equal to alone Participant and 2 * number of Pairs&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" y="130" width="320" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-10" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Expected Behavior :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="2" y="130" width="207" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HVblePlZ4hyX_3w8zG4A-11" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="wHKpd65QwjYDFyCoAMrG-4" vertex="1">
+          <mxGeometry x="12" y="230" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="wHKpd65QwjYDFyCoAMrG-3" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Actual Behavior :&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="wHKpd65QwjYDFyCoAMrG-4">
+          <mxGeometry x="2.5" y="230" width="173" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
