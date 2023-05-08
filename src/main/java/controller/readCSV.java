@@ -25,7 +25,7 @@ public class readCSV {
         addParticipantAndPair(read_File(csvFile));
     }
     /**
-     *
+     * csvFile is read
      * @param csvFile
      * @return list of participant in String[]
      * @throws Exception
@@ -37,8 +37,12 @@ public class readCSV {
     }
 
 
+    /**
+     * @Discription Participant and pair are created from list
+     * @param list
+     */
     public void addParticipantAndPair(List<String[]> list){
-        System.out.println("removeFirst"+Arrays.toString(list.remove(0)));
+        list.remove(0);
 
         for (int i = 0; i< list.size(); i++) {
             String[] participant_String = list.get(i);
@@ -78,7 +82,7 @@ public class readCSV {
 
                 not_alone_participant.add(participant_String);
                 countPair +=1;
-                countParticipant +=1;
+                countParticipant +=2;
 
                 //make Pairs
                 Pair pair = new Pair(participant_1, participant_2);
