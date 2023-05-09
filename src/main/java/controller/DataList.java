@@ -38,7 +38,7 @@ public class DataList {
         }
     }
 
-    public void removePairFromList(Pair pair,int index) {
+    public void removePairFromList(Pair pair) {
         pairList.remove(pair);
         if (participantList.size() + 2 <= event.getMaxParticipant()) {
             if (!event.getPairSuccesorList().isEmpty()) {
