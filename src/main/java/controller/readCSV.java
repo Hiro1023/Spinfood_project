@@ -22,13 +22,18 @@ public class readCSV {
     public int countPair = 0;
 
 
-    public readCSV(){};
+    public readCSV() {
+    }
+
+    ;
 
     public readCSV(File csvFile) throws Exception {
         addParticipantAndPair(read_File(csvFile));
     }
+
     /**
      * csvFile is read
+     *
      * @param csvFile
      * @return list of participant in String[]
      * @throws Exception
@@ -41,13 +46,13 @@ public class readCSV {
 
 
     /**
-     * @Discription Participant and pair are created from list
      * @param list
+     * @Discription Participant and pair are created from list
      */
-    public void addParticipantAndPair(List<String[]> list){
+    public void addParticipantAndPair(List<String[]> list) {
         list.remove(0);
 
-        for (int i = 0; i< list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             String[] participant_String = list.get(i);
 
             String ID = participant_String[1];
@@ -57,18 +62,23 @@ public class readCSV {
             String sex = participant_String[5];
 
             String kitchen = participant_String[6];
-            String kitchenStory = (participant_String[7].equals(""))? "0":participant_String[7]; //kitchen floor
-            String kitchenLongitude = (participant_String[8].equals(""))? "0":participant_String[8];    //kitchen Longitude
-            String kitchenLatitude = (participant_String[9].equals(""))? "0":participant_String[9];     //Kitchen Latitude
+            String kitchenStory = (participant_String[7].equals("")) ? "0" : participant_String[7]; //kitchen floor
+            String kitchenLongitude = (participant_String[8].equals("")) ? "0" : participant_String[8];    //kitchen Longitude
+            String kitchenLatitude = (participant_String[9].equals("")) ? "0" : participant_String[9];     //Kitchen Latitude
 
-            String key = kitchenLongitude+kitchenLatitude;
-
-            if(!AddressTable.containsKey(key)) {
+            String key = kitchenLongitude + kitchenLatitude;
+            if (!AddressTable.containsKey(key)) {
                 List<String> IDList = new ArrayList<>();
                 IDList.add(ID);
-                AddressTable.put(key,IDList);
+                if (!participant_String[10].equals("")) {
+                    IDList.add(participant_String[10]);
+                }
+                AddressTable.put(key, IDList);
             } else {
                 AddressTable.get(key).add(ID);
+                if (!participant_String[10].equals("")) {
+                    AddressTable.get(key).add(participant_String[10]);
+                }
             }
 
             if (participant_String[10].equals("") &&
@@ -76,37 +86,45 @@ public class readCSV {
                     participant_String[12].equals("") &&
                     participant_String[13].equals("")) {
                 alone_participant.add(participant_String); //later this will be added to list of alone_registration Class
-                Participant participant = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,
-                        kitchenLongitude,kitchenLatitude);
+                Participant participant = new Participant(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
+                        kitchenLongitude, kitchenLatitude);
                 event.getDataList().addParticipantToList(participant);
                 countParticipant++;
-            }else{//is Pair
+            } else {//is Pair
                 String ID_2 = participant_String[10];
                 String name_2 = participant_String[11];
                 String age_2 = participant_String[12];//convert string to double first and then to int, some age fields in csv file are in double
                 String sex_2 = participant_String[13];
                 Participant participant_1 = new Participant(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
-                        kitchenLongitude,kitchenLatitude);
+                        kitchenLongitude, kitchenLatitude);
                 event.getDataList().addParticipantToList(participant_1);
 
                 Participant participant_2 = new Participant(ID_2, name_2, foodPreference, age_2, sex_2, kitchen, kitchenStory,
-                        kitchenLongitude,kitchenLatitude);
+                        kitchenLongitude, kitchenLatitude);
                 event.getDataList().addParticipantToList(participant_2);
 
                 not_alone_participant.add(participant_String);
-                countPair +=1;
-                countParticipant +=2;
+                countPair += 1;
+                countParticipant += 2;
 
                 //make Pairs
                 Pair pair = new Pair(participant_1, participant_2);
                 event.getDataList().addPairToList(pair);
             }
-        }
 
+        }
+        for (Participant p : event.getDataList().getParticipantList()) {
+            if (p.getKitchen() != null) {
+                String key = String.valueOf(p.getKitchen().getKitchenLongitude()) + String.valueOf(p.getKitchen().getKitchenLatitude());
+                p.setKitchenCount(AddressTable.get(key).size());
+            }
         }
     }
 
-// [address, id1,id2.id3]
-// compare
-// p1.kitchen.long == p2...
-// p1.kutcc++, p2.kc++
+    public static void main(String[] args) throws Exception {
+        readCSV test = new readCSV(new File("Dokumentation/teilnehmerliste.csv"));
+        for (Participant p : test.event.getDataList().getParticipantList()) {
+            p.show();
+        }
+    }
+}

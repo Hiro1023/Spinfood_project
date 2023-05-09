@@ -12,13 +12,6 @@ public class Participant implements Utility {
     private Kitchen kitchen;
     private AGE_RANGE agerange; //enem
 
-    public int getKitchenCount() {
-        return KitchenCount;
-    }
-
-    public void setKitchenCount(int kitchenCount) {
-        KitchenCount = kitchenCount;
-    }
 
     private int KitchenCount = 0;
 
@@ -30,7 +23,31 @@ public class Participant implements Utility {
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
         this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
+        this.agerange = assignAgeRange(this.age);
     }
+
+    private AGE_RANGE assignAgeRange(int age) {
+        if (age < 18) {
+            return AGE_RANGE.LessThan18;
+        } else if (age < 24) {
+            return AGE_RANGE.LessThan24;
+        } else if (age < 28) {
+            return AGE_RANGE.LessThan28;
+        } else if (age < 31) {
+            return AGE_RANGE.LessThan31;
+        } else if (age < 36) {
+            return AGE_RANGE.LessThan36;
+        } else if (age < 42) {
+            return AGE_RANGE.LessThan42;
+        } else if (age < 47) {
+            return AGE_RANGE.LessThan47;
+        } else if (age < 57) {
+            return AGE_RANGE.LessThan57;
+        } else {
+            return AGE_RANGE.MoreThan56;
+        }
+    }
+
 
     private FOOD_PREFERENCE assignFoodPreference(String foodPreference) {
         switch (foodPreference) {
@@ -57,6 +74,7 @@ public class Participant implements Utility {
         System.out.println("Sex: " + this.sex);
         System.out.println("Kitchen: " + ((this.kitchen==null)?   "null":this.kitchen.showKitchen()) );
         System.out.println("Age Range: " + this.agerange);
+        System.out.println("Kitchen Count: " + this.getKitchenCount());
     }
 
     @Override
@@ -121,6 +139,14 @@ public class Participant implements Utility {
 
     public AGE_RANGE getAgerange() {
         return agerange;
+    }
+
+    public int getKitchenCount() {
+        return KitchenCount;
+    }
+
+    public void setKitchenCount(int kitchenCount) {
+        KitchenCount = kitchenCount;
     }
 
 
