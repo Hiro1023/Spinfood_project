@@ -3,60 +3,59 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.Group;
-import models.Pair;
-import models.Participant;
-import models.ParticipantSuccessorList;
+import models.*;
 
 public class ListManagement{
-
+public Event event;
 public DataList dataList;
-public ParticipantSuccessorList successorList;
 
 public ListManagement(DataList dataList){
     this.dataList = dataList;
+    this.event = this.dataList.event;
 }
-  
-    
+
+
 
 public void editCriteria(CRITERIA criteria, int newWeight) {
     criteria.setWeight(newWeight);
 }
 
 
-public void makeBestPairs(List<Participant> participants) {
-    List<Participant> unmatchedParticipants = new ArrayList<>(participants);
-
-    while (!unmatchedParticipants.isEmpty()) {
-        Pair bestPair = makeBestPair(unmatchedParticipants);
+public void makeBestPairList(List<Participant> participants) {
+    while (dataList.unmatchedParticipants.size() > 1) {
+        Participant participant1 = dataList.unmatchedParticipants.get(0);
+        Pair bestPair = makeBestPair(participant1);
         dataList.pairList.add(bestPair);
-        unmatchedParticipants.remove(bestPair.getTeilnehmer1());
-        unmatchedParticipants.remove(bestPair.getTeilnehmer2());
+        dataList.unmatchedParticipants.remove(bestPair.getParticipant1());
+        dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
+    }
+    if (dataList.unmatchedParticipants.size() == 1) {
+        event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
     }
 }
 
-public Pair makeBestPair(List<Participant> participants) {
+public Pair makeBestPair(Participant participant) {
     Pair bestPair = null;
     double bestScore = -1;
-    for (Participant participant1 : participants) {
-        for (Participant participant2 : participants) {
-            if (participant1 == participant2 || (participant1.getKitchen() == null && participant2.getKitchen() == null) || (participant1.getKitchen() != null && participant2.getKitchen() != null)) {
+        for (Participant participant2 : dataList.getParticipantList()) {
+            boolean bothNoKitchen = participant.getKitchen() == null && participant2.getKitchen() == null;
+            boolean bothHaveKitchen = participant.getKitchen() != null && participant2.getKitchen() != null;
+            if (participant == participant2 || bothNoKitchen || bothHaveKitchen) {
                 continue;
             }
-            Pair tempPair = new Pair(participant1, participant2);
+            Pair tempPair = new Pair(participant, participant2);
             double tempScore = tempPair.calculatePairWeightedScore(tempPair);
             if (tempScore > bestScore) {
                 bestScore = tempScore;
                 bestPair = tempPair;
             }
         }
-    }
     return bestPair;
 }
 
 
 //creating the best possible Group
-public List<Group> makeBestGroups(List<Pair> pairs, ParticipantSuccessorList successorsList) {
+public List<Group> makeBestGroupList(List<Pair> pairs, ParticipantSuccessorList successorsList) {
     List<Group> bestGroups = new ArrayList<>();
     List<Pair> unmatchedPairs = new ArrayList<>(pairs);
 

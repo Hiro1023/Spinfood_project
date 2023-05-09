@@ -19,6 +19,7 @@ public class Pair implements Calculation{
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
         this.participant2 = participant2;
+        this.Pair_ID = participant1.getID()+"-"+participant2.getID();
     }
 
     
@@ -169,11 +170,11 @@ public class Pair implements Calculation{
         return visitedPairs;
     }
 
-    public Participant getTeilnehmer1() {
+    public Participant getParticipant1() {
         return participant1;
     }
 
-    public Participant getTeilnehmer2() {
+    public Participant getParticipant2() {
         return participant2;
     }
 

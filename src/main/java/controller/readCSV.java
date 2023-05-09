@@ -65,6 +65,7 @@ public class readCSV {
                 Participant participant = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,
                         kitchenLongitude,kitchenLatitude);
                 dataList.addParticipantToList(participant);
+                dataList.unmatchedParticipants.add(participant);
                 countParticipant++;
             }else{//is Pair
                 String ID_2 = participant_String[10];

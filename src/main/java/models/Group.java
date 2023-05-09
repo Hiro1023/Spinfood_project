@@ -7,6 +7,7 @@ import controller.Calculation;
 
 public class Group implements Calculation{
     private List<Pair> Pairs = new ArrayList<>();
+    private List<Pair> MetPairs = new ArrayList<>();
     private Pair cookingPair;
     private COURSE course;
     private FOOD_PREFERENCE foodPreference;

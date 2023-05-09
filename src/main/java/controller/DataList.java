@@ -12,6 +12,7 @@ public class DataList {
     //List(Participant + pair)
     List<Participant> participantList;
     List<Pair> pairList = new ArrayList<>();
+    List<Participant> unmatchedParticipants;
     Event event ;
 
     //Constructor
@@ -19,6 +20,7 @@ public class DataList {
         participantList = new ArrayList<>();
         pairList = new ArrayList<>();
         this.event = event;
+        this.unmatchedParticipants = new ArrayList<>();
     }
 
     //SuccessorList (Participant + Pair)
