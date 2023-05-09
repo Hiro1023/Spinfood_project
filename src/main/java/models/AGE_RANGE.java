@@ -1,5 +1,17 @@
 package models;
 
 public enum AGE_RANGE {
-
+    LessThan18(0),
+    LessThan24(1),
+    LessThan28(2),
+    LessThan31(3),
+    LessThan36(4),
+    LessThan42(5),
+    LessThan47(6),
+    LessThan57(7),
+    MoreThan56(8);
+    private int value;
+    AGE_RANGE(int i) {
+        this.value = i;
+    }
 }

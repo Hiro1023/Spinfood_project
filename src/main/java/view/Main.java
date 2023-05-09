@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import controller.readCSV;
+import models.Participant;
 
 public class Main {
 
@@ -26,9 +27,14 @@ public class Main {
         readCSV readCSV = new readCSV(new File(csvFile));
         List<String[]> list = readCSV.read_File(new File(csvFile));
         //print out to the console the list of participant from csv file
-        for (String[] teilnehmer : list) {
-            System.out.println(Arrays.toString(teilnehmer));
+        for (Participant par: readCSV.event.getDataList().getParticipantList()) {
+            par.show();
+            System.out.println("---------------------------");
         }
+
+        Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
+        System.out.println(readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
+
     }
 
 }

@@ -8,13 +8,18 @@ import models.Participant;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class readCSV {
     public List<String[]> alone_participant = new ArrayList<>();
     public List<String[]> not_alone_participant = new ArrayList<>();
     public Event event = new Event();
+
+    //hash map if String(as addresse: combination of Longtitude and Latitude)
+    //
+    public HashMap<String, List<Participant>> AddressTable = new HashMap<>();
+
     public int countParticipant = 0;
     public int countPair = 0;
 
@@ -58,6 +63,8 @@ public class readCSV {
             String kitchenLongitude = (participant_String[8].equals(""))? "0":participant_String[8];    //kitchen Longitude
             String kitchenLatitude = (participant_String[9].equals(""))? "0":participant_String[9];     //Kitchen Latitude
 
+            String Kitchen_key = kitchenLongitude+kitchenLatitude;
+
             if (participant_String[10].equals("") &&
                     participant_String[11].equals("") &&
                     participant_String[12].equals("") &&
@@ -67,6 +74,16 @@ public class readCSV {
                         kitchenLongitude,kitchenLatitude);
                 event.getDataList().addParticipantToList(participant);
                 countParticipant++;
+
+                if(!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string
+                    List<Participant> IDList = new ArrayList<>();
+                    IDList.add(participant);
+                    AddressTable.put(Kitchen_key,IDList);
+                } else {
+                    AddressTable.get(Kitchen_key).add(participant);
+                }
+
+
             }else{//is Pair
                 String ID_2 = participant_String[10];
                 String name_2 = participant_String[11];
@@ -87,7 +104,28 @@ public class readCSV {
                 //make Pairs
                 Pair pair = new Pair(participant_1, participant_2);
                 event.getDataList().addPairToList(pair);
+
+                if(!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string
+                    List<Participant> IDList = new ArrayList<>();
+                    IDList.add(participant_1);
+                    IDList.add(participant_2);
+                    AddressTable.put(Kitchen_key,IDList);
+                } else {
+                    AddressTable.get(Kitchen_key).add(participant_1);
+                    AddressTable.get(Kitchen_key).add(participant_2);
+                }
+            }
+
+        }
+
+        for (Participant p : event.getDataList().getParticipantList()) {
+            if (p.getKitchen() != null) {
+                String key = String.valueOf(p.getKitchen().getKitchenLongitude()) + String.valueOf(p.getKitchen().getKitchenLatitude());
+                p.setKitchenCount(AddressTable.get(key).size());
             }
         }
+
+
     }
 }
+
