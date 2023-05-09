@@ -11,18 +11,40 @@ public class Participant implements Utility {
     private SEX sex; //enum
     private Kitchen kitchen;
     private AGE_RANGE agerange; //enem
-    private int count_WG;
 
+    public int getKitchenCount() {
+        return KitchenCount;
+    }
+
+    public void setKitchenCount(int kitchenCount) {
+        KitchenCount = kitchenCount;
+    }
+
+    private int KitchenCount = 0;
 
     public Participant(String ID, String name, String foodPreference, String age, String sex, String availability,
                        String Kitchen_Story, String Kitchen_Longitude, String Kitchen_Latitude) {
         this.ID = ID;
         this.name = name;
-        this.foodPreference = FOOD_PREFERENCE.valueOf(foodPreference);
+        this.foodPreference = assignFoodPreference(foodPreference);
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
         this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
     }
+
+    private FOOD_PREFERENCE assignFoodPreference(String foodPreference) {
+        switch (foodPreference) {
+            case "meat":
+                return FOOD_PREFERENCE.meat;
+            case "none":
+                return FOOD_PREFERENCE.none;
+            case "veggie":
+                return FOOD_PREFERENCE.veggie;
+            default:
+                return FOOD_PREFERENCE.vegan;
+        }
+    }
+
 
     @Override
     public void show(){
@@ -35,7 +57,6 @@ public class Participant implements Utility {
         System.out.println("Sex: " + this.sex);
         System.out.println("Kitchen: " + ((this.kitchen==null)?   "null":this.kitchen.showKitchen()) );
         System.out.println("Age Range: " + this.agerange);
-        System.out.println("Count WG: " + this.count_WG);
     }
 
     @Override
@@ -74,10 +95,6 @@ public class Participant implements Utility {
         this.agerange = agerange;
     }
 
-    public void setCount_WG(int count_WG) {
-        this.count_WG = count_WG;
-    }
-
     public Kitchen getKitchen() {
         return kitchen;
     }
@@ -106,9 +123,6 @@ public class Participant implements Utility {
         return agerange;
     }
 
-    public int getCount_WG() {
-        return count_WG;
-    }
 
     public static void main(String[] args) {
         Participant par = new Participant("01be5c1f-4aa1-458d-a530-b1c109ffbb55","Person3","vegan","22","male","yes","1.0","8.681372017093311","50.5820794170933");

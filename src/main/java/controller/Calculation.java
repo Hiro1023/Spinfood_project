@@ -11,4 +11,6 @@ public double calculatePathLength();
 
 public int calculateAgeRangeDiff();
 
+public int calculatePreferenceDev();
+
 }

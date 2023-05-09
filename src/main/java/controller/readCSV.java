@@ -9,12 +9,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class readCSV {
     public List<String[]> alone_participant = new ArrayList<>();
     public List<String[]> not_alone_participant = new ArrayList<>();
     public Event event = new Event();
+
+    public HashMap<String, List<String>> AddressTable = new HashMap<>();
     public int countParticipant = 0;
     public int countPair = 0;
 
@@ -58,6 +61,16 @@ public class readCSV {
             String kitchenLongitude = (participant_String[8].equals(""))? "0":participant_String[8];    //kitchen Longitude
             String kitchenLatitude = (participant_String[9].equals(""))? "0":participant_String[9];     //Kitchen Latitude
 
+            String key = kitchenLongitude+kitchenLatitude;
+
+            if(!AddressTable.containsKey(key)) {
+                List<String> IDList = new ArrayList<>();
+                IDList.add(ID);
+                AddressTable.put(key,IDList);
+            } else {
+                AddressTable.get(key).add(ID);
+            }
+
             if (participant_String[10].equals("") &&
                     participant_String[11].equals("") &&
                     participant_String[12].equals("") &&
@@ -89,5 +102,11 @@ public class readCSV {
                 event.getDataList().addPairToList(pair);
             }
         }
+
+        }
     }
-}
+
+// [address, id1,id2.id3]
+// compare
+// p1.kitchen.long == p2...
+// p1.kutcc++, p2.kc++
