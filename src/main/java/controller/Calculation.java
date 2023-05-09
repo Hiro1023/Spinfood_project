@@ -3,13 +3,17 @@ package controller;
 public interface Calculation {
 
 
-public int calculateAgeDiff();
+//food Score
+public double calculateFoodMatchScore();
 
-public double calculateGenderDiv();
+//sex diversity
+public double calculateSexDiversity();
 
-public double calculatePathLength();
+// path between participants
+public double calculateDistanceBetweenKitchens();
 
-public int calculateAgeRangeDiff();
+// age diff
+public int calculatePairAgeDifference();
 
 public int calculatePreferenceDev();
 

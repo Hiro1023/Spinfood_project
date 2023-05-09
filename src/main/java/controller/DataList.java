@@ -10,15 +10,17 @@ import java.util.List;
 public class DataList {
 
     //List(Participant + pair)
-    private List<Participant> participantList;
-    private List<Pair> pairList;
-    private Event event ;
+    List<Participant> participantList;
+    List<Pair> pairList = new ArrayList<>();
+    List<Participant> unmatchedParticipants;
+    Event event ;
 
     //Constructor
     public DataList (Event event){
         participantList = new ArrayList<>();
         pairList = new ArrayList<>();
         this.event = event;
+        this.unmatchedParticipants = new ArrayList<>();
     }
 
     //SuccessorList (Participant + Pair)
@@ -38,7 +40,7 @@ public class DataList {
         }
     }
 
-    public void removePairFromList(Pair pair,int index) {
+    public void removePairFromList(Pair pair) {
         pairList.remove(pair);
         if (participantList.size() + 2 <= event.getMaxParticipant()) {
             if (!event.getPairSuccesorList().isEmpty()) {
@@ -64,6 +66,4 @@ public class DataList {
     public List<Pair> getPairList() {
         return pairList;
     }
-
-    public Event getEvent() {return event;}
 }
