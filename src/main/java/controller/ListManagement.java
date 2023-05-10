@@ -6,12 +6,10 @@ import java.util.List;
 import models.*;
 
 public class ListManagement{
-public Event event;
 public DataList dataList;
 
 public ListManagement(DataList dataList){
     this.dataList = dataList;
-    this.event = this.dataList.event;
 }
 
 
@@ -30,7 +28,7 @@ public void makeBestPairList(List<Participant> participants) {
         dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
     }
     if (dataList.unmatchedParticipants.size() == 1) {
-        event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
+        dataList.event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
     }
 }
 

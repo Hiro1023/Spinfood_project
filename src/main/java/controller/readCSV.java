@@ -103,6 +103,7 @@ public class readCSV {
 
                 //make Pairs
                 Pair pair = new Pair(participant_1, participant_2);
+                pair.setPreMade(true);
                 event.getDataList().addPairToList(pair);
 
                 if(!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string

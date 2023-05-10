@@ -8,7 +8,12 @@ import controller.Calculation;
 
 public class Pair implements Calculation{
     private String Pair_ID;
-    private boolean isPremade;
+
+    public void setPreMade(boolean preMade) {
+        isPreMade = preMade;
+    }
+
+    private boolean isPreMade;
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
@@ -141,13 +146,17 @@ public class Pair implements Calculation{
         return Math.abs(participant1.getAge() - participant2.getAge());
     }
 
+    @Override
+    public int calculatePreferenceDev() {
+        return 0;
+    }
 
-   
+
     public double calculatePairWeightedScore(Pair pair){
         double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculatePairAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculateDistanceBetweenKitchens() * CRITERIA.TRAVEL_DISTANCE.getWeight();
+        double travelDistanceScore = calculateDistanceBetweenKitchens() * CRITERIA.PATH_LENGTH.getWeight();
 
     
         return foodMatchScore  +
@@ -162,8 +171,8 @@ public class Pair implements Calculation{
         return Pair_ID;
     }
 
-    public boolean isPremade() {
-        return isPremade;
+    public boolean isPreMade() {
+        return isPreMade;
     }
 
     public List<Pair> getVisitedPairs() {

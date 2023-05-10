@@ -35,6 +35,7 @@ public class Main {
         Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
         System.out.println(readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
 
+        System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
     }
 
 }

@@ -60,14 +60,17 @@ public class Group implements Calculation{
         return totalDistance;
     }
 
-
+    @Override
+    public int calculatePreferenceDev() {
+        return 0;
+    }
 
 
     public double calculateGroupWeightedScore(Group group){
         double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculateDistanceBetweenKitchens() * CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculatePairAgeDifference() * CRITERIA.TRAVEL_DISTANCE.getWeight();
+        double travelDistanceScore = calculatePairAgeDifference() * CRITERIA.PATH_LENGTH.getWeight();
 
     
         return foodMatchScore  +
