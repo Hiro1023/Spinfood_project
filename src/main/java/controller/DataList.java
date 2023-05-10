@@ -1,6 +1,7 @@
 package controller;
 
 import models.Event;
+import models.Group;
 import models.Pair;
 import models.Participant;
 
@@ -11,7 +12,8 @@ public class DataList {
 
     //List(Participant + pair)
     List<Participant> participantList;
-    List<Pair> pairList = new ArrayList<>();
+    List<Pair> pairList;
+    List<Group> groupList;
     List<Participant> unmatchedParticipants;
     Event event ;
 
@@ -19,6 +21,7 @@ public class DataList {
     public DataList (Event event){
         participantList = new ArrayList<>();
         pairList = new ArrayList<>();
+        groupList = new ArrayList<>();
         this.event = event;
         this.unmatchedParticipants = new ArrayList<>();
     }
