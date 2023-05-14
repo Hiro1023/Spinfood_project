@@ -14,6 +14,8 @@ public class DataList {
     List<Participant> participantList;
     List<Pair> pairList;
     List<Group> groupList;
+
+
     List<Participant> unmatchedParticipants;
     Event event ;
 
@@ -33,6 +35,10 @@ public class DataList {
         } else {
             event.getParticipantSuccessorList().addParticipant(participant);
         }
+    }
+
+    public void addUnmatchedParticipantToList(Participant participant){
+        unmatchedParticipants.add(participant);
     }
 
     public void addPairToList(Pair pair) {
@@ -60,6 +66,14 @@ public class DataList {
      */
     public List<Participant> getParticipantList() {
         return participantList;
+    }
+
+    /** @Description:
+     *
+     * @return unmatchedParticipants as List of Participant
+     */
+    public List<Participant> getUnmatchedParticipants() {
+        return unmatchedParticipants;
     }
 
     /**

@@ -28,14 +28,23 @@ public class Main {
         List<String[]> list = readCSV.read_File(new File(csvFile));
         //print out to the console the list of participant from csv file
         for (Participant par: readCSV.event.getDataList().getParticipantList()) {
-            par.show();
+            //par.show();
             System.out.println("---------------------------");
         }
 
+        //check for the number of participant with the same kitchen
+        //for ex here: print out the number of participant which have the same kitchen address
         Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
         System.out.println(readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
 
+        //check the isPremade() function
         System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
+
+        //check the unmatchParticipantList
+        for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
+            par.show();
+            System.out.println("---------------------------");
+        }
     }
 
 }

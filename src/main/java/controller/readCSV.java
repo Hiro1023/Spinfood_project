@@ -72,7 +72,7 @@ public class readCSV {
                 alone_participant.add(participant_String); //later this will be added to list of alone_registration Class
                 Participant participant = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,
                         kitchenLongitude,kitchenLatitude);
-                event.getDataList().addParticipantToList(participant);
+                event.getDataList().addUnmatchedParticipantToList(participant); //add alone_participant to unmatch list
                 countParticipant++;
 
                 if(!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string
