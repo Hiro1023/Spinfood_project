@@ -20,27 +20,65 @@ class readCSVTest {
     /**
      * Test for read_File()
      * Whether this method can read .csv File, is checked
+     * Checking, whether all lines on table is readed
      * @throws Exception
      */
     @Test
-    void read_FileTest() throws Exception{
+    void read_FileTest_checkSumOfLinesOnTable() throws Exception{
         assertEquals(238,test.read_File(new File("Dokumentation/teilnehmerliste.csv")).size());
+    }
+
+    /**
+     * Test for read_File()
+     * checking the Data of first Participant on the Table
+     * @throws Exception
+     */
+    @Test
+    void read_FileTest_checkFirstParticipantOnTable() throws Exception{
         assertArrayEquals(p1,test.read_File(new File("Dokumentation/teilnehmerliste.csv")).get(1));
     }
 
 
     /**
      * Test for addParticipant
-     * Count of all participant, alone_participant and pair are checked
+     * Checking count of all participant
+     */
+    @Test
+    void addParticipantTest_checkSumOfAllparticipant() throws Exception {
+        test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
+        assertEquals(310, test.countParticipant);
+    }
+
+    /**
+     * Checking count of alone_participant
+     * @throws Exception
+     */
+    @Test
+    void addParticipantTest_checkSumOfAlone_participant() throws Exception {
+        test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
+        assertEquals(164,test.alone_participant.size());
+    }
+
+    /**
+     * Checking count of pair
+     * @throws Exception
+     */
+    @Test
+    void addParticipantTest_checkSumOfPair() throws Exception {
+        test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
+        assertEquals(73,test.countPair);
+    }
+
+    /**
+     * Checking, whether result between count of all patricipant and sum of pair and alone_participant is equal
+     * @throws Exception
      */
     @Test
     void addParticipantTest() throws Exception {
         test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
-        assertEquals(310, test.countParticipant);
-        assertEquals(164,test.alone_participant.size());
-        assertEquals(73,test.countPair);
         assertEquals(test.countParticipant,2*(test.countPair)+test.alone_participant.size());
     }
+
 
 
 
