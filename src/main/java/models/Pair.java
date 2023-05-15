@@ -36,7 +36,7 @@ public class Pair implements Calculation{
     @Override
     public double calculateFoodMatchScore() {
         Participant p1 = this.participant1;
-    Participant p2 = this.participant2;
+        Participant p2 = this.participant2;
 
     switch (p1.getFoodPreference()) {
         case meat:
