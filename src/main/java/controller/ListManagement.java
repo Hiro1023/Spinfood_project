@@ -70,11 +70,14 @@ public DataList dataList;
         for (int i = 0; i < numberOfPairs; i++) {
             for (int j = i + 1; j < numberOfPairs; j++) {
                 for (int k = j + 1; k < numberOfPairs; k++) {
-                    Group tempGroup = new Group(pairs.get(i), pairs.get(j), pairs.get(k));
-                    double tempScore = tempGroup.calculateGroupWeightedScore(tempGroup);
-                    if (tempScore > bestScore) {
-                        bestScore = tempScore;
-                        bestGroup = tempGroup;
+                    List<Pair> metPair = new ArrayList<>(pairs.get(i).getVisitedPairs());
+                    if(!(metPair.contains(pairs.get(j))||metPair.contains(pairs.get(k)))) { // Checking, whether Pair(i) didn´t meet Pair(j) and Pair(k)
+                        Group tempGroup = new Group(pairs.get(i), pairs.get(j), pairs.get(k));
+                        double tempScore = tempGroup.calculateGroupWeightedScore(tempGroup);
+                        if (tempScore > bestScore) {
+                            bestScore = tempScore;
+                            bestGroup = tempGroup;
+                        }
                     }
                 }
             }
