@@ -66,7 +66,7 @@ public class Group implements Calculation{
     }
 
 
-    public double calculateGroupWeightedScore(Group group){
+    public double calculateGroupWeightedScore(){
         double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculateDistanceBetweenKitchens() * CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();

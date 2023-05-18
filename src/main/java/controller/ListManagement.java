@@ -73,7 +73,7 @@ public DataList dataList;
                     List<Pair> metPair = new ArrayList<>(pairs.get(i).getVisitedPairs());
                     if(!(metPair.contains(pairs.get(j))||metPair.contains(pairs.get(k)))) { // Checking, whether Pair(i) didn´t meet Pair(j) and Pair(k)
                         Group tempGroup = new Group(pairs.get(i), pairs.get(j), pairs.get(k));
-                        double tempScore = tempGroup.calculateGroupWeightedScore(tempGroup);
+                        double tempScore = tempGroup.calculateGroupWeightedScore();
                         if (tempScore > bestScore) {
                             bestScore = tempScore;
                             bestGroup = tempGroup;
