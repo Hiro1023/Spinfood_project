@@ -39,7 +39,7 @@ public DataList dataList;
                     continue;
                 }
                 Pair tempPair = new Pair(participant, participant2);
-                double tempScore = tempPair.calculatePairWeightedScore(tempPair);
+                double tempScore = tempPair.calculatePairWeightedScore();
                 if (tempScore > bestScore) {
                     bestScore = tempScore;
                     bestPair = tempPair;

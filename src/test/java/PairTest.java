@@ -52,6 +52,7 @@ public class PairTest {
 
     /**
      * Test for calculateFoodMatchScore()
+     * Check all combination of foodPreference
      */
 
     @Test
@@ -71,7 +72,72 @@ public class PairTest {
     }
     @Test
     void calculateFoodMatchScore_meat_none() {
-        Pair mvegan = new Pair(p1, p4);
-        assertEquals(2.0, mvegan.calculateFoodMatchScore());
+        Pair mn = new Pair(p1, p4);
+        assertEquals(2.0, mn.calculateFoodMatchScore());
     }
+
+    @Test
+    void calculateFoodMatchScore_none_meat(){
+        Pair nm = new Pair(p4,p1);
+        Pair mn = new Pair(p1, p4);
+        assertEquals(mn.calculateFoodMatchScore(),nm.calculateFoodMatchScore());
+    }
+    @Test
+    void calculateFoodMatchScore_none_vegan(){
+        Pair nveg = new Pair(p4,p5);
+        assertEquals(2.0,nveg.calculateFoodMatchScore());
+    }
+    @Test
+    void calculateFoodMatchScore_none_vegie() {
+        Pair nveggi = new Pair(p4, p3);
+        assertEquals(2.0, nveggi.calculateFoodMatchScore());
+    }
+    @Test
+    void calculateFoodMatchScore_none_none() {
+        Pair nn = new Pair(p4, p4);
+        assertEquals(3.0, nn.calculateFoodMatchScore());
+    }
+
+    @Test
+    void calculateFoodMatchScore_vegan_meat() {
+        Pair vm = new Pair(p5, p1);
+        Pair mv = new Pair(p1, p5);
+        assertEquals(mv.calculateFoodMatchScore(), vm.calculateFoodMatchScore());
+    }
+
+    @Test
+    void calculateFoodMatchScore_vegan_vegan() {
+        Pair vv = new Pair(p5, p5);
+        assertEquals(vv.calculateFoodMatchScore(), vv.calculateFoodMatchScore());
+    }
+
+    @Test
+    void calculateFoodMatchScore_vegan_none() {
+        Pair vn = new Pair(p5, p4);
+        Pair nv = new Pair(p4, p5);
+        assertEquals(vn.calculateFoodMatchScore(), nv.calculateFoodMatchScore());
+    }
+
+    @Test
+    void calculateFoodMatchScore_vegan_veggie() {
+        Pair vvegi = new Pair(p5, p3);
+        assertEquals(1.0, vvegi.calculateFoodMatchScore());
+    }
+
+    /**
+     * Test for calculatePairWeightedScore
+     * Priority(Weight) of Criteria is default
+     * food_Prefernce : 20
+     * age_difference : 10
+     * gender_diversity : 5
+     * path_length : 5
+     */
+    @Test
+    void calculatePairWeightedScore(){
+        Pair pair = new Pair(p1,p2);
+        double calc = pair.calculateFoodMatchScore()*20 + pair.calculatePairAgeDifference()*10
+                + pair.calculateSexDiversity()*5 + pair.calculateDistanceBetweenKitchens()*5;
+        assertEquals(calc,pair.calculatePairWeightedScore());
+    }
+
 }

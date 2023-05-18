@@ -152,7 +152,7 @@ public class Pair implements Calculation{
     }
 
 
-    public double calculatePairWeightedScore(Pair pair){
+    public double calculatePairWeightedScore(){
         double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculatePairAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
