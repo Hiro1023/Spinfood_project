@@ -6,7 +6,7 @@ import java.util.List;
 import models.*;
 
 public class ListManagement{
-public DataList dataList;
+    public DataList dataList;
 
     public ListManagement(DataList dataList){
         this.dataList = dataList;
@@ -32,18 +32,24 @@ public DataList dataList;
     public Pair makeBestPair(Participant participant) {
         Pair bestPair = null;
         double bestScore = -1;
-            for (Participant participant2 : dataList.getParticipantList()) {
+            for (Participant participant2 : dataList.unmatchedParticipants) {
                 boolean bothNoKitchen = participant.getKitchen() == null && participant2.getKitchen() == null;
                 boolean bothHaveKitchen = participant.getKitchen() != null && participant2.getKitchen() != null;
-                if (participant == participant2 || bothNoKitchen || bothHaveKitchen) {
+                /**
+                 * @Problem:    This conditions of bothNoKitchen and bothHaveKitchen don't work properly
+                 * @ToDo:   We need to fix this code logicly
+                 */
+                /*
+                if (participant == participant2 || bothNoKitchen || bothHaveKitchen)
                     continue;
-                }
+                 */
                 Pair tempPair = new Pair(participant, participant2);
                 double tempScore = tempPair.calculatePairWeightedScore();
                 if (tempScore > bestScore) {
                     bestScore = tempScore;
                     bestPair = tempPair;
                 }
+
             }
         return bestPair;
     }

@@ -65,6 +65,11 @@ public class Group implements Calculation{
         return 0;
     }
 
+    @Override
+    public void show() {
+        //still have do write function for print out the group
+    }
+
 
     public double calculateGroupWeightedScore(){
         double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();

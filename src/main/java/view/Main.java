@@ -4,10 +4,18 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import controller.ListManagement;
 import controller.readCSV;
+import models.Pair;
 import models.Participant;
 
 public class Main {
+
+    public static Pair makeBestPair_Testing(ListManagement lm,Participant participant){
+        Pair test_pair = lm.makeBestPair(participant);
+        return test_pair;
+    }
+
 
     /**
      * Description: main class is the entry point.
@@ -29,7 +37,7 @@ public class Main {
         //print out to the console the list of participant from csv file
         for (Participant par: readCSV.event.getDataList().getParticipantList()) {
             //par.show();
-            System.out.println("---------------------------");
+            //System.out.println("---------------------------");
         }
 
         //check for the number of participant with the same kitchen
@@ -45,6 +53,26 @@ public class Main {
             par.show();
             System.out.println("---------------------------");
         }
+
+        //print out the unmatchedParticipants from readCSV class
+        System.out.println("readCSV getUnmatchedParticipants: " + readCSV.event.getDataList().getUnmatchedParticipants().size());
+
+        //print out the unmatchedParticipants from ListManagement class
+        ListManagement lm = new ListManagement(readCSV.event.getDataList());
+        System.out.println("ListManagement getUnmatchedParticipants "+lm.dataList.getUnmatchedParticipants().size());
+
+        lm.dataList.getUnmatchedParticipants().get(0).show();
+
+        Participant firstUnmatchedParticipant = lm.dataList.getUnmatchedParticipants().get(4);
+        Pair test_pair = makeBestPair_Testing(lm,firstUnmatchedParticipant);
+        test_pair.show();
+
+
+
+
+
+
+
     }
 
 }

@@ -17,4 +17,6 @@ public int calculatePairAgeDifference();
 
 public int calculatePreferenceDev();
 
+public void show();
+
 }

@@ -53,7 +53,7 @@ public class Pair implements Calculation{
         case none:
             switch (p2.getFoodPreference()) {
                 case meat:
-                    return 2;
+                    return 1;
                 case none:
                     return 3;
                 case vegan:
@@ -87,6 +87,19 @@ public class Pair implements Calculation{
 
     return 0; // Default case, should not be reached
 }
+
+    @Override
+    public void show(){
+        System.out.println("This is a pair: ");
+        System.out.println();
+        System.out.print("      ");
+        System.out.println("First Participant ");
+        this.participant1.show();
+        System.out.println();
+        System.out.print("      ");
+        System.out.println("Second Participant ");
+        this.participant2.show();
+    }
   
 
 
@@ -129,7 +142,7 @@ public class Pair implements Calculation{
         Kitchen kitchen2 = participant2.getKitchen();
     
         if(kitchen1 == null || kitchen2 == null) {
-            return Double.MAX_VALUE;
+            return 0 ;
         }
 
         double xDiff = kitchen1.getKitchenLatitude() - kitchen2.getKitchenLatitude();
@@ -159,9 +172,10 @@ public class Pair implements Calculation{
         double travelDistanceScore = calculateDistanceBetweenKitchens() * CRITERIA.PATH_LENGTH.getWeight();
 
     
-        return foodMatchScore  +
-               ageDifferenceScore + genderDiversityScore + travelDistanceScore;
+        return foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
     }
+
+
     
 
 
