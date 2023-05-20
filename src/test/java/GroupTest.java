@@ -15,7 +15,7 @@ public class GroupTest {
     Participant p7 = new Participant("16","P7","none","23","male","yes","2.0","1.1","51.2");
     Pair pair1 = new Pair(p1,p2);
     Pair pair2 = new Pair(p3,p6);
-    Pair pair3 = new Pair(p3,p7);
+    Pair pair3 = new Pair(p4,p7);
 
     /**
      * Test for calculateFoodMatchScore
@@ -23,8 +23,19 @@ public class GroupTest {
      */
     @Test
     public void calculateFoodMatchScoreTest(){
-        Group g1 = new Group(pair1,pair2,pair3);
+        Group g = new Group(pair1,pair2,pair3);
         double calc = pair1.calculateFoodMatchScore() + pair2.calculateFoodMatchScore() + pair3.calculateFoodMatchScore();
-        assertEquals(calc,g1.calculateFoodMatchScore());
+        assertEquals(calc,g.calculateFoodMatchScore());
+    }
+
+    /**
+     * Test for calculateFoodMatchScore
+     * This methode calculates the Sum of genderdiversity for all Pairs
+     */
+    @Test
+    public void calculateSexDiversityTest(){
+        Group g = new Group(pair1,pair2,pair3);
+        double calc = pair1.calculateSexDiversity() + pair2.calculateSexDiversity() + pair3.calculateSexDiversity();
+        assertEquals(calc,g.calculateSexDiversity());
     }
 }
