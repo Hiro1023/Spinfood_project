@@ -18,8 +18,8 @@ public class ListManagement{
 
     public void makeBestPairList(List<Participant> participants) {
         while (dataList.unmatchedParticipants.size() > 1) {
-            Participant participant1 = dataList.unmatchedParticipants.get(0);
-            Pair bestPair = makeBestPair(participant1);
+            //get first
+            Pair bestPair = makeBestPair(dataList.unmatchedParticipants.get(0));
             dataList.pairList.add(bestPair);
             dataList.unmatchedParticipants.remove(bestPair.getParticipant1());
             dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
@@ -43,13 +43,11 @@ public class ListManagement{
                 if (participant == participant2 || bothNoKitchen || bothHaveKitchen)
                     continue;
                  */
-                Pair tempPair = new Pair(participant, participant2);
-                double tempScore = tempPair.calculatePairWeightedScore();
+                double tempScore = new Pair(participant, participant2).calculatePairWeightedScore();
                 if (tempScore > bestScore) {
                     bestScore = tempScore;
-                    bestPair = tempPair;
+                    bestPair = new Pair(participant, participant2);
                 }
-
             }
         return bestPair;
     }

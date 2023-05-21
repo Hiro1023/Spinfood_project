@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,31 @@ import models.Participant;
 
 public class Main {
 
-    public static Pair makeBestPair_Testing(ListManagement lm,Participant participant){
+    static String csvFile = "Dokumentation/teilnehmerliste.csv";
+    static readCSV readCSV;
+
+    static {
+        try {
+            readCSV = new readCSV(new File(csvFile));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static List<String[]> list;
+
+    static {
+        try {
+            list = readCSV.read_File(new File(csvFile));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static ListManagement lm = new ListManagement(readCSV.event.getDataList());
+
+
+    public static Pair makeBestPair_Testing(Participant participant){
         Pair test_pair = lm.makeBestPair(participant);
         return test_pair;
     }
@@ -31,9 +56,7 @@ public class Main {
         File selectedFile = fileChooser.getSelectedFile();
          */
 
-        String csvFile = "Dokumentation/teilnehmerliste.csv";
-        readCSV readCSV = new readCSV(new File(csvFile));
-        List<String[]> list = readCSV.read_File(new File(csvFile));
+
         //print out to the console the list of participant from csv file
         for (Participant par: readCSV.event.getDataList().getParticipantList()) {
             //par.show();
@@ -43,29 +66,37 @@ public class Main {
         //check for the number of participant with the same kitchen
         //for ex here: print out the number of participant which have the same kitchen address
         Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
-        System.out.println(readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
+        System.out.println("number of participants with the same kitchen address: " + readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
 
         //check the isPremade() function
         System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
 
         //check the unmatchParticipantList
         for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
-            par.show();
-            System.out.println("---------------------------");
+            //par.show();
+            //System.out.println("---------------------------");
         }
 
-        //print out the unmatchedParticipants from readCSV class
-        System.out.println("readCSV getUnmatchedParticipants: " + readCSV.event.getDataList().getUnmatchedParticipants().size());
-
         //print out the unmatchedParticipants from ListManagement class
-        ListManagement lm = new ListManagement(readCSV.event.getDataList());
         System.out.println("ListManagement getUnmatchedParticipants "+lm.dataList.getUnmatchedParticipants().size());
 
-        lm.dataList.getUnmatchedParticipants().get(0).show();
 
-        Participant firstUnmatchedParticipant = lm.dataList.getUnmatchedParticipants().get(4);
-        Pair test_pair = makeBestPair_Testing(lm,firstUnmatchedParticipant);
+
+        Participant firstUnmatchedParticipant = lm.dataList.getUnmatchedParticipants().get(1);
+        Pair test_pair = makeBestPair_Testing(firstUnmatchedParticipant);
         test_pair.show();
+
+
+
+        System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
+        lm.makeBestPairList(lm.dataList.getUnmatchedParticipants());
+        System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs
+
+        for (Pair pair: lm.dataList.getPairList()) {
+            if(pair.isPreMade()==false)
+                pair.show();
+            System.out.println("---------------------------");
+        }
 
 
 

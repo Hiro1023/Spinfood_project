@@ -91,6 +91,7 @@ public class Pair implements Calculation{
     @Override
     public void show(){
         System.out.println("This is a pair: ");
+        System.out.println("Is PreMade: " + isPreMade);
         System.out.println();
         System.out.print("      ");
         System.out.println("First Participant ");
