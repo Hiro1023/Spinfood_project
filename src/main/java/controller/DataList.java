@@ -15,7 +15,6 @@ public class DataList {
     List<Pair> pairList;
     List<Group> groupList;
 
-
     List<Participant> unmatchedParticipants;
     Event event ;
 

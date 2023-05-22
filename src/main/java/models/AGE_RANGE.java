@@ -10,6 +10,11 @@ public enum AGE_RANGE {
     LessThan47(6),
     LessThan57(7),
     MoreThan56(8);
+
+    public int getValue() {
+        return value;
+    }
+
     private int value;
     AGE_RANGE(int i) {
         this.value = i;

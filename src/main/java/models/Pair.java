@@ -5,8 +5,9 @@ import java.util.List;
 
 import controller.CRITERIA;
 import controller.Calculation;
+import controller.Utility;
 
-public class Pair implements Calculation{
+public class  Pair implements Calculation, Utility {
     private String Pair_ID;
 
     public void setPreMade(boolean preMade) {
@@ -34,150 +35,58 @@ public class Pair implements Calculation{
 
 
     @Override
-    public double calculateFoodMatchScore() {
-        Participant p1 = this.participant1;
-        Participant p2 = this.participant2;
-
-    switch (p1.getFoodPreference()) {
-        case meat:
-            switch (p2.getFoodPreference()) {
-                case meat:
-                    return 3;
-                case none:
-                    return 2;
-                case vegan:
-                    return 0;
-                case veggie:
-                    return 1;
-            }
-        case none:
-            switch (p2.getFoodPreference()) {
-                case meat:
-                    return 1;
-                case none:
-                    return 3;
-                case vegan:
-                    return 2;
-                case veggie:
-                    return 2;
-            }
-        case vegan:
-            switch (p2.getFoodPreference()) {
-                case meat:
-                    return 0;
-                case none:
-                    return 2;
-                case vegan:
-                    return 3;
-                case veggie:
-                    return 1;
-            }
-        case veggie:
-            switch (p2.getFoodPreference()) {
-                case meat:
-                    return 1;
-                case none:
-                    return 2;
-                case vegan:
-                    return 1;
-                case veggie:
-                    return 3;
-            }
+    public double calculateFoodPreference() {
+        return Math.abs(this.participant1.getFoodPreference().getValue() - this.getParticipant2().getFoodPreference().getValue());
     }
-
-    return 0; // Default case, should not be reached
-}
-
-    @Override
-    public void show(){
-        System.out.println("This is a pair: ");
-        System.out.println("Is PreMade: " + isPreMade);
-        System.out.println();
-        System.out.print("      ");
-        System.out.println("First Participant ");
-        this.participant1.show();
-        System.out.println();
-        System.out.print("      ");
-        System.out.println("Second Participant ");
-        this.participant2.show();
-    }
-  
-
 
     @Override
     public double calculateSexDiversity() {
-        double femCount = 0;
-        double maleCount = 0;
-        double otherCount = 0;
-        
-        if(participant1.getSex() == SEX.female){
-            femCount++;
-        } else if(participant1.getSex() == SEX.male){
-            maleCount++;
-        } else {
-        otherCount++;
-        }
-
-        if(participant2.getSex() == SEX.female){
-            femCount++;
-        } else if(participant2.getSex() == SEX.male){
-            maleCount++;
-        } else {
-        otherCount++;
-        }
-        double totalCount = femCount + maleCount + otherCount;
-        double idealRatio = 0.5;
-        double femRatio = femCount / totalCount;
-        double maleRatio = maleCount / totalCount;
-        double otherRatio = otherCount / totalCount;
-        
-        return Math.abs(femRatio - idealRatio) + Math.abs(maleRatio - idealRatio) + Math.abs(otherRatio - idealRatio);
+        return Math.abs(0.5 - ((double)this.participant1.getSex().getValue() + this.participant2.getSex().getValue())/2);
     }
-        
-        
-
 
     @Override
     public double calculateDistanceBetweenKitchens() {
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
-    
-        if(kitchen1 == null || kitchen2 == null) {
-            return 0 ;
+
+        if (kitchen1 == null || kitchen2 == null) {
+            return 0.0;
         }
+        double EARTH_RADIUS = 6371.0;
 
-        double xDiff = kitchen1.getKitchenLatitude() - kitchen2.getKitchenLatitude();
-        double yDiff = kitchen1.getKitchenLongitude() - kitchen2.getKitchenLongitude();
-        
-        return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+        double radLat1 = Math.toRadians(kitchen1.getKitchenLatitude());
+        double radLon1 = Math.toRadians(kitchen1.getKitchenLongitude());
+        double radLat2 = Math.toRadians(kitchen2.getKitchenLatitude());
+        double radLon2 = Math.toRadians(kitchen2.getKitchenLongitude());
+
+        double dlon = radLon2 - radLon1;
+        double dlat = radLat2 - radLat1;
+        double haversineFormula = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(dlon / 2), 2);
+        double angularDistanceInRadians = 2 * Math.atan2(Math.sqrt(haversineFormula), Math.sqrt(1 - haversineFormula));
+
+        return EARTH_RADIUS * angularDistanceInRadians;
     }
-
-
-
 
     @Override
     public int calculatePairAgeDifference() {
-        return Math.abs(participant1.getAge() - participant2.getAge());
+        return Math.abs(participant1.getAgerange().getValue() - participant2.getAgerange().getValue());
     }
-
-    @Override
-    public int calculatePreferenceDev() {
-        return 0;
-    }
-
 
     public double calculatePairWeightedScore(){
-        double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = calculatePairAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
-        double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculateDistanceBetweenKitchens() * CRITERIA.PATH_LENGTH.getWeight();
+        double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
+        double ageDifferenceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
+        double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
+        double travelDistanceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
 
     
-        return foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
+        double Score =  1/(foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
+        if (Score == Double.POSITIVE_INFINITY) {
+            Score = 1000;
+        }
+        return Score;
     }
-
-
     
+
 
 
 
@@ -203,5 +112,13 @@ public class Pair implements Calculation{
     }
 
 
+    @Override
+    public void show() {
+        System.out.println(getParticipant1().getName() + " " + getParticipant2().getName());
+    }
 
+    @Override
+    public boolean equal(Object o) {
+        return false;
+    }
 }
