@@ -1,12 +1,13 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import models.*;
 
 public class ListManagement{
-    public DataList dataList;
+public DataList dataList;
 
     public ListManagement(DataList dataList){
         this.dataList = dataList;
@@ -16,72 +17,140 @@ public class ListManagement{
         criteria.setWeight(newWeight);
     }
 
-    public void makeBestPairList(List<Participant> participants) {
+    public void makeBestPairList() {
         while (dataList.unmatchedParticipants.size() > 1) {
-            //get first
-            Pair bestPair = makeBestPair(dataList.unmatchedParticipants.get(0));
-            dataList.pairList.add(bestPair);
-            dataList.unmatchedParticipants.remove(bestPair.getParticipant1());
-            dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
+            boolean impossiblePair = dataList.unmatchedParticipants.size() == 2 && makeBestPair(dataList.unmatchedParticipants.get(0))==null;
+            if (impossiblePair) {
+                break;
+            } else {
+                Map<Pair, Double> tempPairs = new HashMap<>();
+                List<Participant> tempParticipants = new ArrayList<>(dataList.unmatchedParticipants);
+                for (Participant p : tempParticipants) {
+                    Pair bestPair = makeBestPair(p);
+                    if (bestPair != null) {
+                        tempPairs.put(bestPair, bestPair.calculatePairWeightedScore());
+                    }
+                }
+                List<Pair> tempPairList = new ArrayList<>();
+                tempPairs.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .forEach(x -> tempPairList.add(x.getKey()));
+                List<Pair> list = tempPairList;
+                for (int i = 0; i < list.size(); i++) {
+                    Pair a = list.get(0);
+                    dataList.pairList.add(a);
+                    dataList.unmatchedParticipants.remove(a.getParticipant1());
+                    dataList.unmatchedParticipants.remove(a.getParticipant2());
+                    list = list.stream().filter(x -> !containsPairedParticipant(x, a.getParticipant1(), a.getParticipant2())).collect(Collectors.toList());
+                }
+            }
         }
-        if (dataList.unmatchedParticipants.size() == 1) {
-            dataList.event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
+        for (Participant p : dataList.unmatchedParticipants) {
+            dataList.event.getParticipantSuccessorList().addParticipant(p);
         }
+    }
+
+//    public void makeBestPairList() {
+//        while (dataList.unmatchedParticipants.size() > 1) {
+//            Participant participant1 = dataList.unmatchedParticipants.get(0);
+//            Pair bestPair = makeBestPair(participant1);
+//            dataList.pairList.add(bestPair);
+//            dataList.unmatchedParticipants.remove(bestPair.getParticipant1());
+//            dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
+//        }
+//        if (dataList.unmatchedParticipants.size() == 1) {
+//            dataList.event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
+//        }
+//    }
+
+    public boolean containsPairedParticipant (Pair p, Participant a, Participant b){
+        return p.getParticipant1().equals(a) || p.getParticipant1().equals(b) || p.getParticipant2().equals(a) || p.getParticipant2().equals(b);
     }
 
     public Pair makeBestPair(Participant participant) {
         Pair bestPair = null;
         double bestScore = -1;
-            for (Participant participant2 : dataList.unmatchedParticipants) {
-                boolean bothNoKitchen = participant.getKitchen() == null && participant2.getKitchen() == null;
-                boolean bothHaveKitchen = participant.getKitchen() != null && participant2.getKitchen() != null;
-                /**
-                 * @Problem:    This conditions of bothNoKitchen and bothHaveKitchen don't work properly
-                 * @ToDo:   We need to fix this code logicly
-                 */
-                /*
-                if (participant == participant2 || bothNoKitchen || bothHaveKitchen)
-                    continue;
-                 */
-                double tempScore = new Pair(participant, participant2).calculatePairWeightedScore();
-                if (tempScore > bestScore) {
-                    bestScore = tempScore;
-                    bestPair = new Pair(participant, participant2);
-                }
+        List<Participant> candidates = new ArrayList<>(dataList.unmatchedParticipants);
+        candidates.remove(participant);
+        if (participant.getKitchen() == null) {
+            candidates = candidates.stream().filter(x -> x.getKitchen()!=null).collect(Collectors.toList());
+        }
+        if (participant.getFoodPreference().equals(FOOD_PREFERENCE.meat)) {
+            candidates = candidates.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.vegan)).filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.veggie)).collect(Collectors.toList());
+        }
+        if (participant.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || participant.getFoodPreference().equals(FOOD_PREFERENCE.veggie)) {
+            candidates = candidates.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.meat)).collect(Collectors.toList());
+        }
+
+        for (Participant p : candidates) {
+            Pair tempPair = new Pair(participant,p);
+            double score = tempPair.calculatePairWeightedScore();
+
+            if (score > bestScore) {
+                bestPair = tempPair;
+                bestScore = score;
             }
+        }
         return bestPair;
     }
 
 
     //creating the best possible Group
-    public List<Group> makeBestGroupList(List<Pair> pairs, ParticipantSuccessorList successorsList) {
-        List<Group> bestGroups = new ArrayList<>();
-        List<Pair> unmatchedPairs = new ArrayList<>(pairs);
-
-        while (!unmatchedPairs.isEmpty()) {
-            Group bestGroup = makeBestGroup(unmatchedPairs);
-            bestGroups.add(bestGroup);
-            unmatchedPairs.removeAll(bestGroup.getPairs());
+    public void makeBestGroupList() {
+        List<Pair> unpairedPairList = new ArrayList<>(dataList.pairList);
+        while (unpairedPairList.size() > 2) {
+            boolean impossibleGroup = unpairedPairList.size() == 3 && makeBestGroup(unpairedPairList.get(0))==null;
+            if (impossibleGroup) {
+                break;
+            } else {
+                Map<Group, Double> tempGroups = new HashMap<>();
+                for (Pair p : unpairedPairList) {
+                    Group bestGroup = makeBestGroup(p);
+                    if (bestGroup != null) {
+                        tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
+                    }
+                }
+                List<Group> tempGroupList = new ArrayList<>();
+                tempGroups.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .forEach(x -> tempGroupList.add(x.getKey()));
+                List<Group> list = tempGroupList;
+                for (int i = 0; i < list.size(); i++) {
+                    Group a = list.get(0);
+                    dataList.groupList.add(a);
+                    unpairedPairList.removeAll(a.getPairs());
+                    list = list.stream().filter(x -> notContainsPairedPairs(x, a.getPairs())).collect(Collectors.toList());
+                }
+            }
         }
-
-        return bestGroups;
+        for (Pair p : unpairedPairList) {
+            dataList.event.getPairSuccesorList().addPair(p);
+        }
     }
 
-    public Group makeBestGroup(List<Pair> pairs) {
+    private boolean notContainsPairedPairs(Group x, List<Pair> pairs) {
+        List<Pair> commonPair = new ArrayList<>(x.getPairs());
+        commonPair.retainAll(pairs);
+        return commonPair.isEmpty();
+    }
+
+    public Group makeBestGroup(Pair pair) {
         Group bestGroup = null;
         double bestScore = -1;
-        int numberOfPairs = pairs.size();
-        for (int i = 0; i < numberOfPairs; i++) {
-            for (int j = i + 1; j < numberOfPairs; j++) {
-                for (int k = j + 1; k < numberOfPairs; k++) {
-                    List<Pair> metPair = new ArrayList<>(pairs.get(i).getVisitedPairs());
-                    if(!(metPair.contains(pairs.get(j))||metPair.contains(pairs.get(k)))) { // Checking, whether Pair(i) didn´t meet Pair(j) and Pair(k)
-                        Group tempGroup = new Group(pairs.get(i), pairs.get(j), pairs.get(k));
-                        double tempScore = tempGroup.calculateGroupWeightedScore();
-                        if (tempScore > bestScore) {
-                            bestScore = tempScore;
-                            bestGroup = tempGroup;
-                        }
+        List<Pair> unmatchedPairs = new ArrayList<>(dataList.pairList);
+        unmatchedPairs.remove(pair);
+        if (containsMeat(pair)) {
+            unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
+        }
+        if (containsVeganOrVeggie(pair)) {
+            unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
+        }
+        for (int i = 0; i < unmatchedPairs.size()-1;i++) {
+            for (int j = 1; j < unmatchedPairs.size();j++) {
+                if (!unmatchedPairs.get(i).equal(unmatchedPairs.get(j))) {
+                    Group tempGroup = new Group(pair, unmatchedPairs.get(i), unmatchedPairs.get(j));
+                    double tempScore = tempGroup.calculateGroupWeightedScore();
+                    if (tempScore > bestScore) {
+                        bestScore = tempScore;
+                        bestGroup = tempGroup;
                     }
                 }
             }
@@ -89,4 +158,12 @@ public class ListManagement{
         return bestGroup;
     }
 
+    private boolean containsMeat (Pair pair) {
+        return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.meat) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.meat);
+    }
+
+    private boolean containsVeganOrVeggie (Pair pair){
+        return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
+    }
 }

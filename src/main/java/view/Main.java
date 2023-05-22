@@ -7,6 +7,7 @@ import java.util.List;
 
 import controller.ListManagement;
 import controller.readCSV;
+import models.Group;
 import models.Pair;
 import models.Participant;
 
@@ -89,7 +90,7 @@ public class Main {
 
 
         System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
-        lm.makeBestPairList(lm.dataList.getUnmatchedParticipants());
+        lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs
 
         for (Pair pair: lm.dataList.getPairList()) {
@@ -97,13 +98,7 @@ public class Main {
                 pair.show();
             System.out.println("---------------------------");
         }
-
-
-
-
-
-
-
+        lm.makeBestGroupList();
     }
 
 }

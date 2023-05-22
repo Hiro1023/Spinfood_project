@@ -4,7 +4,7 @@ public interface Calculation {
 
 
 //food Score
-public double calculateFoodMatchScore();
+public double calculateFoodPreference();
 
 //sex diversity
 public double calculateSexDiversity();
@@ -15,7 +15,6 @@ public double calculateDistanceBetweenKitchens();
 // age diff
 public int calculatePairAgeDifference();
 
-public int calculatePreferenceDev();
 
 public void show();
 

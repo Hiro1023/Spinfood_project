@@ -13,8 +13,12 @@ public class DataList {
     //List(Participant + pair)
     List<Participant> participantList;
     List<Pair> pairList;
-    List<Group> groupList;
 
+    public List<Group> getGroupList() {
+        return groupList;
+    }
+
+    List<Group> groupList;
 
     List<Participant> unmatchedParticipants;
     Event event ;

@@ -7,7 +7,6 @@ import controller.Calculation;
 
 public class Group implements Calculation{
     private List<Pair> Pairs = new ArrayList<>();
-    private List<Pair> MetPairs = new ArrayList<>();
     private Pair cookingPair;
     private COURSE course;
     private FOOD_PREFERENCE foodPreference;
@@ -23,12 +22,12 @@ public class Group implements Calculation{
     }
 
     @Override
-    public double calculateFoodMatchScore() {
+    public double calculateFoodPreference() {
         int groupScore = 0;
         for (Pair pair : getPairs()) {
-            groupScore += pair.calculateFoodMatchScore();
+            groupScore += pair.calculateFoodPreference();
         }
-        return groupScore;
+        return groupScore/3;
     }
     
 
@@ -44,42 +43,38 @@ public class Group implements Calculation{
 
     @Override
     public double calculateDistanceBetweenKitchens() {
-        double totalAgeDiff = 0;
+        double totalDistance = 0;
         for(Pair pair : getPairs()){
-            totalAgeDiff += pair.calculateDistanceBetweenKitchens();
-        }
-        return totalAgeDiff;
-    }
-
-    @Override
-    public int calculatePairAgeDifference() {
-        int totalDistance = 0;
-        for(Pair pair : getPairs()){
-            totalDistance += pair.calculatePairAgeDifference();
+            totalDistance += pair.calculateDistanceBetweenKitchens();
         }
         return totalDistance;
     }
 
     @Override
-    public int calculatePreferenceDev() {
-        return 0;
+    public int calculatePairAgeDifference() {
+        int totalAgeDiff = 0;
+        for(Pair pair : getPairs()){
+            totalAgeDiff += pair.calculatePairAgeDifference();
+        }
+        return totalAgeDiff/3;
     }
 
     @Override
     public void show() {
-        //still have do write function for print out the group
+        System.out.println("Group Pairs : ");
+        this.getPairs().forEach(x -> x.show());
+        System.out.println("----------------------------------------");
     }
 
 
     public double calculateGroupWeightedScore(){
-        double foodMatchScore = calculateFoodMatchScore() * CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = calculateDistanceBetweenKitchens() * CRITERIA.AGE_DIFFERENCE.getWeight();
-        double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculatePairAgeDifference() * CRITERIA.PATH_LENGTH.getWeight();
+        double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
+        double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
+        double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
+        double travelDistanceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
 
     
-        return foodMatchScore  +
-               ageDifferenceScore + genderDiversityScore + travelDistanceScore;
+        return 1/(foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
     }
     
 

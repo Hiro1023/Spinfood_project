@@ -20,6 +20,7 @@ public class readCSV {
     //
     public HashMap<String, List<Participant>> AddressTable = new HashMap<>();
 
+    public ListManagement listManagement = new ListManagement(event.getDataList());
     public int countParticipant = 0;
     public int countPair = 0;
 
@@ -73,6 +74,7 @@ public class readCSV {
                 Participant participant = new Participant(ID,name,foodPreference,age,sex,kitchen,kitchenStory,
                         kitchenLongitude,kitchenLatitude);
                 event.getDataList().addUnmatchedParticipantToList(participant); //add alone_participant to unmatch list
+                event.getDataList().addParticipantToList(participant);
                 countParticipant++;
 
                 if(!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string
@@ -125,8 +127,9 @@ public class readCSV {
                 p.setKitchenCount(AddressTable.get(key).size());
             }
         }
-
-
+        //System.out.println(event.getDataList().getPairList().size());
+        //event.getDataList().getPairList().forEach(x -> x.show());
+        //System.out.println("===================================================================================");
     }
 }
 
