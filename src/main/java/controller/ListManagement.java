@@ -2,6 +2,7 @@ package controller;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import models.*;
 
@@ -94,38 +95,41 @@ public DataList dataList;
 
 
     //creating the best possible Group
-    public List<Group> makeBestGroupList() {
+    public void makeBestGroupList() {
         List<Pair> unpairedPairList = new ArrayList<>(dataList.pairList);
-        while (unpairedPairList.size() > 1) {
-            boolean impossiblePair = dataList.unmatchedParticipants.size() == 3 && makeBestPair(dataList.unmatchedParticipants.get(0))==null;
-            if (impossiblePair) {
+        while (unpairedPairList.size() > 2) {
+            boolean impossibleGroup = unpairedPairList.size() == 3 && makeBestGroup(unpairedPairList.get(0))==null;
+            if (impossibleGroup) {
                 break;
             } else {
-                Map<Pair, Double> tempPairs = new HashMap<>();
-                List<Participant> tempParticipants = new ArrayList<>(dataList.unmatchedParticipants);
-                for (Participant p : tempParticipants) {
-                    Pair bestPair = makeBestPair(p);
-                    if (bestPair != null) {
-                        tempPairs.put(bestPair, bestPair.calculatePairWeightedScore());
+                Map<Group, Double> tempGroups = new HashMap<>();
+                for (Pair p : unpairedPairList) {
+                    Group bestGroup = makeBestGroup(p);
+                    if (bestGroup != null) {
+                        tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
                     }
                 }
-                List<Pair> tempPairList = new ArrayList<>();
-                tempPairs.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                        .forEach(x -> tempPairList.add(x.getKey()));
-                List<Pair> list = tempPairList;
+                List<Group> tempGroupList = new ArrayList<>();
+                tempGroups.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .forEach(x -> tempGroupList.add(x.getKey()));
+                List<Group> list = tempGroupList;
                 for (int i = 0; i < list.size(); i++) {
-                    Pair a = list.get(0);
-                    dataList.pairList.add(a);
-                    dataList.unmatchedParticipants.remove(a.getParticipant1());
-                    dataList.unmatchedParticipants.remove(a.getParticipant2());
-                    list = list.stream().filter(x -> !containsPairedParticipant(x, a.getParticipant1(), a.getParticipant2())).collect(Collectors.toList());
+                    Group a = list.get(0);
+                    dataList.groupList.add(a);
+                    unpairedPairList.removeAll(a.getPairs());
+                    list = list.stream().filter(x -> notContainsPairedPairs(x, a.getPairs())).collect(Collectors.toList());
                 }
             }
         }
-        for (Participant p : dataList.unmatchedParticipants) {
-            dataList.event.getParticipantSuccessorList().addParticipant(p);
+        for (Pair p : unpairedPairList) {
+            dataList.event.getPairSuccesorList().addPair(p);
         }
-        return 
+    }
+
+    private boolean notContainsPairedPairs(Group x, List<Pair> pairs) {
+        List<Pair> commonPair = new ArrayList<>(x.getPairs());
+        commonPair.retainAll(pairs);
+        return commonPair.isEmpty();
     }
 
     public Group makeBestGroup(Pair pair) {
@@ -139,15 +143,15 @@ public DataList dataList;
         if (containsVeganOrVeggie(pair)) {
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
         }
-
         for (int i = 0; i < unmatchedPairs.size()-1;i++) {
-            for (int j = 1; j < unmatchedPairs.size() ; j++) {
-                Group tempGroup = new Group(pair,unmatchedPairs.get(i),unmatchedPairs.get(j));
-                double tempScore = tempGroup.calculateGroupWeightedScore();
-
-                if (tempScore > bestScore) {
-                    bestScore = tempScore;
-                    bestGroup = tempGroup;
+            for (int j = 1; j < unmatchedPairs.size();j++) {
+                if (!unmatchedPairs.get(i).equal(unmatchedPairs.get(j))) {
+                    Group tempGroup = new Group(pair, unmatchedPairs.get(i), unmatchedPairs.get(j));
+                    double tempScore = tempGroup.calculateGroupWeightedScore();
+                    if (tempScore > bestScore) {
+                        bestScore = tempScore;
+                        bestGroup = tempGroup;
+                    }
                 }
             }
         }

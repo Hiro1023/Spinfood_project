@@ -59,13 +59,19 @@ public class Group implements Calculation{
         return totalAgeDiff/3;
     }
 
+    @Override
+    public void show() {
+        System.out.println("Group Pairs : ");
+        this.getPairs().forEach(x -> x.show());
+        System.out.println("----------------------------------------");
+    }
 
 
     public double calculateGroupWeightedScore(){
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.AGE_DIFFERENCE.getWeight();
+        double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculatePairAgeDifference() / CRITERIA.PATH_LENGTH.getWeight();
+        double travelDistanceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
 
     
         return 1/(foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
