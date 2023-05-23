@@ -61,8 +61,9 @@ public class Group implements Calculation{
 
     @Override
     public void show() {
-        System.out.println("Group Pairs : ");
+        System.out.println("Group : ");
         this.getPairs().forEach(x -> x.show());
+        System.out.println(this.calculateGroupWeightedScore());
         System.out.println("----------------------------------------");
     }
 
