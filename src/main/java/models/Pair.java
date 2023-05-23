@@ -114,7 +114,6 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public void show() {
-        System.out.println("+==================================================+");
         System.out.println(getParticipant1().getName());
         System.out.println(getParticipant2().getName());
     }

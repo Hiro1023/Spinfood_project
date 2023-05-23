@@ -94,11 +94,12 @@ public class Main {
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs
 
         for (Pair pair: lm.dataList.getPairList()) {
-            if(pair.isPreMade()==false)
                 pair.show();
             System.out.println("---------------------------");
         }
         lm.makeBestGroupList();
+        System.out.println(lm.dataList.getGroupList().size());
+        lm.dataList.getGroupList().forEach(Group::show);
     }
 
 }

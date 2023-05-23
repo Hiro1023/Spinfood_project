@@ -48,20 +48,6 @@ public DataList dataList;
             dataList.event.getParticipantSuccessorList().addParticipant(p);
         }
     }
-
-//    public void makeBestPairList() {
-//        while (dataList.unmatchedParticipants.size() > 1) {
-//            Participant participant1 = dataList.unmatchedParticipants.get(0);
-//            Pair bestPair = makeBestPair(participant1);
-//            dataList.pairList.add(bestPair);
-//            dataList.unmatchedParticipants.remove(bestPair.getParticipant1());
-//            dataList.unmatchedParticipants.remove(bestPair.getParticipant2());
-//        }
-//        if (dataList.unmatchedParticipants.size() == 1) {
-//            dataList.event.getParticipantSuccessorList().addParticipant(dataList.unmatchedParticipants.get(0));
-//        }
-//    }
-
     public boolean containsPairedParticipant (Pair p, Participant a, Participant b){
         return p.getParticipant1().equals(a) || p.getParticipant1().equals(b) || p.getParticipant2().equals(a) || p.getParticipant2().equals(b);
     }
@@ -122,7 +108,12 @@ public DataList dataList;
             }
         }
         for (Pair p : unpairedPairList) {
-            dataList.event.getPairSuccesorList().addPair(p);
+            if (p.isPreMade()) {
+                dataList.event.getPairSuccesorList().addPair(p);
+            } else {
+                dataList.event.getParticipantSuccessorList().addParticipant(p.getParticipant1());
+                dataList.event.getParticipantSuccessorList().addParticipant(p.getParticipant2());
+            }
         }
     }
 
@@ -137,19 +128,24 @@ public DataList dataList;
         double bestScore = -1;
         List<Pair> unmatchedPairs = new ArrayList<>(dataList.pairList);
         unmatchedPairs.remove(pair);
+        unmatchedPairs.removeAll(pair.getVisitedPairs());
         if (containsMeat(pair)) {
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         }
         if (containsVeganOrVeggie(pair)) {
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
         }
-        for (int i = 0; i < unmatchedPairs.size()-1;i++) {
-            for (int j = 1; j < unmatchedPairs.size();j++) {
-                if (!unmatchedPairs.get(i).equal(unmatchedPairs.get(j))) {
-                    Group tempGroup = new Group(pair, unmatchedPairs.get(i), unmatchedPairs.get(j));
-                    double tempScore = tempGroup.calculateGroupWeightedScore();
-                    if (tempScore > bestScore) {
-                        bestScore = tempScore;
+        for (int i = 0; i < unmatchedPairs.size() - 1; i++) {
+            for (int j = i + 1; j < unmatchedPairs.size(); j++) {
+                Pair pair1 = unmatchedPairs.get(i);
+                Pair pair2 = unmatchedPairs.get(j);
+
+                if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
+                    Group tempGroup = new Group(pair, pair1, pair2);
+                    double score = tempGroup.calculateGroupWeightedScore();
+
+                    if (score > bestScore) {
+                        bestScore = score;
                         bestGroup = tempGroup;
                     }
                 }

@@ -63,6 +63,7 @@ public class Group implements Calculation{
     public void show() {
         System.out.println("Group Pairs : ");
         this.getPairs().forEach(x -> x.show());
+        System.out.println(this.calculateGroupWeightedScore());
         System.out.println("----------------------------------------");
     }
 
