@@ -82,14 +82,13 @@ public DataList dataList;
 
     //creating the best possible Group
     public void makeBestGroupList() {
-        List<Pair> unpairedPairList = new ArrayList<>(dataList.pairList);
-        while (unpairedPairList.size() > 2) {
-            boolean impossibleGroup = unpairedPairList.size() == 3 && makeBestGroup(unpairedPairList.get(0))==null;
+        while (dataList.pairList.size() > 2) {
+            boolean impossibleGroup = dataList.pairList.size() == 3 && makeBestGroup(dataList.pairList.get(0))==null;
             if (impossibleGroup) {
                 break;
             } else {
                 Map<Group, Double> tempGroups = new HashMap<>();
-                for (Pair p : unpairedPairList) {
+                for (Pair p : dataList.pairList) {
                     Group bestGroup = makeBestGroup(p);
                     if (bestGroup != null) {
                         tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
@@ -98,16 +97,18 @@ public DataList dataList;
                 List<Group> tempGroupList = new ArrayList<>();
                 tempGroups.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                         .forEach(x -> tempGroupList.add(x.getKey()));
+
                 List<Group> list = tempGroupList;
                 for (int i = 0; i < list.size(); i++) {
                     Group a = list.get(0);
                     dataList.groupList.add(a);
-                    unpairedPairList.removeAll(a.getPairs());
-                    list = list.stream().filter(x -> notContainsPairedPairs(x, a.getPairs())).collect(Collectors.toList());
+                    dataList.pairList.removeAll(a.getPairs());
+                    list = list.stream().filter(x -> notContainsPairedPairs(x, a)).collect(Collectors.toList());
                 }
             }
         }
-        for (Pair p : unpairedPairList) {
+
+        for (Pair p : dataList.pairList) {
             if (p.isPreMade()) {
                 dataList.event.getPairSuccesorList().addPair(p);
             } else {
@@ -117,10 +118,13 @@ public DataList dataList;
         }
     }
 
-    private boolean notContainsPairedPairs(Group x, List<Pair> pairs) {
-        List<Pair> commonPair = new ArrayList<>(x.getPairs());
-        commonPair.retainAll(pairs);
-        return commonPair.isEmpty();
+    private boolean notContainsPairedPairs(Group x, Group a) {
+        for (Pair p : a.getPairs()) {
+            if (x.getPairs().contains(p)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Group makeBestGroup(Pair pair) {
