@@ -21,6 +21,11 @@ public class DataList {
     List<Group> groupList;
 
     List<Participant> unmatchedParticipants;
+
+    public Event getEvent() {
+        return event;
+    }
+
     Event event ;
 
     //Constructor

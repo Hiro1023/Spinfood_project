@@ -107,6 +107,9 @@ public DataList dataList;
                 }
             }
         }
+        for(Group g : dataList.groupList){
+            addmeetedPair(g);
+        }
 
         for (Pair p : dataList.pairList) {
             if (p.isPreMade()) {
@@ -118,6 +121,16 @@ public DataList dataList;
         }
     }
 
+    public boolean check(){
+        for(int i = 0 ; i < dataList.getGroupList().size()-1 ; i++){
+            for(int j = i+1 ; j < dataList.groupList.size() ; j++){
+                if(!notContainsPairedPairs(dataList.groupList.get(i),dataList.groupList.get(i))){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     private boolean notContainsPairedPairs(Group x, Group a) {
         for (Pair p : a.getPairs()) {
             if (x.getPairs().contains(p)) {
@@ -133,6 +146,9 @@ public DataList dataList;
         List<Pair> unmatchedPairs = new ArrayList<>(dataList.pairList);
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
+        if(unmatchedPairs.size()<2){
+            return bestGroup;
+        }
         if (containsMeat(pair)) {
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         }
@@ -156,6 +172,15 @@ public DataList dataList;
             }
         }
         return bestGroup;
+    }
+
+    public void addmeetedPair(Group group){
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+        p1.meetPair(p2,p3);
+        p2.meetPair(p1,p3);
+        p3.meetPair(p1,p2);
     }
 
     private boolean containsMeat (Pair pair) {

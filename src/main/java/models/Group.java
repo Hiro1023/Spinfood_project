@@ -73,9 +73,13 @@ public class Group implements Calculation{
         double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
         double travelDistanceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
+        double score =  1/(foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
 
-    
-        return 1/(foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
+        if(score == Double.POSITIVE_INFINITY){
+            return 1000;
+        }
+
+        return score;
     }
     
 

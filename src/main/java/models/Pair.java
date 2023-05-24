@@ -29,8 +29,9 @@ public class  Pair implements Calculation, Utility {
     }
 
     
-    public void meetPair(Pair pair) {
-        visitedPairs.add(pair);
+    public void meetPair(Pair pair1,Pair pair2) {
+        visitedPairs.add(pair1);
+        visitedPairs.add(pair2);
     }
 
 

@@ -93,13 +93,22 @@ public class Main {
         lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs
 
+        /*
         for (Pair pair: lm.dataList.getPairList()) {
                 pair.show();
+
+            System.out.println(pair.calculatePairWeightedScore());
             System.out.println("---------------------------");
         }
+
+         */
+
         lm.makeBestGroupList();
         System.out.println(lm.dataList.getGroupList().size());
-        lm.dataList.getGroupList().forEach(Group::show);
+        System.out.println(lm.check());
+        System.out.println(lm.dataList.getEvent());
+        //lm.dataList.getGroupList().forEach(Group::show);
+        //lm.dataList.getGroupList().get(0).getPairs().get(0).getVisitedPairs().forEach(Pair::show);
     }
 
 }
