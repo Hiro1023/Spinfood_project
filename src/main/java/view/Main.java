@@ -1,8 +1,6 @@
 package view;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import controller.ListManagement;
@@ -103,12 +101,18 @@ public class Main {
 
          */
 
+        /*
+        for (int i = 0 ; i < 10 ; i++) {
+            lm.makeBestGroupList();
+            lm.dataList.getGroupList().get(13).show();
+            System.out.println(lm.check());
+        }#
+
+         */
         lm.makeBestGroupList();
-        System.out.println(lm.dataList.getGroupList().size());
-        System.out.println(lm.check());
-        System.out.println(lm.dataList.getEvent());
-        //lm.dataList.getGroupList().forEach(Group::show);
-        //lm.dataList.getGroupList().get(0).getPairs().get(0).getVisitedPairs().forEach(Pair::show);
+        lm.dataList.getGroupList().forEach(Group::show);
+        lm.dataList.getGroupList().get(0).getPairs().get(0).getVisitedPairs().forEach(Pair::show);
+        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
     }
 
 }

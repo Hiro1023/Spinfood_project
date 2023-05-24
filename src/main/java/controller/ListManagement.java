@@ -2,7 +2,6 @@ package controller;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import models.*;
 
@@ -82,6 +81,7 @@ public DataList dataList;
 
     //creating the best possible Group
     public void makeBestGroupList() {
+        List<Pair> pairListTemp = dataList.getPairList();
         while (dataList.pairList.size() > 2) {
             boolean impossibleGroup = dataList.pairList.size() == 3 && makeBestGroup(dataList.pairList.get(0))==null;
             if (impossibleGroup) {
@@ -111,6 +111,7 @@ public DataList dataList;
             addmeetedPair(g);
         }
 
+        System.out.println(dataList.pairList.size());
         for (Pair p : dataList.pairList) {
             if (p.isPreMade()) {
                 dataList.event.getPairSuccesorList().addPair(p);
@@ -124,7 +125,7 @@ public DataList dataList;
     public boolean check(){
         for(int i = 0 ; i < dataList.getGroupList().size()-1 ; i++){
             for(int j = i+1 ; j < dataList.groupList.size() ; j++){
-                if(!notContainsPairedPairs(dataList.groupList.get(i),dataList.groupList.get(i))){
+                if(!notContainsPairedPairs(dataList.groupList.get(i),dataList.groupList.get(j))){
                     return false;
                 }
             }

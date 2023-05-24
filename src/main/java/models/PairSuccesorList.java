@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PairSuccesorList extends SuccesorList{
+    public List<Pair> getPairSuccessorList() {
+        return pairSuccessorList;
+    }
+
     private List<Pair> pairSuccessorList = new ArrayList<>();
 
     public PairSuccesorList() {};
