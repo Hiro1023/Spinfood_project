@@ -47,7 +47,8 @@ public class ListManagement{
         for (Participant p : dataList.unmatchedParticipants) {
             dataList.event.getParticipantSuccessorList().addParticipant(p);
         }
-        pairListTemp = new ArrayList<>(dataList.getPairList());
+        //copy everything from data
+        pairListTemp = new ArrayList<>(dataList.pairList);
 
     }
 
