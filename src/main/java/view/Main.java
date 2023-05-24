@@ -1,8 +1,6 @@
 package view;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 import controller.ListManagement;
@@ -36,7 +34,24 @@ public class Main {
 
     static ListManagement lm = new ListManagement(readCSV.event.getDataList());
 
-
+    public static void showParticipantList(){
+        for (Participant par: lm.dataList.getParticipantList()) {
+            par.show();
+            System.out.println("---------------------------");
+        }
+    }
+    public static void showGroupList(){
+        for (Group group : lm.dataList.getGroupList()) {
+            group.show();
+            System.out.println("-----------------------");
+        }
+    }
+    public static void showVisitedListOfEachPair(){
+        for(Pair pair: lm.dataList.getPairList()){
+            pair.getVisitedPairs().forEach(Pair::show);
+            System.out.println("--------------------------");
+        }
+    }
 
 
     /**
@@ -53,12 +68,8 @@ public class Main {
         File selectedFile = fileChooser.getSelectedFile();
          */
 
-
         //print out to the console the list of participant from csv file
-        for (Participant par: readCSV.event.getDataList().getParticipantList()) {
-            //par.show();
-            //System.out.println("---------------------------");
-        }
+        //showParticipantList();
 
         //check for the number of participant with the same kitchen
         //for ex here: print out the number of participant which have the same kitchen address
@@ -80,33 +91,16 @@ public class Main {
         //print out the unmatchedParticipants from ListManagement class
         System.out.println("ListManagement getUnmatchedParticipants: "+lm.dataList.getUnmatchedParticipants().size());
 
-
         System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs, sometimes 154
         System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupList().size());   //0
         lm.makeBestGroupList();
-
         System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupList().size());    //51
 
 
 
-        /*
-        for (Pair pair: lm.dataList.getPairList()) {
-                pair.show();
-
-            System.out.println(pair.calculatePairWeightedScore());
-            System.out.println("---------------------------");
-        }
-
-         */
-
-        for (Group group : lm.dataList.getGroupList()) {
-            group.show();
-            System.out.println("-----------------------");
-        }
-
-
+/*
         //print out all the visited pair from each first pair in the group list
         for(Group group: lm.dataList.getGroupList()){
             for(Pair pair: group.getPairs()){
@@ -115,19 +109,9 @@ public class Main {
             }
         }
 
-
-
-        System.out.println("check from dataList: ");
-        System.out.println("check size of pairList" + lm.dataList.getPairList().size());
-
-        /*
-        for(Pair pair: lm.dataList.getPairList()){
-            pair.getVisitedPairs().forEach(Pair::show);
-            System.out.println("--------------------------");
-        }
-
-         */
-
+ */
+        showGroupList();
+        //showVisitedListOfEachPair();
 
     }
 

@@ -87,8 +87,6 @@ public class ListManagement{
 
     //creating the best possible Group
     public void makeBestGroupList() {
-        //copy pairList to pairListTemp
-        System.out.println("pairListTemp.size() "+pairListTemp.size());
         //find best Group and terminate if there is only 2 pairs left
 
         while (pairListTemp.size() > 2) {
@@ -97,11 +95,10 @@ public class ListManagement{
                 break;
             else {
                 Map<Group, Double> tempGroups = new HashMap<>();
-                for (Pair p : pairListTemp) {
+                for (Pair p : pairListTemp) { //O(n)
                     Group bestGroup = makeBestGroup(p);
-                    if (bestGroup != null) {
+                    if (bestGroup != null)
                         tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
-                    }
                 }
                 List<Group> tempGroupList = new ArrayList<>();
                 //sort the tempGroup in descending order
@@ -113,28 +110,20 @@ public class ListManagement{
                 for (int i = 0; i < list.size(); i++) {
                     Group a = list.get(0);
                     dataList.groupList.add(a);  //add this group a to the dataList->groupList
+                    addMetPair(a);   //mark all pair in this group as met
                     pairListTemp.removeAll(a.getPairs()); //remove all the pairs, which was grouped
-                    //filter only the pair which is not paired
-                    list = list.stream().filter(x -> notContainsPairedPairs(x, a)).collect(Collectors.toList());
+                    list = list.stream().filter(x -> notContainsPairedPairs(x, a)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
-
             }
         }
-        //mark all pair in this group as met
-        for(Group g : dataList.groupList)
-            addMetPair(g);
-
 
         //add the rest pair in the list to pairSuccescorList  or ParticipantSuccessorList
         for (Pair p : pairListTemp) {
-            if (p.isPreMade()) {
+            if (p.isPreMade())
                 dataList.event.getPairSuccesorList().addPair(p);
-            } else {
-                dataList.event.getParticipantSuccessorList().addParticipant(p.getParticipant1());
-                dataList.event.getParticipantSuccessorList().addParticipant(p.getParticipant2());
-            }
+            else
+                dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(),p.getParticipant2());
         }
-        System.out.println("pairListTemp.size() "+pairListTemp.size());
     }
 
     public boolean checkForGroup(){
@@ -165,25 +154,23 @@ public class ListManagement{
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
 
-        if(unmatchedPairs.size()<2){
+        if(unmatchedPairs.size()<2)
             return bestGroup;
-        }
 
-        if (containsMeat(pair)) {
+        if (containsMeat(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
-        }
-        if (containsVeganOrVeggie(pair)) {
+
+        if (containsVeganOrVeggie(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
-        }
+
+        //O(n^2)
         for (int i = 0; i < unmatchedPairs.size() - 1; i++) {
             for (int j = i + 1; j < unmatchedPairs.size(); j++) {
                 Pair pair1 = unmatchedPairs.get(i);
                 Pair pair2 = unmatchedPairs.get(j);
-
                 if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
                     Group tempGroup = new Group(pair, pair1, pair2);
                     double score = tempGroup.calculateGroupWeightedScore();
-
                     if (score > bestScore) {
                         bestScore = score;
                         bestGroup = tempGroup;
@@ -191,6 +178,7 @@ public class ListManagement{
                 }
             }
         }
+
         return bestGroup;
     }
 

@@ -12,6 +12,11 @@ public class ParticipantSuccessorList extends SuccesorList{
         participantSuccessorList.add(participant);
     }
 
+    public void addAllParticipant(Participant par1,Participant par2){
+        participantSuccessorList.add(par1);
+        participantSuccessorList.add(par2);
+    }
+
     public List<Participant> getParticipantSuccessorList() {
         return participantSuccessorList;
     }
