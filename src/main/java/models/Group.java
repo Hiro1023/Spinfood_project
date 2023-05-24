@@ -62,10 +62,14 @@ public class Group implements Calculation{
     @Override
     public void show() {
         System.out.println("Group : ");
-        this.getPairs().forEach(x -> x.show());
+        //this.getPairs().forEach(x -> x.show());
+        System.out.println(this.getPairs().get(0).getParticipant1().getName()+" "+this.getPairs().get(0).getParticipant2().getName());
+        System.out.println(this.getPairs().get(1).getParticipant1().getName()+" "+this.getPairs().get(1).getParticipant2().getName());
+        System.out.println(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName());
         System.out.println(this.calculateGroupWeightedScore());
-        System.out.println("----------------------------------------");
+
     }
+
 
 
     public double calculateGroupWeightedScore(){

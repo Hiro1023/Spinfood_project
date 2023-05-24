@@ -115,12 +115,28 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public void show() {
-        System.out.println(getParticipant1().getName());
-        System.out.println(getParticipant2().getName());
+        System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
+        /*
+        System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
+        System.out.println();
+        System.out.print("      ");
+        System.out.println("First Participant ");
+        this.participant1.show();
+        System.out.println();
+        System.out.print("      ");
+        System.out.println("Second Participant ");
+        this.participant2.show();
+
+         */
     }
+
+
 
     @Override
     public boolean equal(Object o) {
+
+
+
         return false;
     }
 }

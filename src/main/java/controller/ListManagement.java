@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 import models.*;
 
 public class ListManagement{
-public DataList dataList;
+    public DataList dataList;
+    public List<Pair> pairListTemp;
 
     public ListManagement(DataList dataList){
         this.dataList = dataList;
@@ -46,7 +47,11 @@ public DataList dataList;
         for (Participant p : dataList.unmatchedParticipants) {
             dataList.event.getParticipantSuccessorList().addParticipant(p);
         }
+        pairListTemp = new ArrayList<>(dataList.getPairList());
+
     }
+
+
     public boolean containsPairedParticipant (Pair p, Participant a, Participant b){
         return p.getParticipant1().equals(a) || p.getParticipant1().equals(b) || p.getParticipant2().equals(a) || p.getParticipant2().equals(b);
     }
@@ -81,38 +86,46 @@ public DataList dataList;
 
     //creating the best possible Group
     public void makeBestGroupList() {
-        List<Pair> pairListTemp = dataList.getPairList();
-        while (dataList.pairList.size() > 2) {
-            boolean impossibleGroup = dataList.pairList.size() == 3 && makeBestGroup(dataList.pairList.get(0))==null;
-            if (impossibleGroup) {
+        //copy pairList to pairListTemp
+        System.out.println("pairListTemp.size() "+pairListTemp.size());
+        //find best Group and terminate if there is only 2 pairs left
+
+        while (pairListTemp.size() > 2) {
+            boolean impossibleGroup = pairListTemp.size()==3 && makeBestGroup(pairListTemp.get(0))==null;
+            if (impossibleGroup)
                 break;
-            } else {
+            else {
                 Map<Group, Double> tempGroups = new HashMap<>();
-                for (Pair p : dataList.pairList) {
+                for (Pair p : pairListTemp) {
                     Group bestGroup = makeBestGroup(p);
                     if (bestGroup != null) {
                         tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
                     }
                 }
                 List<Group> tempGroupList = new ArrayList<>();
+                //sort the tempGroup in descending order
                 tempGroups.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                         .forEach(x -> tempGroupList.add(x.getKey()));
 
                 List<Group> list = tempGroupList;
+
                 for (int i = 0; i < list.size(); i++) {
                     Group a = list.get(0);
-                    dataList.groupList.add(a);
-                    dataList.pairList.removeAll(a.getPairs());
+                    dataList.groupList.add(a);  //add this group a to the dataList->groupList
+                    pairListTemp.removeAll(a.getPairs()); //remove all the pairs, which was grouped
+                    //filter only the pair which is not paired
                     list = list.stream().filter(x -> notContainsPairedPairs(x, a)).collect(Collectors.toList());
                 }
+
             }
         }
-        for(Group g : dataList.groupList){
-            addmeetedPair(g);
-        }
+        //mark all pair in this group as met
+        for(Group g : dataList.groupList)
+            addMetPair(g);
 
-        System.out.println(dataList.pairList.size());
-        for (Pair p : dataList.pairList) {
+
+        //add the rest pair in the list to pairSuccescorList  or ParticipantSuccessorList
+        for (Pair p : pairListTemp) {
             if (p.isPreMade()) {
                 dataList.event.getPairSuccesorList().addPair(p);
             } else {
@@ -120,9 +133,10 @@ public DataList dataList;
                 dataList.event.getParticipantSuccessorList().addParticipant(p.getParticipant2());
             }
         }
+        System.out.println("pairListTemp.size() "+pairListTemp.size());
     }
 
-    public boolean check(){
+    public boolean checkForGroup(){
         for(int i = 0 ; i < dataList.getGroupList().size()-1 ; i++){
             for(int j = i+1 ; j < dataList.groupList.size() ; j++){
                 if(!notContainsPairedPairs(dataList.groupList.get(i),dataList.groupList.get(j))){
@@ -144,12 +158,16 @@ public DataList dataList;
     public Group makeBestGroup(Pair pair) {
         Group bestGroup = null;
         double bestScore = -1;
-        List<Pair> unmatchedPairs = new ArrayList<>(dataList.pairList);
+
+        List<Pair> unmatchedPairs = new ArrayList<>(pairListTemp);
+
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
+
         if(unmatchedPairs.size()<2){
             return bestGroup;
         }
+
         if (containsMeat(pair)) {
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         }
@@ -175,7 +193,7 @@ public DataList dataList;
         return bestGroup;
     }
 
-    public void addmeetedPair(Group group){
+    public void addMetPair(Group group){
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);

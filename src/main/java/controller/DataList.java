@@ -37,7 +37,6 @@ public class DataList {
         this.unmatchedParticipants = new ArrayList<>();
     }
 
-    //SuccessorList (Participant + Pair)
     public void addParticipantToList(Participant participant){
         if(participantList.size() < event.getMaxParticipant()){
             participantList.add(participant);
