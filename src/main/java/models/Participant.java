@@ -79,7 +79,7 @@ public class Participant implements Utility {
 
     @Override
     public boolean equal(Object o) {
-        return false;
+        return this.equals(o);
     }
 
 
