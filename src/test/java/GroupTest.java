@@ -24,7 +24,7 @@ public class GroupTest {
     @Test
     public void calculateFoodMatchScoreTest(){
         Group g = new Group(pair1,pair2,pair3);
-        double calc = pair1.calculateFoodPreference() + pair2.calculateFoodPreference() + pair3.calculateFoodPreference();
+        double calc = (pair1.calculateFoodPreference() + pair2.calculateFoodPreference() + pair3.calculateFoodPreference())/3;
         assertEquals(calc,g.calculateFoodPreference());
     }
 

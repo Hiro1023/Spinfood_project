@@ -23,7 +23,7 @@ public class Group implements Calculation{
 
     @Override
     public double calculateFoodPreference() {
-        int groupScore = 0;
+        double groupScore = 0;
         for (Pair pair : getPairs()) {
             groupScore += pair.calculateFoodPreference();
         }
