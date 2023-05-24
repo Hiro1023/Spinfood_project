@@ -15,11 +15,18 @@ public class PairTest {
     Participant p5 = new Participant("14","p5","vegan","15","other","no","","","");
 
     /**
+     * Test for calculatePairAgeDifference
+     */
+    @Test
+    void calculatePairAgeDifference_return1(){
+        Pair ageDiff = new Pair(p1,p5);
+        assertEquals(1,ageDiff.calculatePairAgeDifference());
+    }
+    /**
      * Test for method "calculateSexDiversity"
      * with Female -> the Result 0.0
      * without Female -> the result 0.5
      */
-
     @Test
     void calculateSexDiversityTest_withFemale_return0(){
         Pair differentSex = new Pair(p1,p2);
