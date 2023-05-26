@@ -47,8 +47,7 @@ public class ListManagement{
         for (Participant p : dataList.unmatchedParticipants) {
             dataList.event.getParticipantSuccessorList().addParticipant(p);
         }
-        //copy everything from data
-        pairListTemp = new ArrayList<>(dataList.pairList);
+        //copy everything from data after all Participants is matched to Pairs
 
     }
 
@@ -75,7 +74,6 @@ public class ListManagement{
         for (Participant p : candidates) {
             Pair tempPair = new Pair(participant,p);
             double score = tempPair.calculatePairWeightedScore();
-
             if (score > bestScore) {
                 bestPair = tempPair;
                 bestScore = score;
@@ -83,11 +81,11 @@ public class ListManagement{
         }
         return bestPair;
     }
-
-
+    
     //creating the best possible Group
     public void makeBestGroupList() {
         //find best Group and terminate if there is only 2 pairs left
+        pairListTemp = new ArrayList<>(dataList.pairList);
 
         while (pairListTemp.size() > 2) {
             boolean impossibleGroup = pairListTemp.size()==3 && makeBestGroup(pairListTemp.get(0))==null;
@@ -178,7 +176,6 @@ public class ListManagement{
                 }
             }
         }
-
         return bestGroup;
     }
 

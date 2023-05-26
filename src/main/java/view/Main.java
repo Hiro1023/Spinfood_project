@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import controller.ListManagement;
@@ -10,10 +11,8 @@ import models.Pair;
 import models.Participant;
 
 public class Main {
-
     static String csvFile = "Dokumentation/teilnehmerliste.csv";
     static readCSV readCSV;
-
     static {
         try {
             readCSV = new readCSV(new File(csvFile));
@@ -23,7 +22,6 @@ public class Main {
     }
 
     static List<String[]> list;
-
     static {
         try {
             list = readCSV.read_File(new File(csvFile));
@@ -40,6 +38,10 @@ public class Main {
             System.out.println("---------------------------");
         }
     }
+
+    public static void showParticipantSuccesorList(){
+        lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
+    }
     public static void showGroupList(){
         for (Group group : lm.dataList.getGroupList()) {
             group.show();
@@ -50,6 +52,13 @@ public class Main {
         for(Pair pair: lm.dataList.getPairList()){
             pair.getVisitedPairs().forEach(Pair::show);
             System.out.println("--------------------------");
+        }
+    }
+
+    public static void showUnmatchedParticipant(){
+        for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
+            par.show();
+            System.out.println("---------------------------");
         }
     }
 
@@ -77,16 +86,8 @@ public class Main {
         System.out.println("number of participants with the same kitchen address: " + readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
 
         //check the isPremade() function
-        System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
+        //System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
 
-/*
-        //check the unmatchParticipantList
-        for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
-            par.show();
-            System.out.println("---------------------------");
-        }
-
-*/
 
         //print out the unmatchedParticipants from ListManagement class
         System.out.println("ListManagement getUnmatchedParticipants: "+lm.dataList.getUnmatchedParticipants().size());
@@ -98,20 +99,35 @@ public class Main {
         lm.makeBestGroupList();
         System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupList().size());    //51
 
-
-
-/*
-        //print out all the visited pair from each first pair in the group list
-        for(Group group: lm.dataList.getGroupList()){
-            for(Pair pair: group.getPairs()){
-                pair.getVisitedPairs().forEach(Pair::show);
-                System.out.println("--------------------------");
-            }
-        }
-
- */
+        //show group list for the Gang 1
         showGroupList();
-        //showVisitedListOfEachPair();
+
+        //check the visited Pair for the first pair in the List: only for debuging
+        System.out.println("--------------------");
+        lm.dataList.getPairList().get(0).show();
+        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
+
+        //make the best group for Gang 2
+        lm.makeBestGroupList();
+
+        //check the visited Pair for the first pair in the List: only for debuging
+        //the visited Paired has increased from 2 Pairs (Gang1) to 4 pairs (Gang2)
+        System.out.println("--------------------");
+        lm.dataList.getPairList().get(0).show();
+        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
+
+        //make the best group for Gang 3
+        lm.makeBestGroupList();
+
+        //check the visited Pair for the first pair in the List: only for debuging
+        //the visited Paired has increased from 4 Pairs (Gang2) to 6 pairs (Gang3)
+        System.out.println("--------------------");
+        lm.dataList.getPairList().get(0).show();
+        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
+
+
+
+
 
     }
 

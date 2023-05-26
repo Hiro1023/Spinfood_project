@@ -18,6 +18,11 @@ public class DataList {
         return groupList;
     }
 
+    public List<Group> deleteGroupList(){
+        groupList = new ArrayList<>();
+        return groupList;
+    }
+
     List<Group> groupList;
 
     List<Participant> unmatchedParticipants;
