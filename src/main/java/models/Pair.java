@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import controller.CRITERIA;
 import controller.Calculation;
@@ -9,18 +10,12 @@ import controller.Utility;
 
 public class  Pair implements Calculation, Utility {
     private String Pair_ID;
-
-    public void setPreMade(boolean preMade) {
-        isPreMade = preMade;
-    }
-
     private boolean isPreMade;
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
     private Participant participant2;
-
-
+    private Map<Boolean,Integer> hasCooked; //ex <true,1>
 
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
@@ -28,12 +23,10 @@ public class  Pair implements Calculation, Utility {
         this.Pair_ID = participant1.getID()+"-"+participant2.getID();
     }
 
-    
     public void meetPair(Pair pair1,Pair pair2) {
         visitedPairs.add(pair1);
         visitedPairs.add(pair2);
     }
-
 
     @Override
     public double calculateFoodPreference() {
@@ -50,7 +43,7 @@ public class  Pair implements Calculation, Utility {
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
 
-        if (kitchen1 == null || kitchen2 == null) {
+        if (kitchen1 == null || kitchen2 == null) { //should not happen
             return 0.0;
         }
         double EARTH_RADIUS = 6371.0;
@@ -68,6 +61,35 @@ public class  Pair implements Calculation, Utility {
         return EARTH_RADIUS * angularDistanceInRadians;
     }
 
+
+    @Override
+    public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude) {
+        Kitchen kitchen1 = participant1.getKitchen();
+        Kitchen kitchen2 = participant2.getKitchen();
+        int EARTH_RADIUS = 6371; // Earth's radius in kilometers
+        double lon = 0, lat = 0;
+
+        if (kitchen1 != null) {
+            lon = kitchen1.getKitchenLongitude();
+            lat = kitchen1.getKitchenLatitude();
+        } else if (kitchen2 != null) {
+            lon = kitchen2.getKitchenLongitude();
+            lat = kitchen2.getKitchenLatitude();
+        }
+
+        // Calculate the differences between the latitudes and longitudes
+        double latDiff = Math.abs(partyLatitude - lat);
+        double lonDiff = Math.abs(partyLongitude - lon);
+        // Apply the Haversine formula
+        double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+                Math.cos(partyLatitude) * Math.cos(lat) *
+                Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = EARTH_RADIUS * c;
+
+        return distance;
+    }
+
     @Override
     public int calculatePairAgeDifference() {
         return Math.abs(participant1.getAgerange().getValue() - participant2.getAgerange().getValue());
@@ -79,24 +101,32 @@ public class  Pair implements Calculation, Utility {
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
         double travelDistanceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
 
-    
         double Score =  1/(foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
         if (Score == Double.POSITIVE_INFINITY) {
             Score = 1000;
         }
         return Score;
     }
-    
 
 
+    /**
+     * Setter
+     */
+    public void setPreMade(boolean preMade) {
+        isPreMade = preMade;
+    }
 
-
-      
+    public void setHasCooked(Map<Boolean,Integer> hasCooked) {
+        this.hasCooked = hasCooked;
+    }
+    public Map<Boolean, Integer> getHasCooked() {
+        return hasCooked;
+    }
     public String getPairId() {
         return Pair_ID;
     }
 
-    public boolean isPreMade() {
+    public boolean getIsPreMade() {
         return isPreMade;
     }
 
@@ -126,7 +156,6 @@ public class  Pair implements Calculation, Utility {
         System.out.print("      ");
         System.out.println("Second Participant ");
         this.participant2.show();
-
          */
     }
 
@@ -135,8 +164,10 @@ public class  Pair implements Calculation, Utility {
     @Override
     public boolean equal(Object o) {
 
-
-
         return false;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

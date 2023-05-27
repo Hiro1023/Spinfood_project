@@ -25,7 +25,6 @@ public class Event {
         return Date;
     }
 
-
     public boolean isFull() {
         return isFull;
     }
@@ -41,7 +40,13 @@ public class Event {
     public double getPartyLongitude() {
         return partyLongitude;
     }
+    public void setPartyLongitude(double partyLongitude) {
+        this.partyLongitude = partyLongitude;
+    }
 
+    public void setPartyLatitude(double partyLatitude) {
+        this.partyLatitude = partyLatitude;
+    }
     public ParticipantSuccessorList getParticipantSuccessorList() {
         return participantSuccessorList;
     }
@@ -62,8 +67,6 @@ public class Event {
     public Event(){
         Event_ID = 0;
         Date = new Date();
-        this.partyLongitude = 0.0;
-        this.partyLatitude = 0.0;
         this.maxParticipant = 1000;
         this.dataList = new DataList(this);
     }

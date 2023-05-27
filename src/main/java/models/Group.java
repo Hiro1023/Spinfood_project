@@ -51,6 +51,16 @@ public class Group implements Calculation{
     }
 
     @Override
+    public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude) {
+        return 0;
+    }
+
+
+    public double calculateNearestKitchenToTheParty(){
+        return 0.0;
+    }
+
+    @Override
     public int calculatePairAgeDifference() {
         int totalAgeDiff = 0;
         for(Pair pair : getPairs()){
@@ -70,8 +80,6 @@ public class Group implements Calculation{
 
     }
 
-
-
     public double calculateGroupWeightedScore(){
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
@@ -85,10 +93,13 @@ public class Group implements Calculation{
 
         return score;
     }
-    
 
     public List<Pair> getPairs() {
         return Pairs;
+    }
+
+    public static void main(String[] args) {
+
     }
 
  

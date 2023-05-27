@@ -16,7 +16,7 @@ public class readCSV {
     public List<String[]> not_alone_participant = new ArrayList<>();
     public Event event = new Event();
 
-    //hash map if String(as addresse: combination of Longtitude and Latitude)
+    //hash map if String (as address: combination of Longtitude and Latitude)
     //
     public HashMap<String, List<Participant>> AddressTable = new HashMap<>();
 
@@ -24,11 +24,11 @@ public class readCSV {
     public int countParticipant = 0;
     public int countPair = 0;
 
-
     public readCSV(){};
 
-    public readCSV(File csvFile) throws Exception {
-        addParticipantAndPair(read_File(csvFile));
+    public readCSV(File participantCSVFile,File partyLocationCSVFile) throws Exception {
+        addParticipantAndPair(read_File(participantCSVFile));
+        addPartyLocation(read_File(partyLocationCSVFile));
     }
     /**
      * csvFile is read
@@ -42,6 +42,12 @@ public class readCSV {
         return list;
     }
 
+    public void addPartyLocation(List<String[]> list){
+        System.out.println("Party Loc: ");
+        String[] loc = list.get(1);
+        event.setPartyLongitude(Double.parseDouble(loc[0]));
+        event.setPartyLatitude(Double.parseDouble(loc[1]));
+    }
 
     /**
      * @Discription Participant and pair are created from list

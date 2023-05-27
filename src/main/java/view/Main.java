@@ -1,7 +1,6 @@
 package view;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.ListManagement;
@@ -11,20 +10,20 @@ import models.Pair;
 import models.Participant;
 
 public class Main {
-    static String csvFile = "Dokumentation/teilnehmerliste.csv";
+    static String participantCSVFile = "Dokumentation/teilnehmerliste.csv";
+    static String partyLocationCSVFile = "Dokumentation/partylocation.csv";
     static readCSV readCSV;
     static {
         try {
-            readCSV = new readCSV(new File(csvFile));
+            readCSV = new readCSV(new File(participantCSVFile),new File(partyLocationCSVFile));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     static List<String[]> list;
     static {
         try {
-            list = readCSV.read_File(new File(csvFile));
+            list = readCSV.read_File(new File(participantCSVFile));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -42,8 +41,34 @@ public class Main {
     public static void showParticipantSuccesorList(){
         lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
     }
-    public static void showGroupList(){
-        for (Group group : lm.dataList.getGroupList()) {
+
+    public static void showKitchenAddressAndParticipant(){
+        for (String address : readCSV.AddressTable.keySet()) {
+            System.out.println("Address: " + address);
+            // Get the list of participants for the current address
+            List<Participant> participants = readCSV.AddressTable.get(address);
+            // Iterate over the participants in the list
+            for (Participant participant : participants)
+                System.out.println("Participant: " + participant.getName());
+            // You can print other participant details here as needed
+            System.out.println(); // Add an empty line between addresses
+        }
+    }
+    public static void showGroupListGang01(){
+        for (Group group : lm.dataList.getGroupListGang01()) {
+            group.show();
+            System.out.println("-----------------------");
+        }
+    }
+    public static void showGroupListGang02(){
+        for (Group group : lm.dataList.getGroupListGang02()) {
+            group.show();
+            System.out.println("-----------------------");
+        }
+    }
+
+    public static void showGroupListGang03(){
+        for (Group group : lm.dataList.getGroupListGang03()) {
             group.show();
             System.out.println("-----------------------");
         }
@@ -95,13 +120,15 @@ public class Main {
         System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs, sometimes 154
-        System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupList().size());   //0
+        System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListGang01().size());   //0
         lm.makeBestGroupList();
-        System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupList().size());    //51
+        System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListGang01().size());    //51
 
         //show group list for the Gang 1
-        showGroupList();
+        //showGroupListGang01();
+        //showGroupListGang03();
 
+/*
         //check the visited Pair for the first pair in the List: only for debuging
         System.out.println("--------------------");
         lm.dataList.getPairList().get(0).show();
@@ -126,6 +153,9 @@ public class Main {
         lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
 
 
+        showGroupListGang03();
+ */
+        //showKitchenAddressAndParticipant();
 
 
 

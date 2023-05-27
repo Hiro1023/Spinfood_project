@@ -14,16 +14,9 @@ public class DataList {
     List<Participant> participantList;
     List<Pair> pairList;
 
-    public List<Group> getGroupList() {
-        return groupList;
-    }
-
-    public List<Group> deleteGroupList(){
-        groupList = new ArrayList<>();
-        return groupList;
-    }
-
-    List<Group> groupList;
+    List<Group> groupListGang01;
+    List<Group> groupListGang02;
+    List<Group> groupListGang03;
 
     List<Participant> unmatchedParticipants;
 
@@ -37,7 +30,9 @@ public class DataList {
     public DataList (Event event){
         participantList = new ArrayList<>();
         pairList = new ArrayList<>();
-        groupList = new ArrayList<>();
+        groupListGang01 = new ArrayList<>();
+        groupListGang02 = new ArrayList<>();
+        groupListGang03 = new ArrayList<>();
         this.event = event;
         this.unmatchedParticipants = new ArrayList<>();
     }
@@ -73,6 +68,19 @@ public class DataList {
         }
     }
 
+    /**
+     *
+     * @return groupListGang01 as List of Group for Gang 1
+     */
+    public List<Group> getGroupListGang01() {
+        return groupListGang01;
+    }
+    public List<Group> getGroupListGang02() {
+        return groupListGang02;
+    }
+    public List<Group> getGroupListGang03() {
+        return groupListGang03;
+    }
     /**
      *
      * @return

@@ -12,7 +12,10 @@ public double calculateSexDiversity();
 // path between participants
 public double calculateDistanceBetweenKitchens();
 
-// age diff
+
+public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude);
+
+    // age diff
 public int calculatePairAgeDifference();
 
 

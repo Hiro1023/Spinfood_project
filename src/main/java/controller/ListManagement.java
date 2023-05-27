@@ -16,6 +16,7 @@ public class ListManagement{
     public void editCriteria(CRITERIA criteria, int newWeight) {
         criteria.setWeight(newWeight);
     }
+    private int counterGang = 1;
 
     public void makeBestPairList() {
         while (dataList.unmatchedParticipants.size() > 1) {
@@ -106,34 +107,48 @@ public class ListManagement{
                 List<Group> list = tempGroupList;
 
                 for (int i = 0; i < list.size(); i++) {
-                    Group a = list.get(0);
-                    dataList.groupList.add(a);  //add this group a to the dataList->groupList
-                    addMetPair(a);   //mark all pair in this group as met
-                    pairListTemp.removeAll(a.getPairs()); //remove all the pairs, which was grouped
-                    list = list.stream().filter(x -> notContainsPairedPairs(x, a)).collect(Collectors.toList()); //filter only the pair which is not paired
+                    Group g = list.get(0);
+                    addToGroup(g);  //add this group g to the dataList->groupList 1,2 or 3
+                    addMetPair(g);   //mark all pair in this group as met
+                    pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
+                    list = list.stream().filter(x -> notContainsPairedPairs(x, g)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
             }
         }
-
-        //add the rest pair in the list to pairSuccescorList  or ParticipantSuccessorList
+        //increase counter, go to next Gang
+        counterGang++;
+        System.out.println("COUNT");
+        //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
         for (Pair p : pairListTemp) {
-            if (p.isPreMade())
+            if (p.getIsPreMade())
                 dataList.event.getPairSuccesorList().addPair(p);
             else
                 dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(),p.getParticipant2());
         }
     }
 
+    public void addToGroup(Group g){
+       if(counterGang==1)
+                dataList.groupListGang01.add(g);
+       else if(counterGang==2)
+                dataList.groupListGang02.add(g);
+       else if(counterGang==3)
+                dataList.groupListGang03.add(g);
+    }
+
+/*
     public boolean checkForGroup(){
-        for(int i = 0 ; i < dataList.getGroupList().size()-1 ; i++){
-            for(int j = i+1 ; j < dataList.groupList.size() ; j++){
-                if(!notContainsPairedPairs(dataList.groupList.get(i),dataList.groupList.get(j))){
+        for(int i = 0; i < dataList.getGroupListGang01().size()-1 ; i++){
+            for(int j = i+1; j < dataList.groupListGang01.size() ; j++){
+                if(!notContainsPairedPairs(dataList.groupListGang01.get(i),dataList.groupListGang01.get(j))){
                     return false;
                 }
             }
         }
         return true;
     }
+*/
+
     private boolean notContainsPairedPairs(Group x, Group a) {
         for (Pair p : a.getPairs()) {
             if (x.getPairs().contains(p)) {
@@ -196,4 +211,9 @@ public class ListManagement{
         return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.vegan)
                 || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
+
+    public void findCookPair(){
+
+    }
+
 }
