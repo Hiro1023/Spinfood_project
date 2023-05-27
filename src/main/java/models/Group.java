@@ -50,6 +50,10 @@ public class Group implements Calculation{
         return totalDistance;
     }
 
+    public double calculateNearestKitchenToTheParty(){
+        return 0.0;
+    }
+
     @Override
     public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude) {
         return 0;
