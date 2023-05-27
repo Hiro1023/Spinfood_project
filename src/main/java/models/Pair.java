@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import controller.CRITERIA;
 import controller.Calculation;
@@ -9,18 +10,12 @@ import controller.Utility;
 
 public class  Pair implements Calculation, Utility {
     private String Pair_ID;
-
-    public void setPreMade(boolean preMade) {
-        isPreMade = preMade;
-    }
-
     private boolean isPreMade;
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
     private Participant participant2;
-
-
+    private Map<Boolean,Integer> hasCooked; //ex <true,1>
 
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
@@ -50,7 +45,7 @@ public class  Pair implements Calculation, Utility {
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
 
-        if (kitchen1 == null || kitchen2 == null) {
+        if (kitchen1 == null || kitchen2 == null) { //should not happen
             return 0.0;
         }
         double EARTH_RADIUS = 6371.0;
@@ -86,17 +81,26 @@ public class  Pair implements Calculation, Utility {
         }
         return Score;
     }
-    
 
 
+    /**
+     * Setter
+     */
+    public void setPreMade(boolean preMade) {
+        isPreMade = preMade;
+    }
 
-
-      
+    public void setHasCooked(Map<Boolean,Integer> hasCooked) {
+        this.hasCooked = hasCooked;
+    }
+    public Map<Boolean, Integer> getHasCooked() {
+        return hasCooked;
+    }
     public String getPairId() {
         return Pair_ID;
     }
 
-    public boolean isPreMade() {
+    public boolean getIsPreMade() {
         return isPreMade;
     }
 
@@ -126,7 +130,6 @@ public class  Pair implements Calculation, Utility {
         System.out.print("      ");
         System.out.println("Second Participant ");
         this.participant2.show();
-
          */
     }
 
@@ -134,8 +137,6 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public boolean equal(Object o) {
-
-
 
         return false;
     }

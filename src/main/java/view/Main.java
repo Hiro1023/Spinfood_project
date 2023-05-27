@@ -1,7 +1,6 @@
 package view;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import controller.ListManagement;
@@ -42,8 +41,21 @@ public class Main {
     public static void showParticipantSuccesorList(){
         lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
     }
-    public static void showGroupList(){
-        for (Group group : lm.dataList.getGroupList()) {
+    public static void showGroupListGang01(){
+        for (Group group : lm.dataList.getGroupListGang01()) {
+            group.show();
+            System.out.println("-----------------------");
+        }
+    }
+    public static void showGroupListGang02(){
+        for (Group group : lm.dataList.getGroupListGang02()) {
+            group.show();
+            System.out.println("-----------------------");
+        }
+    }
+
+    public static void showGroupListGang03(){
+        for (Group group : lm.dataList.getGroupListGang03()) {
             group.show();
             System.out.println("-----------------------");
         }
@@ -95,12 +107,14 @@ public class Main {
         System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());    //after match: 155 pairs, sometimes 154
-        System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupList().size());   //0
+        System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListGang01().size());   //0
         lm.makeBestGroupList();
-        System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupList().size());    //51
+        System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListGang01().size());    //51
 
         //show group list for the Gang 1
-        showGroupList();
+        //showGroupListGang01();
+        //showGroupListGang03();
+
 
         //check the visited Pair for the first pair in the List: only for debuging
         System.out.println("--------------------");
@@ -125,6 +139,8 @@ public class Main {
         lm.dataList.getPairList().get(0).show();
         lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
 
+
+        showGroupListGang03();
 
 
 
