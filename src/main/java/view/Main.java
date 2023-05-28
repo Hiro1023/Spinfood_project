@@ -5,6 +5,7 @@ import java.util.List;
 
 import controller.ListManagement;
 import controller.readCSV;
+import models.Event;
 import models.Group;
 import models.Pair;
 import models.Participant;
@@ -40,6 +41,10 @@ public class Main {
 
     public static void showParticipantSuccesorList(){
         lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
+    }
+
+    public static void showPairList(){
+        lm.dataList.getPairList().forEach(Pair::show);
     }
 
     public static void showKitchenAddressAndParticipant(){
@@ -124,10 +129,6 @@ public class Main {
         lm.makeBestGroupList();
         System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListGang01().size());    //51
 
-        //show group list for the Gang 1
-        //showGroupListGang01();
-        //showGroupListGang03();
-
 /*
         //check the visited Pair for the first pair in the List: only for debuging
         System.out.println("--------------------");
@@ -152,11 +153,24 @@ public class Main {
         lm.dataList.getPairList().get(0).show();
         lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
 
+        System.out.println("--------------------");
+        lm.dataList.getPairList().get(2).show();
+        lm.dataList.getPairList().get(2).getVisitedPairs().forEach(Pair::show);
 
         showGroupListGang03();
  */
-        //showKitchenAddressAndParticipant();
 
+        lm.makeBestGroupList();
+        lm.makeBestGroupList();
+        //lm.dataList.getGroupListGang01().get(0).show();//show the first group
+        for (Group g : lm.dataList.getGroupListGang01()) {
+            for (Pair p : g.getPairs()) {
+                p.show();
+                System.out.println(p.getHasCooked());
+            }
+            System.out.println("----------------------");
+        }
+        //lm.dataList.getGroupListGang01().get(0).getPairs().forEach(Pair::getHasCooked);
 
 
     }

@@ -20,7 +20,7 @@ public class readCSV {
     //
     public HashMap<String, List<Participant>> AddressTable = new HashMap<>();
 
-    public ListManagement listManagement = new ListManagement(event.getDataList());
+    //public ListManagement listManagement = new ListManagement(event.getDataList());
     public int countParticipant = 0;
     public int countPair = 0;
 

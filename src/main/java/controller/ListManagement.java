@@ -8,10 +8,14 @@ import models.*;
 public class ListManagement{
     public DataList dataList;
     public List<Pair> pairListTemp;
-
+    public double partyLongitude;
+    public double partyLatitude ;
     public ListManagement(DataList dataList){
         this.dataList = dataList;
+        this.partyLongitude = dataList.event.getPartyLongitude();
+        this.partyLatitude = dataList.event.getPartyLatitude();
     }
+
 
     public void editCriteria(CRITERIA criteria, int newWeight) {
         criteria.setWeight(newWeight);
@@ -109,7 +113,7 @@ public class ListManagement{
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
                     addToGroup(g);  //add this group g to the dataList->groupList 1,2 or 3
-                    addMetPair(g);   //mark all pair in this group as met
+                    addMetAndCookPair(g);   //mark all pair in this group as met
                     pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
                     list = list.stream().filter(x -> notContainsPairedPairs(x, g)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
@@ -120,10 +124,12 @@ public class ListManagement{
         System.out.println("COUNT");
         //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
         for (Pair p : pairListTemp) {
-            if (p.getIsPreMade())
+            if (p.getIsPreMade()) {
+                dataList.pairList.remove(p);
                 dataList.event.getPairSuccesorList().addPair(p);
-            else
-                dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(),p.getParticipant2());
+            } else {
+                dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(), p.getParticipant2());
+            }
         }
     }
 
@@ -169,10 +175,8 @@ public class ListManagement{
 
         if(unmatchedPairs.size()<2)
             return bestGroup;
-
         if (containsMeat(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
-
         if (containsVeganOrVeggie(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
 
@@ -194,10 +198,28 @@ public class ListManagement{
         return bestGroup;
     }
 
-    public void addMetPair(Group group){
+    /**
+     *
+     * @param group
+     * @return void
+     */
+    public void addMetAndCookPair(Group group){
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);
+
+        double distanceToParty1 = p1.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
+        double distanceToParty2 = p2.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
+        double distanceToParty3 = p3.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
+        double max = Math.max(Math.max(distanceToParty1,distanceToParty2),distanceToParty3);
+
+        if (distanceToParty1==max)
+            p1.setHasCooked(true,counterGang);
+        else if(distanceToParty2==max)
+            p2.setHasCooked(true,counterGang);
+        else if(distanceToParty3==max)
+            p3.setHasCooked(true,counterGang);
+
         p1.meetPair(p2,p3);
         p2.meetPair(p1,p3);
         p3.meetPair(p1,p2);
@@ -212,6 +234,9 @@ public class ListManagement{
                 || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
 
+    private boolean allCooked(Pair p1,Pair p2,Pair p3){
+        return !p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty();
+    }
     public void findCookPair(){
 
     }

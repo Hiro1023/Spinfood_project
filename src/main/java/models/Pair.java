@@ -1,8 +1,10 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import models.Event;
 
 import controller.CRITERIA;
 import controller.Calculation;
@@ -21,6 +23,7 @@ public class  Pair implements Calculation, Utility {
         this.participant1 = participant1;
         this.participant2 = participant2;
         this.Pair_ID = participant1.getID()+"-"+participant2.getID();
+        hasCooked = new HashMap<>();
     }
 
     public void meetPair(Pair pair1,Pair pair2) {
@@ -62,13 +65,14 @@ public class  Pair implements Calculation, Utility {
     }
 
 
-    @Override
-    public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude) {
+    public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
+        if(!hasCooked.isEmpty())//when the group has already cooked
+            return 0.0;
+
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
         int EARTH_RADIUS = 6371; // Earth's radius in kilometers
         double lon = 0, lat = 0;
-
         if (kitchen1 != null) {
             lon = kitchen1.getKitchenLongitude();
             lat = kitchen1.getKitchenLatitude();
@@ -76,14 +80,20 @@ public class  Pair implements Calculation, Utility {
             lon = kitchen2.getKitchenLongitude();
             lat = kitchen2.getKitchenLatitude();
         }
+        // Convert latitude and longitude to radians
+        double lat1 = Math.toRadians(lat);
+        double lon1 = Math.toRadians(lon);
+        double lat2 = Math.toRadians(partyLatitude);
+        double lon2 = Math.toRadians(partyLongitude);
 
         // Calculate the differences between the latitudes and longitudes
-        double latDiff = Math.abs(partyLatitude - lat);
-        double lonDiff = Math.abs(partyLongitude - lon);
+        double latDiff = Math.abs(lat2 - lat1);
+        double lonDiff = Math.abs(lon2 - lon1);
+
         // Apply the Haversine formula
         double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
-                Math.cos(partyLatitude) * Math.cos(lat) *
-                Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
+                        Math.cos(lat1) * Math.cos(lat2) *
+                                Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = EARTH_RADIUS * c;
 
@@ -102,9 +112,8 @@ public class  Pair implements Calculation, Utility {
         double travelDistanceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
 
         double Score =  1/(foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
-        if (Score == Double.POSITIVE_INFINITY) {
+        if (Score == Double.POSITIVE_INFINITY)
             Score = 1000;
-        }
         return Score;
     }
 
@@ -116,8 +125,8 @@ public class  Pair implements Calculation, Utility {
         isPreMade = preMade;
     }
 
-    public void setHasCooked(Map<Boolean,Integer> hasCooked) {
-        this.hasCooked = hasCooked;
+    public void setHasCooked(Boolean b,int i) {
+        this.hasCooked.put(b,i);
     }
     public Map<Boolean, Integer> getHasCooked() {
         return hasCooked;

@@ -13,7 +13,7 @@ public double calculateSexDiversity();
 public double calculateDistanceBetweenKitchens();
 
 
-public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude);
+public double calculateDistanceBetweenKitchenAndParty(double plon, double pla);
 
     // age diff
 public int calculatePairAgeDifference();

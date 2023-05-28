@@ -55,14 +55,10 @@ public class Group implements Calculation{
     }
 
     @Override
-    public double calculateDistanceBetweenKitchenAndParty(Double partyLongitude, Double partyLatitude) {
+    public double calculateDistanceBetweenKitchenAndParty(double p1,double p2) {
         return 0;
     }
 
-
-    public double calculateNearestKitchenToTheParty(){
-        return 0.0;
-    }
 
     @Override
     public int calculatePairAgeDifference() {

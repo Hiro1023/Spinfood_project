@@ -67,6 +67,8 @@ public class Event {
     public Event(){
         Event_ID = 0;
         Date = new Date();
+        this.partyLatitude = 8.6746166676233;
+        this.partyLongitude = 50.5909317660173;
         this.maxParticipant = 1000;
         this.dataList = new DataList(this);
     }
