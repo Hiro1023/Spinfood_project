@@ -59,7 +59,7 @@ public class GroupTest {
         assertEquals(1.0,g2.calculateSexDiversity());
     }
     @Test
-    public void sexDiversity_twoPairHaveFemale_return1(){
+    public void sexDiversity_twoPairHaveFemale_return0c5(){
         Group g3 = new Group(pair1,pair2,pair5);
         assertEquals(0.5,g3.calculateSexDiversity());
     }

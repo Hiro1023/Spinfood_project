@@ -40,7 +40,6 @@ class ListManagementTest {
         listManagement.makeBestPairList();
         assertEquals(p4,listManagement.dataList.pairList.get(0).getParticipant1());
         assertEquals(p6,listManagement.dataList.pairList.get(0).getParticipant2());
-        //assertEquals(p1,listManagement.dataList.pairList.);
     }
     @Test
     void containsPairedParticipant() {

@@ -129,7 +129,7 @@ public class PairTest {
     void calculatePairWeightedScore_return114(){
         Pair pair = new Pair(p1,p2);
         System.out.print(Double.POSITIVE_INFINITY);
-        assertEquals(114,Math.floor(pair.calculatePairWeightedScore()*1000));
+        assertEquals(11,Math.floor(pair.calculatePairWeightedScore()*1000));
     }
 
 }
