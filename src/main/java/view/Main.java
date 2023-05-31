@@ -124,9 +124,9 @@ public class Main {
         System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
         System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());
-        lm.dataList.getPairList().forEach(Pair::show);//after match: 155 pairs, sometimes 154
+        //lm.dataList.getPairList().forEach(Pair::show);//after match: 155 pairs, sometimes 154
         System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListCourse01().size());   //0
-        //lm.makeBestGroupList();
+        lm.makeBestGroupList();
         System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListCourse01().size());    //51
 
 /*
@@ -160,20 +160,23 @@ public class Main {
         showGroupListGang03();
  */
 
-        //lm.makeBestGroupList();
-        //lm.makeBestGroupList();
+        lm.makeBestGroupList();
+        lm.makeBestGroupList();
 
-        //lm.dataList.getGroupListGang01().get(0).show();//show the first group
-        //for (Group g : lm.dataList.getGroupListGang01()) {
-        //    for (Pair p : g.getPairs()) {
-        //        p.show();
-        //        System.out.println(p.getHasCooked());
-        //    }
-        //    System.out.println("----------------------");
-        //}
-        //lm.dataList.getGroupListGang01().get(0).getPairs().forEach(Pair::getHasCooked);
+        //lm.dataList.getGroupListCourse02().get(0).show();//show the first group
+        for (Pair p : lm.dataList.getPairList()) {
+            p.show();
+            System.out.println(p.getHasCooked());
+            System.out.println("----------------------");
+        }
+
+
+        lm.dataList.getGroupListCourse01().get(0).getPairs().forEach(Pair::getHasCooked);
+
 
 
     }
+
+
 
 }
