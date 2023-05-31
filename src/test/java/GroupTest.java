@@ -31,7 +31,7 @@ public class GroupTest {
     Group g1 = new Group(pair1,pair2,pair3);
     MathContext mtx = new MathContext(3, RoundingMode.DOWN);  //Rounded down to the fourth decimal place
     BigDecimal foodPreference = new BigDecimal(g1.calculateFoodPreference());
-    BigDecimal kitchenDistance = new BigDecimal(g1.calculateDistanceBetweenKitchens());
+    BigDecimal kitchenDistance = new BigDecimal(g1.calculatePathLength());
 
     /**
      * Test for calculateFoodMatchScore
@@ -71,9 +71,9 @@ public class GroupTest {
      */
     @Test
     public void distanceBetweenKitchens_return437(){
-        double calc = g1.getPairs().get(0).calculateDistanceBetweenKitchens()
-                                            + g1.getPairs().get(1).calculateDistanceBetweenKitchens()
-                                                                    + g1.getPairs().get(2).calculateDistanceBetweenKitchens();
+        double calc = g1.getPairs().get(0).calculatePathLength()
+                                            + g1.getPairs().get(1).calculatePathLength()
+                                                                    + g1.getPairs().get(2).calculatePathLength();
         BigDecimal calc_decimal = new BigDecimal(calc);
         assertEquals(calc_decimal.round(mtx).toString(),kitchenDistance.round(mtx).toString());
     }
@@ -83,7 +83,7 @@ public class GroupTest {
      */
     @Test
     public void pairAgeDifference(){
-        assertEquals(2,g1.calculatePairAgeDifference());
+        assertEquals(2,g1.calculateAgeDifference());
     }
 
 

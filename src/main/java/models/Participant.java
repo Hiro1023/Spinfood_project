@@ -82,9 +82,6 @@ public class Participant implements Utility {
         return this.equals(o);
     }
 
-
-
-
     public void setID(String ID) {
         this.ID = ID;
     }
@@ -147,12 +144,6 @@ public class Participant implements Utility {
 
     public void setKitchenCount(int kitchenCount) {
         KitchenCount = kitchenCount;
-    }
-
-
-    public static void main(String[] args) {
-        Participant par = new Participant("01be5c1f-4aa1-458d-a530-b1c109ffbb55","Person3","vegan","22","male","yes","1.0","8.681372017093311","50.5820794170933");
-        par.show();
     }
 
 }

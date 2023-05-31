@@ -20,7 +20,7 @@ public class PairTest {
     @Test
     void calculatePairAgeDifference_return1(){
         Pair ageDiff = new Pair(p1,p5);
-        assertEquals(1,ageDiff.calculatePairAgeDifference());
+        assertEquals(1,ageDiff.calculateAgeDifference());
     }
     /**
      * Test for method "calculateSexDiversity"
@@ -47,13 +47,13 @@ public class PairTest {
     @Test
     void calculateDistanceBetweenKitchens_bothHasKitchen_return437(){
         Pair both = new Pair(p1,p2);
-        assertEquals(437,Math.floor(both.calculateDistanceBetweenKitchens()));
+        assertEquals(437,Math.floor(both.calculatePathLength()));
     }
 
     @Test
     void calculateDistanceBetweenKitchens_eitherHasKitchen_return0(){
         Pair either = new Pair(p1,p3);
-        assertEquals(0,either.calculateDistanceBetweenKitchens());
+        assertEquals(0,either.calculatePathLength());
     }
 
     /**

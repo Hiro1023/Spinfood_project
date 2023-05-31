@@ -6,8 +6,7 @@ import java.util.List;
 public class ParticipantSuccessorList extends SuccesorList{
     private List<Participant> participantSuccessorList = new ArrayList<>();
 
-    public ParticipantSuccessorList() {};
-
+    public ParticipantSuccessorList(){};
     public void addParticipant(Participant participant) {
         participantSuccessorList.add(participant);
     }
@@ -21,8 +20,8 @@ public class ParticipantSuccessorList extends SuccesorList{
         return participantSuccessorList;
     }
 
-    public int getNumberOfParticipantSuccessorList() {
+    @Override
+    public int getSize() {
         return participantSuccessorList.size();
     }
-
 }
