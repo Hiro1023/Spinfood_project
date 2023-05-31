@@ -1,11 +1,13 @@
 package controller;
 
 import controller.readCSV;
+import models.Event;
 import models.Participant;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,6 +40,7 @@ class readCSVTest {
     @Test
     void read_FileTest_checkFirstParticipantOnTable() throws Exception{
         assertArrayEquals(p1,test.read_File(new File("Dokumentation/teilnehmerliste.csv")).get(1));
+
     }
 
 
@@ -79,6 +82,25 @@ class readCSVTest {
     void addParticipantTest() throws Exception {
         test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
         assertEquals(test.countParticipant,2*(test.countPair)+test.alone_participant.size());
+    }
+
+
+    @Test
+    void addPartyLocationTest_checkLongitude(){
+        List<String[]> dataCSV = new ArrayList<>();
+        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"5.0","6.0"});
+        test.addPartyLocation(dataCSV);
+        assertEquals("5.0",Double.toString(test.event.getPartyLongitude()));
+    }
+
+    @Test
+    void addPartyLocationTest_checkLatitude(){
+        List<String[]> dataCSV = new ArrayList<>();
+        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"5.0","6.0"});
+        test.addPartyLocation(dataCSV);
+        assertEquals("6.0",Double.toString(test.event.getPartyLatitude()));
     }
 
 
