@@ -31,6 +31,7 @@ public class GroupTest {
     Pair pair5 = new Pair(p4,p5);
     Pair pair6 = new Pair(p8,p7);
     Group g1 = new Group(pair1,pair2,pair3);
+
     MathContext mtx = new MathContext(3, RoundingMode.DOWN);  //Rounded down to the fourth decimal place
     BigDecimal foodPreference = new BigDecimal(g1.calculateFoodPreference());
     BigDecimal kitchenDistance = new BigDecimal(g1.calculatePathLength());
