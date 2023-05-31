@@ -66,8 +66,8 @@ public class  Pair implements Calculation, Utility {
 
 
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
-        if(!hasCooked.isEmpty())//when the group has already cooked
-            return 0.0;
+        if(!(hasCooked.isEmpty()))//when the group has already cooked
+            return Double.MAX_VALUE;
 
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();

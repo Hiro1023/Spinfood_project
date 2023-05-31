@@ -2,7 +2,6 @@ package controller;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 import models.*;
 
 public class ListManagement{
@@ -79,6 +78,9 @@ public class ListManagement{
         for (Participant p : candidates) {
             Pair tempPair = new Pair(participant,p);
             double score = tempPair.calculatePairWeightedScore();
+            if(score==1000){
+                return tempPair;
+            }
             if (score > bestScore) {
                 bestPair = tempPair;
                 bestScore = score;
@@ -169,12 +171,11 @@ public class ListManagement{
         double bestScore = -1;
 
         List<Pair> unmatchedPairs = new ArrayList<>(pairListTemp);
-
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
 
         if(unmatchedPairs.size()<2)
-            return bestGroup;
+            return null;
         if (containsMeat(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         if (containsVeganOrVeggie(pair))
@@ -185,7 +186,8 @@ public class ListManagement{
             for (int j = i + 1; j < unmatchedPairs.size(); j++) {
                 Pair pair1 = unmatchedPairs.get(i);
                 Pair pair2 = unmatchedPairs.get(j);
-                if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
+
+                if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1) ) {
                     Group tempGroup = new Group(pair, pair1, pair2);
                     double score = tempGroup.calculateGroupWeightedScore();
                     if (score > bestScore) {
@@ -234,8 +236,11 @@ public class ListManagement{
                 || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
 
-    private boolean allCooked(Pair p1,Pair p2,Pair p3){
-        return !p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty();
+    private boolean allCook(Pair p1,Pair p2,Pair p3){
+        if(p1.getHasCooked().isEmpty()) return false;
+        if(p2.getHasCooked().isEmpty()) return false;
+        if(p3.getHasCooked().isEmpty()) return false;
+        return true;
     }
     public void findCookPair(){
 

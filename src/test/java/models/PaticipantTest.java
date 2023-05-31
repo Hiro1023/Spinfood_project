@@ -1,3 +1,5 @@
+package models;
+
 import models.FOOD_PREFERENCE;
 import models.Participant;
 import org.junit.jupiter.api.Test;

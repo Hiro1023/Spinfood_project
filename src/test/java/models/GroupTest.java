@@ -1,3 +1,5 @@
+package models;
+
 import models.Group;
 import models.Pair;
 import models.Participant;

@@ -1,3 +1,5 @@
+package controller;
+
 import controller.readCSV;
 import models.Participant;
 import org.junit.jupiter.api.BeforeAll;

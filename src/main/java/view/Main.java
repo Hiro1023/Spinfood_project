@@ -112,7 +112,7 @@ public class Main {
 
         //check for the number of participant with the same kitchen
         //for ex here: print out the number of participant which have the same kitchen address
-        Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
+        //Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
         System.out.println("number of participants with the same kitchen address: " + readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
 
         //check the isPremade() function
@@ -159,9 +159,10 @@ public class Main {
 
         showGroupListGang03();
  */
+        lm.makeBestGroupList();
+        lm.makeBestGroupList();
 
-        lm.makeBestGroupList();
-        lm.makeBestGroupList();
+
         //lm.dataList.getGroupListGang01().get(0).show();//show the first group
         for (Group g : lm.dataList.getGroupListGang01()) {
             for (Pair p : g.getPairs()) {
@@ -170,7 +171,32 @@ public class Main {
             }
             System.out.println("----------------------");
         }
+        for (Group g : lm.dataList.getGroupListGang02()) {
+            for (Pair p : g.getPairs()) {
+                p.show();
+                System.out.println(p.getHasCooked());
+            }
+            System.out.println("----------------------");
+        }
+
+
+
+        for (Group g : lm.dataList.getGroupListGang03()) {
+            for (Pair p : g.getPairs()) {
+                p.show();
+                System.out.println(p.getHasCooked());
+            }
+            System.out.println("----------------------");
+        }
+
+
+
+        //System.out.println("size: " + lm.dataList.getGroupListGang01().size()+lm.dataList.getGroupListGang02().size()+lm.dataList.getGroupListGang03().size());
         //lm.dataList.getGroupListGang01().get(0).getPairs().forEach(Pair::getHasCooked);
+
+        lm.dataList.getPairList().forEach(Pair::show);
+
+
 
 
     }

@@ -1,3 +1,5 @@
+package models;
+
 import models.Pair;
 import models.Participant;
 import org.junit.jupiter.api.Test;
