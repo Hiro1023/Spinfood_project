@@ -14,6 +14,5 @@ public enum SEX {
     SEX(int value) {
         this.value = value;
     }
-    //public static final SEX val[] = values();
 
 }

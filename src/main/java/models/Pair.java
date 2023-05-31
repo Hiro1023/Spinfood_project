@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import models.Event;
 
 import controller.CRITERIA;
 import controller.Calculation;
@@ -17,16 +16,16 @@ public class  Pair implements Calculation, Utility {
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
     private Participant participant2;
-    private Map<Boolean,Integer> hasCooked; //ex <true,1>
+    private Map<Boolean, Integer> hasCooked; //ex <true,1>
 
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
         this.participant2 = participant2;
-        this.Pair_ID = participant1.getID()+"-"+participant2.getID();
+        this.Pair_ID = participant1.getID() + "-" + participant2.getID();
         hasCooked = new HashMap<>();
     }
 
-    public void meetPair(Pair pair1,Pair pair2) {
+    public void meetPair(Pair pair1, Pair pair2) {
         visitedPairs.add(pair1);
         visitedPairs.add(pair2);
     }
@@ -38,11 +37,11 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public double calculateSexDiversity() {
-        return Math.abs(0.5 - ((double)this.participant1.getSex().getValue() + this.participant2.getSex().getValue())/2);
+        return Math.abs(0.5 - ((double) this.participant1.getSex().getValue() + this.participant2.getSex().getValue()) / 2);
     }
 
     @Override
-    public double calculateDistanceBetweenKitchens() {
+    public double calculatePathLength() {
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
 
@@ -66,8 +65,8 @@ public class  Pair implements Calculation, Utility {
 
 
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
-        if(!(hasCooked.isEmpty()))//when the group has already cooked
-            return Double.MAX_VALUE;
+        if (!hasCooked.isEmpty())//when the group has already cooked
+            return 0.0;
 
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
@@ -92,8 +91,8 @@ public class  Pair implements Calculation, Utility {
 
         // Apply the Haversine formula
         double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
-                        Math.cos(lat1) * Math.cos(lat2) *
-                                Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
+                Math.cos(lat1) * Math.cos(lat2) *
+                        Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = EARTH_RADIUS * c;
 
@@ -101,17 +100,17 @@ public class  Pair implements Calculation, Utility {
     }
 
     @Override
-    public int calculatePairAgeDifference() {
+    public int calculateAgeDifference() {
         return Math.abs(participant1.getAgerange().getValue() - participant2.getAgerange().getValue());
     }
 
-    public double calculatePairWeightedScore(){
+    public double calculatePairWeightedScore() {
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
+        double ageDifferenceScore = (double) calculateAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
+        double travelDistanceScore = calculatePathLength() / CRITERIA.PATH_LENGTH.getWeight();
 
-        double Score =  1/(foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
+        double Score = 1 / (foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
         if (Score == Double.POSITIVE_INFINITY)
             Score = 1000;
         return Score;
@@ -125,12 +124,14 @@ public class  Pair implements Calculation, Utility {
         isPreMade = preMade;
     }
 
-    public void setHasCooked(Boolean b,int i) {
-        this.hasCooked.put(b,i);
+    public void setHasCooked(Boolean b, int i) {
+        this.hasCooked.put(b, i);
     }
+
     public Map<Boolean, Integer> getHasCooked() {
         return hasCooked;
     }
+
     public String getPairId() {
         return Pair_ID;
     }
@@ -154,7 +155,7 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public void show() {
-        System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
+        System.out.println("This is a pair: " + this.participant1.getName() + " and " + this.participant2.getName());
         /*
         System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
         System.out.println();
@@ -169,14 +170,8 @@ public class  Pair implements Calculation, Utility {
     }
 
 
-
     @Override
     public boolean equal(Object o) {
-
         return false;
-    }
-
-    public static void main(String[] args) {
-
     }
 }

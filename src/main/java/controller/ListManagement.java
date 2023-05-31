@@ -2,29 +2,26 @@ package controller;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 import models.*;
 
 public class ListManagement{
     public DataList dataList;
     public List<Pair> pairListTemp;
-    public double partyLongitude;
-    public double partyLatitude ;
+    private int courseCounter = 1;
+
     public ListManagement(DataList dataList){
         this.dataList = dataList;
-        this.partyLongitude = dataList.event.getPartyLongitude();
-        this.partyLatitude = dataList.event.getPartyLatitude();
     }
-
 
     public void editCriteria(CRITERIA criteria, int newWeight) {
         criteria.setWeight(newWeight);
     }
-    private int counterGang = 1;
-
     public void makeBestPairList() {
         while (dataList.unmatchedParticipants.size() > 1) {
             boolean impossiblePair = dataList.unmatchedParticipants.size() == 2 && makeBestPair(dataList.unmatchedParticipants.get(0))==null;
-            if (impossiblePair) {
+            boolean atLeastOneKitchen = checkKitchen(dataList.unmatchedParticipants);
+            if (impossiblePair || !atLeastOneKitchen) {
                 break;
             } else {
                 Map<Pair, Double> tempPairs = new HashMap<>();
@@ -50,9 +47,15 @@ public class ListManagement{
         }
         for (Participant p : dataList.unmatchedParticipants) {
             dataList.event.getParticipantSuccessorList().addParticipant(p);
-        }
-        //copy everything from data after all Participants is matched to Pairs
+        }//copy everything from data after all Participants is matched to Pairs
+    }
 
+    private boolean checkKitchen(List<Participant> unmatchedParticipants) {
+        for (Participant p : unmatchedParticipants) {
+            if (p.getKitchen() != null)
+                return true;
+        }
+        return false;
     }
 
 
@@ -78,12 +81,13 @@ public class ListManagement{
         for (Participant p : candidates) {
             Pair tempPair = new Pair(participant,p);
             double score = tempPair.calculatePairWeightedScore();
-            if(score==1000){
+            if (score == 1000) {
                 return tempPair;
-            }
-            if (score > bestScore) {
-                bestPair = tempPair;
-                bestScore = score;
+            } else {
+                if (score > bestScore) {
+                    bestPair = tempPair;
+                    bestScore = score;
+                }
             }
         }
         return bestPair;
@@ -122,7 +126,7 @@ public class ListManagement{
             }
         }
         //increase counter, go to next Gang
-        counterGang++;
+        courseCounter++;
         System.out.println("COUNT");
         //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
         for (Pair p : pairListTemp) {
@@ -135,27 +139,16 @@ public class ListManagement{
         }
     }
 
-    public void addToGroup(Group g){
-       if(counterGang==1)
-                dataList.groupListGang01.add(g);
-       else if(counterGang==2)
-                dataList.groupListGang02.add(g);
-       else if(counterGang==3)
-                dataList.groupListGang03.add(g);
-    }
 
-/*
-    public boolean checkForGroup(){
-        for(int i = 0; i < dataList.getGroupListGang01().size()-1 ; i++){
-            for(int j = i+1; j < dataList.groupListGang01.size() ; j++){
-                if(!notContainsPairedPairs(dataList.groupListGang01.get(i),dataList.groupListGang01.get(j))){
-                    return false;
-                }
-            }
-        }
-        return true;
+
+    private void addToGroup(Group g){
+       if(courseCounter ==1)
+                dataList.groupListCourse01.add(g);
+       else if(courseCounter ==2)
+                dataList.groupListCourse02.add(g);
+       else if(courseCounter ==3)
+                dataList.groupListCourse03.add(g);
     }
-*/
 
     private boolean notContainsPairedPairs(Group x, Group a) {
         for (Pair p : a.getPairs()) {
@@ -171,11 +164,12 @@ public class ListManagement{
         double bestScore = -1;
 
         List<Pair> unmatchedPairs = new ArrayList<>(pairListTemp);
+
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
 
         if(unmatchedPairs.size()<2)
-            return null;
+            return bestGroup;
         if (containsMeat(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         if (containsVeganOrVeggie(pair))
@@ -186,8 +180,7 @@ public class ListManagement{
             for (int j = i + 1; j < unmatchedPairs.size(); j++) {
                 Pair pair1 = unmatchedPairs.get(i);
                 Pair pair2 = unmatchedPairs.get(j);
-
-                if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1) ) {
+                if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
                     Group tempGroup = new Group(pair, pair1, pair2);
                     double score = tempGroup.calculateGroupWeightedScore();
                     if (score > bestScore) {
@@ -206,6 +199,9 @@ public class ListManagement{
      * @return void
      */
     public void addMetAndCookPair(Group group){
+        double partyLongitude = dataList.event.getPartyLongitude();
+        double partyLatitude = dataList.event.getPartyLatitude();
+
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);
@@ -216,11 +212,11 @@ public class ListManagement{
         double max = Math.max(Math.max(distanceToParty1,distanceToParty2),distanceToParty3);
 
         if (distanceToParty1==max)
-            p1.setHasCooked(true,counterGang);
+            p1.setHasCooked(true, courseCounter);
         else if(distanceToParty2==max)
-            p2.setHasCooked(true,counterGang);
+            p2.setHasCooked(true, courseCounter);
         else if(distanceToParty3==max)
-            p3.setHasCooked(true,counterGang);
+            p3.setHasCooked(true, courseCounter);
 
         p1.meetPair(p2,p3);
         p2.meetPair(p1,p3);
@@ -236,11 +232,8 @@ public class ListManagement{
                 || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
 
-    private boolean allCook(Pair p1,Pair p2,Pair p3){
-        if(p1.getHasCooked().isEmpty()) return false;
-        if(p2.getHasCooked().isEmpty()) return false;
-        if(p3.getHasCooked().isEmpty()) return false;
-        return true;
+    private boolean allCooked(Pair p1,Pair p2,Pair p3){
+        return !p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty();
     }
     public void findCookPair(){
 

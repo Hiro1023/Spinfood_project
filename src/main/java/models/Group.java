@@ -4,8 +4,9 @@ import java.util.List;
 
 import controller.CRITERIA;
 import controller.Calculation;
+import controller.Utility;
 
-public class Group implements Calculation{
+public class Group implements Calculation, Utility {
     private List<Pair> Pairs = new ArrayList<>();
     private Pair cookingPair;
     private COURSE course;
@@ -42,10 +43,10 @@ public class Group implements Calculation{
     
 
     @Override
-    public double calculateDistanceBetweenKitchens() {
+    public double calculatePathLength() {
         double totalDistance = 0;
         for(Pair pair : getPairs()){
-            totalDistance += pair.calculateDistanceBetweenKitchens();
+            totalDistance += pair.calculatePathLength();
         }
         return totalDistance;
     }
@@ -61,10 +62,10 @@ public class Group implements Calculation{
 
 
     @Override
-    public int calculatePairAgeDifference() {
+    public int calculateAgeDifference() {
         int totalAgeDiff = 0;
         for(Pair pair : getPairs()){
-            totalAgeDiff += pair.calculatePairAgeDifference();
+            totalAgeDiff += pair.calculateAgeDifference();
         }
         return totalAgeDiff/3;
     }
@@ -80,11 +81,16 @@ public class Group implements Calculation{
 
     }
 
+    @Override
+    public boolean equal(Object o) {
+        return false;
+    }
+
     public double calculateGroupWeightedScore(){
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = calculateDistanceBetweenKitchens() / CRITERIA.PATH_LENGTH.getWeight();
+        double ageDifferenceScore = calculatePathLength() / CRITERIA.PATH_LENGTH.getWeight();
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = (double) calculatePairAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
+        double travelDistanceScore = (double) calculateAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
         double score =  1/(foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
 
         if(score == Double.POSITIVE_INFINITY){
