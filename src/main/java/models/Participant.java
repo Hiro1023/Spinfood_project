@@ -26,6 +26,11 @@ public class Participant implements Utility {
         this.agerange = assignAgeRange(this.age);
     }
 
+    /**
+     * @description: for each age groups we are assigning them to a specific enum
+     * @param age
+     * @return AGE_RANGE
+     */
     private AGE_RANGE assignAgeRange(int age) {
         if (age < 18) {
             return AGE_RANGE.LessThan18;
@@ -49,6 +54,11 @@ public class Participant implements Utility {
     }
 
 
+    /**
+     * @description: assigns food prefrence for each case of preffered
+     * @param foodPreference
+     * @return FOOD_PREFRENCE
+     */
     private FOOD_PREFERENCE assignFoodPreference(String foodPreference) {
         switch (foodPreference) {
             case "meat":

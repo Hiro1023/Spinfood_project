@@ -42,8 +42,12 @@ public class readCSV {
         return list;
     }
 
+    /**
+     * @description : sets the party location for the event
+     * @param list
+     * @return void
+     */
     public void addPartyLocation(List<String[]> list){
-        System.out.println("Party Loc: ");
         String[] loc = list.get(1);
         event.setPartyLongitude(Double.parseDouble(loc[0]));
         event.setPartyLatitude(Double.parseDouble(loc[1]));

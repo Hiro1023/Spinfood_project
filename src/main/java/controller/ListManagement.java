@@ -14,9 +14,22 @@ public class ListManagement{
         this.dataList = dataList;
     }
 
+    /**
+     *  This method is used to give a criteria and updated weight or setting a new weight for the criteria
+     * @param criteria the criteria to be modified
+     * @param newWeight the weight to be given to this criteria
+     * @return void
+     */
     public void editCriteria(CRITERIA criteria, int newWeight) {
         criteria.setWeight(newWeight);
     }
+    /**
+     * This method creates the best possible list of pairs. It keeps forming pairs of participants and take the best weight for each pair until
+     * no more suitable pairs can be formed.
+     * After forming each pair, it removes the paired participants from the unmatched participants list and adds the pair to the pairList.
+     *
+     * @return void
+     */
     public void makeBestPairList() {
         while (dataList.unmatchedParticipants.size() > 1) {
             boolean impossiblePair = dataList.unmatchedParticipants.size() == 2 && makeBestPair(dataList.unmatchedParticipants.get(0))==null;
@@ -50,6 +63,11 @@ public class ListManagement{
         }//copy everything from data after all Participants is matched to Pairs
     }
 
+    /**
+     *  this method checks a list of participants if they own a kitchen to cook in
+     * @param unmatchedParticipants
+     * @return boolean if a participant owns a kitchen
+     */
     private boolean checkKitchen(List<Participant> unmatchedParticipants) {
         for (Participant p : unmatchedParticipants) {
             if (p.getKitchen() != null)
@@ -58,11 +76,25 @@ public class ListManagement{
         return false;
     }
 
-
+    /**
+     * This method checks whether a given pair contains a certain participant.
+     *
+     * @param p The pair to be checked.
+     * @param a The first participant to be checked against the pair.
+     * @param b The second participant to be checked against the pair.
+     * @return boolean, returns true if either of the pair's participants is equal to the given participant, false otherwise.
+     */
     public boolean containsPairedParticipant (Pair p, Participant a, Participant b){
         return p.getParticipant1().equals(a) || p.getParticipant1().equals(b) || p.getParticipant2().equals(a) || p.getParticipant2().equals(b);
     }
 
+    /**
+     * This method attempts to make the best pair for a given participant. It first filters out suitable candidates based on kitchen availability and food preference.
+     * Then, it calculates the pair score for each candidate and chooses the one with the highest score.
+     *
+     * @param participant The participant for whom the best pair is to be found.
+     * @return Pair, the best pair for the given participant.
+     */
     public Pair makeBestPair(Participant participant) {
         Pair bestPair = null;
         double bestScore = -1;
@@ -92,8 +124,12 @@ public class ListManagement{
         }
         return bestPair;
     }
-    
-    //creating the best possible Group
+
+    /**
+     * This method creates the best possible list of groups. It keeps forming groups of pairs until no more suitable groups can be formed.
+     * After forming each group, it removes the grouped pairs from the temporary pair list and adds the group to the appropriate group list.
+     * @return void
+     */
     public void makeBestGroupList() {
         //find best Group and terminate if there is only 2 pairs left
         pairListTemp = new ArrayList<>(dataList.pairList);
@@ -140,7 +176,12 @@ public class ListManagement{
     }
 
 
-
+    /**
+     * This method adds a given group to the appropriate group list based on the course.
+     *
+     * @param g The group to be added.
+     * @return void
+     */
     private void addToGroup(Group g){
        if(courseCounter ==1)
                 dataList.groupListCourse01.add(g);
@@ -150,6 +191,13 @@ public class ListManagement{
                 dataList.groupListCourse03.add(g);
     }
 
+    /**
+     * This method checks if a given group contains any pairs that are already included in another group.
+     *
+     * @param x The group to be checked.
+     * @param a The group to be compared.
+     * @return boolean, returns true if the given group does not contain any pairs from the other group, false otherwise.
+     */
     private boolean notContainsPairedPairs(Group x, Group a) {
         for (Pair p : a.getPairs()) {
             if (x.getPairs().contains(p)) {
@@ -158,7 +206,13 @@ public class ListManagement{
         }
         return true;
     }
-
+    /**
+     * This method attempts to make the best group for a given pair. It first filters out suitable pair candidates based on food preference.
+     * Then, it calculates the group score for each candidate pair and chooses the ones with the highest score.
+     *
+     * @param pair The pair for whom the best group is to be found.
+     * @return Group, the best group for the given pair.
+     */
     public Group makeBestGroup(Pair pair) {
         Group bestGroup = null;
         double bestScore = -1;
@@ -194,8 +248,10 @@ public class ListManagement{
     }
 
     /**
+     * This method is used to add a  pair that cooked    to the group. It calculates the distance of each pair's kitchen to the party location,
+     * sets the pair with the maximum distance as having cooked and which course, and updates the meetings between the pairs.
      *
-     * @param group
+     * @param group the group of pairs participating in the cooking event.
      * @return void
      */
     public void addMetAndCookPair(Group group){
@@ -223,15 +279,34 @@ public class ListManagement{
         p3.meetPair(p1,p2);
     }
 
+
+    /**
+     * This method checks whether the given pair contains a participant who prefers meat.
+     *
+     * @param pair the pair of participants to be checked.
+     * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
+     */
     private boolean containsMeat (Pair pair) {
         return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.meat) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.meat);
     }
-
+    /**
+     * This method checks whether the given pair contains a participant who is vegan or veggie.
+     *
+     * @param pair the pair of participants to be checked.
+     * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
+     */
     private boolean containsVeganOrVeggie (Pair pair){
         return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.vegan)
                 || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
 
+    /**
+     *  this method takes all pairs from a group and checks if they have cooked or not
+     * @param p1 first pair to check if they have cooked
+     * @param p2 second paur to check if they have cooked
+     * @param p3 third par to check if they have cooked
+     * @return boolean , returns true if all pairs have cooked
+     */
     private boolean allCooked(Pair p1,Pair p2,Pair p3){
         return !p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty();
     }

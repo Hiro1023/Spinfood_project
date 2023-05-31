@@ -25,21 +25,38 @@ public class  Pair implements Calculation, Utility {
         hasCooked = new HashMap<>();
     }
 
+    /**
+     * @description: adds a pair to the visited list
+     * @param pair1
+     * @param pair2
+     */
     public void meetPair(Pair pair1, Pair pair2) {
         visitedPairs.add(pair1);
         visitedPairs.add(pair2);
     }
 
+    /**
+     * @description: absolute value of the difference between the food prefrence between 2 participants
+     * @return food prefrence score
+     */
     @Override
     public double calculateFoodPreference() {
         return Math.abs(this.participant1.getFoodPreference().getValue() - this.getParticipant2().getFoodPreference().getValue());
     }
 
+    /**
+     * @description: calculates the sex diversity between 2 participants having 0.5 as ideal
+     * @return
+     */
     @Override
     public double calculateSexDiversity() {
         return Math.abs(0.5 - ((double) this.participant1.getSex().getValue() + this.participant2.getSex().getValue()) / 2);
     }
 
+    /**
+     * @description calculates Path length between 2 kitchens
+     * @return distance between the 2 kitchens
+     */
     @Override
     public double calculatePathLength() {
         Kitchen kitchen1 = participant1.getKitchen();
@@ -64,6 +81,12 @@ public class  Pair implements Calculation, Utility {
     }
 
 
+    /**
+     * @description: uses haversine formula to calculate the distance between each kitchen of the participants and the party location
+     * @param partyLongitude
+     * @param partyLatitude
+     * @return distance between the kitchens to the party
+     */
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
         if (!hasCooked.isEmpty())//when the group has already cooked
             return 0.0;
@@ -99,11 +122,20 @@ public class  Pair implements Calculation, Utility {
         return distance;
     }
 
+    /**
+     * @description: calculates the absolute value for age diff
+     * @return
+     */
     @Override
     public int calculateAgeDifference() {
         return Math.abs(participant1.getAgerange().getValue() - participant2.getAgerange().getValue());
     }
 
+    /**
+     * @description: This methode calculate all the points for each criteria and divide it with their corresponding weight.
+     *               The final score wil be one divided by the sum of all four points.
+     * @return the total weight score for the whole pair
+     */
     public double calculatePairWeightedScore() {
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = (double) calculateAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
