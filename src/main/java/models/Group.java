@@ -94,10 +94,13 @@ public class Group implements Calculation, Utility {
     public void show() {
         System.out.println("Group : ");
         //this.getPairs().forEach(x -> x.show());
-        System.out.println(this.getPairs().get(0).getParticipant1().getName()+" "+this.getPairs().get(0).getParticipant2().getName());
-        System.out.println(this.getPairs().get(1).getParticipant1().getName()+" "+this.getPairs().get(1).getParticipant2().getName());
-        System.out.println(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName());
-        System.out.println(this.calculateGroupWeightedScore());
+        System.out.print(this.getPairs().get(0).getParticipant1().getName()+" "+this.getPairs().get(0).getParticipant2().getName());
+        System.out.println(this.getPairs().get(0).getHasCooked());
+        System.out.print(this.getPairs().get(1).getParticipant1().getName()+" "+this.getPairs().get(1).getParticipant2().getName());
+        System.out.println(this.getPairs().get(1).getHasCooked());
+        System.out.print(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName());
+        System.out.println(this.getPairs().get(2).getHasCooked());
+        //System.out.println(this.calculateGroupWeightedScore());
 
     }
 

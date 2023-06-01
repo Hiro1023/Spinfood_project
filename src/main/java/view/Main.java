@@ -42,6 +42,11 @@ public class Main {
     public static void showPairList(){
         lm.dataList.getPairList().forEach(Pair::show);
     }
+    public static void showIsPreMadePair(){
+        lm.dataList.getPairList().stream()
+                .filter(pair -> pair.getIsPreMade())
+                .forEach(Pair::show);
+    }
     public static void showKitchenAddressAndParticipant(){
         for (String address : readCSV.AddressTable.keySet()) {
             System.out.println("Address: " + address);
@@ -78,6 +83,13 @@ public class Main {
             System.out.println("--------------------------");
         }
     }
+    public static void showHasCookedPair(){
+        for (Pair p : lm.dataList.getPairList()) {
+            p.show();
+            System.out.println(p.getHasCooked());
+            System.out.println("----------------------");
+        }
+    }
     public static void showUnmatchedParticipant(){
         for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
             par.show();
@@ -98,74 +110,25 @@ public class Main {
         File selectedFile = fileChooser.getSelectedFile();
          */
 
-        //print out to the console the list of participant from csv file
-        //showParticipantList();
-
-        //check for the number of participant with the same kitchen
-        //for ex here: print out the number of participant which have the same kitchen address
-        Participant p1 = readCSV.event.getDataList().getParticipantList().get(0);
-        System.out.println("number of participants with the same kitchen address: " + readCSV.AddressTable.get("8.68137201709331150.5820794170933").size());
-
-        //check the isPremade() function
-        //System.out.println(readCSV.event.getDataList().getPairList().get(0).isPreMade());
-
-
-        //print out the unmatchedParticipants from ListManagement class
-        System.out.println("ListManagement getUnmatchedParticipants: "+lm.dataList.getUnmatchedParticipants().size());
-
-        System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
+        //System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
-        System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());
+        //System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());
         //lm.dataList.getPairList().forEach(Pair::show);//after match: 155 pairs, sometimes 154
-        System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListCourse01().size());   //0
+        //System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListCourse01().size());   //0
         lm.makeBestGroupList();
-        System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListCourse01().size());    //51
-
-/*
-        //check the visited Pair for the first pair in the List: only for debuging
-        System.out.println("--------------------");
-        lm.dataList.getPairList().get(0).show();
-        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
-
-        //make the best group for Gang 2
+        //System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListCourse01().size());    //51
+        lm.makeBestGroupList();
         lm.makeBestGroupList();
 
-        //check the visited Pair for the first pair in the List: only for debuging
-        //the visited Paired has increased from 2 Pairs (Gang1) to 4 pairs (Gang2)
-        System.out.println("--------------------");
-        lm.dataList.getPairList().get(0).show();
-        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
-
-        //make the best group for Gang 3
-        lm.makeBestGroupList();
-
-        //check the visited Pair for the first pair in the List: only for debuging
-        //the visited Paired has increased from 4 Pairs (Gang2) to 6 pairs (Gang3)
-        System.out.println("--------------------");
-        lm.dataList.getPairList().get(0).show();
-        lm.dataList.getPairList().get(0).getVisitedPairs().forEach(Pair::show);
-
-        System.out.println("--------------------");
-        lm.dataList.getPairList().get(2).show();
-        lm.dataList.getPairList().get(2).getVisitedPairs().forEach(Pair::show);
-
+        System.out.println("Gang 1:");
+        showGroupListGang01();
+        System.out.println("Gang 2:");
+        showGroupListGang02();
+        System.out.println("Gang 3:");
         showGroupListGang03();
- */
 
-        lm.makeBestGroupList();
-        lm.makeBestGroupList();
+        showHasCookedPair();
 
-        //lm.dataList.getGroupListCourse02().get(0).show();//show the first group
-        for (Pair p : lm.dataList.getPairList()) {
-            p.show();
-            System.out.println(p.getHasCooked());
-            System.out.println("----------------------");
-        }
-
-
-        lm.dataList.getGroupListCourse01().get(0).getPairs().forEach(Pair::getHasCooked);
-        Pair pair = lm.dataList.getPairList().get(0);
-        System.out.println(pair.calculateDistanceBetweenKitchenAndParty(lm.dataList.getEvent().getPartyLongitude(), lm.dataList.getEvent().getPartyLatitude())) ;
 
     }
 

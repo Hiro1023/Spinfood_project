@@ -1,8 +1,6 @@
 package controller;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import models.*;
 
 public class ListManagement{
@@ -114,6 +112,7 @@ public class ListManagement{
             Pair tempPair = new Pair(participant,p);
             double score = tempPair.calculatePairWeightedScore();
             if (score == 1000) {
+
                 return tempPair;
             } else {
                 if (score > bestScore) {
@@ -162,8 +161,8 @@ public class ListManagement{
             }
         }
         //increase counter, go to next Gang
+        System.out.println("Group List Gang " + courseCounter );
         courseCounter++;
-        System.out.println("COUNT");
         //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
         for (Pair p : pairListTemp) {
             if (p.getIsPreMade()) {
@@ -243,42 +242,63 @@ public class ListManagement{
                     }
                 }
             }
+
         }
         return bestGroup;
     }
 
     /**
-     * This method is used to add a  pair that cooked    to the group. It calculates the distance of each pair's kitchen to the party location,
+     * This method is used to add a  pair that cooked to the group. It calculates the distance of each pair's kitchen to the party location,
      * sets the pair with the maximum distance as having cooked and which course, and updates the meetings between the pairs.
      *
      * @param group the group of pairs participating in the cooking event.
      * @return void
      */
     public void addMetAndCookPair(Group group){
-        double partyLongitude = dataList.event.getPartyLongitude();
-        double partyLatitude = dataList.event.getPartyLatitude();
+        //each pair in group
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+        //add met pair
+        p1.meetPair(p2,p3);
+        p2.meetPair(p1,p3);
+        p3.meetPair(p1,p2);
+        //find pair that will cook in this gang
+        findCookPair(group);
+    }
 
+    /**
+     *
+     * @param group
+     */
+    public void findCookPair(Group group) {
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);
 
-        double distanceToParty1 = p1.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
-        double distanceToParty2 = p2.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
-        double distanceToParty3 = p3.calculateDistanceBetweenKitchenAndParty(partyLongitude,partyLatitude);
-        double max = Math.max(Math.max(distanceToParty1,distanceToParty2),distanceToParty3);
+        double partyLongitude = dataList.event.getPartyLongitude();
+        double partyLatitude = dataList.event.getPartyLatitude();
 
-        if (distanceToParty1==max)
+        double distanceToParty1 = p1.calculateDistanceBetweenKitchenAndParty(partyLongitude, partyLatitude);
+        double distanceToParty2 = p2.calculateDistanceBetweenKitchenAndParty(partyLongitude, partyLatitude);
+        double distanceToParty3 = p3.calculateDistanceBetweenKitchenAndParty(partyLongitude, partyLatitude);
+        double max = Math.max(Math.max(distanceToParty1, distanceToParty2), distanceToParty3);
+
+        if (distanceToParty1 == 0.0 && distanceToParty2 == 0 && distanceToParty3 == 0){
+            System.out.println("ERROR");
+            return;
+        }
+
+        if (distanceToParty1==max || (!p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p1.getHasCooked().isEmpty()) ) {
             p1.setHasCooked(true, courseCounter);
-        else if(distanceToParty2==max)
+        } else if(distanceToParty2==max || (!p1.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p2.getHasCooked().isEmpty())){
             p2.setHasCooked(true, courseCounter);
-        else if(distanceToParty3==max)
+        } else if(distanceToParty3==max || (!p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && p3.getHasCooked().isEmpty())) {
             p3.setHasCooked(true, courseCounter);
+        }
 
-        p1.meetPair(p2,p3);
-        p2.meetPair(p1,p3);
-        p3.meetPair(p1,p2);
+
     }
-
 
     /**
      * This method checks whether the given pair contains a participant who prefers meat.
@@ -302,16 +322,15 @@ public class ListManagement{
 
     /**
      *  this method takes all pairs from a group and checks if they have cooked or not
-     * @param p1 first pair to check if they have cooked
-     * @param p2 second paur to check if they have cooked
-     * @param p3 third par to check if they have cooked
+     *
      * @return boolean , returns true if all pairs have cooked
      */
-    private boolean allCooked(Pair p1,Pair p2,Pair p3){
+    private boolean allCooked(Group group){
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
         return !p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty();
     }
-    public void findCookPair(){
 
-    }
 
 }

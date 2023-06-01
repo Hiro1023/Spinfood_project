@@ -88,9 +88,9 @@ public class  Pair implements Calculation, Utility {
      * @return distance between the kitchens to the party
      */
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
-        if (!hasCooked.isEmpty())//when the group has already cooked
+        if (hasCooked.containsKey(true)) {//when the group has already cooked
             return 0.0;
-
+        }
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
         int EARTH_RADIUS = 6371; // Earth's radius in kilometers
@@ -98,7 +98,7 @@ public class  Pair implements Calculation, Utility {
         if (kitchen1 != null) {
             lon = kitchen1.getKitchenLongitude();
             lat = kitchen1.getKitchenLatitude();
-        } else if (kitchen2 != null) {
+        }else{
             lon = kitchen2.getKitchenLongitude();
             lat = kitchen2.getKitchenLatitude();
         }
@@ -119,7 +119,7 @@ public class  Pair implements Calculation, Utility {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = EARTH_RADIUS * c;
 
-        return distance;
+        return Math.abs(distance);
     }
 
     /**
@@ -147,7 +147,6 @@ public class  Pair implements Calculation, Utility {
             Score = 1000;
         return Score;
     }
-
 
     /**
      * Setter
@@ -186,7 +185,7 @@ public class  Pair implements Calculation, Utility {
 
     @Override
     public void show() {
-        System.out.println("This is a pair: " + this.participant1.getName() + " and " + this.participant2.getName());
+        System.out.println("This is a pair: " + this.participant1.getName() + " " + this.participant2.getName());
         /*
         System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
         System.out.println();
@@ -204,5 +203,13 @@ public class  Pair implements Calculation, Utility {
     @Override
     public boolean equal(Object o) {
         return false;
+    }
+
+    public static void main(String[] args) {
+        Participant p1 = new Participant("10","P1","meat","20","male","yes","2.0","8.677666037868752","50.593429237868754");
+        Participant p2 = new Participant("11","P2","meat","30","female","no","","","");
+
+        Pair test_pair = new Pair(p1,p2);
+        System.out.println(test_pair.calculateDistanceBetweenKitchenAndParty(8.6746166676233,50.5909317660173));
     }
 }
