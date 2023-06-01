@@ -28,31 +28,27 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-
     static ListManagement lm = new ListManagement(readCSV.event.getDataList());
-
     public static void showParticipantList(){
         for (Participant par: lm.dataList.getParticipantList()) {
             par.show();
             System.out.println("---------------------------");
         }
     }
-
-    public static void showParticipantSuccesorList(){
+    public static void showParticipantSuccessorList(){
         lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
     }
 
     public static void showPairList(){
         lm.dataList.getPairList().forEach(Pair::show);
     }
-
     public static void showKitchenAddressAndParticipant(){
         for (String address : readCSV.AddressTable.keySet()) {
             System.out.println("Address: " + address);
             // Get the list of participants for the current address
             List<Participant> participants = readCSV.AddressTable.get(address);
             // Iterate over the participants in the list
-            for (Participant participant : participants)
+            for(Participant participant : participants)
                 System.out.println("Participant: " + participant.getName());
             // You can print other participant details here as needed
             System.out.println(); // Add an empty line between addresses
@@ -70,7 +66,6 @@ public class Main {
             System.out.println("-----------------------");
         }
     }
-
     public static void showGroupListGang03(){
         for (Group group : lm.dataList.getGroupListCourse03()) {
             group.show();
@@ -83,15 +78,12 @@ public class Main {
             System.out.println("--------------------------");
         }
     }
-
     public static void showUnmatchedParticipant(){
         for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
             par.show();
             System.out.println("---------------------------");
         }
     }
-
-
     /**
      * Description: main class is the entry point.
      * @param args
@@ -172,8 +164,8 @@ public class Main {
 
 
         lm.dataList.getGroupListCourse01().get(0).getPairs().forEach(Pair::getHasCooked);
-
-
+        Pair pair = lm.dataList.getPairList().get(0);
+        System.out.println(pair.calculateDistanceBetweenKitchenAndParty(lm.dataList.getEvent().getPartyLongitude(), lm.dataList.getEvent().getPartyLatitude())) ;
 
     }
 

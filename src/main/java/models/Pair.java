@@ -184,7 +184,6 @@ public class  Pair implements Calculation, Utility {
         return participant2;
     }
 
-
     @Override
     public void show() {
         System.out.println("This is a pair: " + this.participant1.getName() + " and " + this.participant2.getName());

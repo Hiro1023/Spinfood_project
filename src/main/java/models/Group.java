@@ -68,9 +68,6 @@ public class Group implements Calculation, Utility {
         return totalDistance;
     }
 
-    public double calculateNearestKitchenToTheParty(){
-        return 0.0;
-    }
 
     @Override
     public double calculateDistanceBetweenKitchenAndParty(double p1,double p2) {
