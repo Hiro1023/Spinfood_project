@@ -5,17 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import controller.CRITERIA;
-import controller.Calculation;
-import controller.Utility;
+import logic.CRITERIA;
+import logic.Calculation;
+import utility.Utility;
 
+/**
+ * The Pair class represents a pair of Participants in an event
+ * It includes methods for calculating weighted scores and displaying pair information
+ */
 public class  Pair implements Calculation, Utility {
-    private String Pair_ID;
+    private final String Pair_ID;
     private boolean isPreMade;
-    private FOOD_PREFERENCE foodPreference;
+    private final FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
-    private Participant participant1;
-    private Participant participant2;
+    private final Participant participant1;
+    private final Participant participant2;
     private Map<Boolean, Integer> hasCooked; //ex <true,1>
 
     public Pair(Participant participant1, Participant participant2) {
@@ -23,12 +27,13 @@ public class  Pair implements Calculation, Utility {
         this.participant2 = participant2;
         this.Pair_ID = participant1.getID() + "-" + participant2.getID();
         hasCooked = new HashMap<>();
+        this.foodPreference = FOOD_PREFERENCE.fromValue(Math.max(participant1.getFoodPreference().getValue(),participant2.getFoodPreference().getValue()));
     }
 
     /**
-     * @description: adds a pair to the visited list
-     * @param pair1
-     * @param pair2
+     * This method adds a pair to the visited list
+     * @param pair1 first met pair
+     * @param pair2 second met pair
      */
     public void meetPair(Pair pair1, Pair pair2) {
         visitedPairs.add(pair1);
@@ -36,8 +41,8 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * @description: absolute value of the difference between the food prefrence between 2 participants
-     * @return food prefrence score
+     * This method absolute value of the difference between the food preference between 2 participants
+     * @return food preference score
      */
     @Override
     public double calculateFoodPreference() {
@@ -45,8 +50,8 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * @description: calculates the sex diversity between 2 participants having 0.5 as ideal
-     * @return
+     * This method calculates the sex diversity between 2 participants having 0.5 as ideal
+     * @return the calculated deviation
      */
     @Override
     public double calculateSexDiversity() {
@@ -54,7 +59,7 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * @description calculates Path length between 2 kitchens
+     * This method calculates Path length between 2 kitchens using Haversine Formula
      * @return distance between the 2 kitchens
      */
     @Override
@@ -82,9 +87,9 @@ public class  Pair implements Calculation, Utility {
 
 
     /**
-     * @description: uses haversine formula to calculate the distance between each kitchen of the participants and the party location
-     * @param partyLongitude
-     * @param partyLatitude
+     * This method uses haversine formula to calculate the distance between each kitchen of the participants and the party location
+     * @param partyLongitude the Longitude value of the party's coordination
+     * @param partyLatitude the Latitude value of the party's coordination
      * @return distance between the kitchens to the party
      */
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
@@ -94,7 +99,7 @@ public class  Pair implements Calculation, Utility {
         Kitchen kitchen1 = participant1.getKitchen();
         Kitchen kitchen2 = participant2.getKitchen();
         int EARTH_RADIUS = 6371; // Earth's radius in kilometers
-        double lon = 0, lat = 0;
+        double lon, lat;
         if (kitchen1 != null) {
             lon = kitchen1.getKitchenLongitude();
             lat = kitchen1.getKitchenLatitude();
@@ -123,8 +128,8 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * @description: calculates the absolute value for age diff
-     * @return
+     * This method calculates the absolute value for age diff
+     * @return the calculated age difference
      */
     @Override
     public int calculateAgeDifference() {
@@ -132,11 +137,12 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * @description: This methode calculate all the points for each criteria and divide it with their corresponding weight.
-     *               The final score wil be one divided by the sum of all four points.
+     * This method calculate all the points for each criterion and divide it with their corresponding weight.
+     * The final score wil be one divided by the sum of all four points.
      * @return the total weight score for the whole pair
      */
-    public double calculatePairWeightedScore() {
+    @Override
+    public double calculateWeightedScore() {
         double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = (double) calculateAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
         double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
@@ -146,6 +152,22 @@ public class  Pair implements Calculation, Utility {
         if (Score == Double.POSITIVE_INFINITY)
             Score = 1000;
         return Score;
+    }
+
+    @Override
+    public void show() {
+        System.out.println("This is a pair: " + this.participant1.getName() + " " + this.participant2.getName());
+    }
+
+    /**
+     * This method compares 2 pairs to check if they are equal
+     * @param o represent the Pair is chosen to compare with
+     * @return true if both pairs are equal
+     */
+    @Override
+    public boolean equal(Object o) {
+        Pair p = (Pair) o;
+        return Pair_ID.equals(p.Pair_ID);
     }
 
     /**
@@ -183,33 +205,7 @@ public class  Pair implements Calculation, Utility {
         return participant2;
     }
 
-    @Override
-    public void show() {
-        System.out.println("This is a pair: " + this.participant1.getName() + " " + this.participant2.getName());
-        /*
-        System.out.println("This is a pair: "+this.participant1.getName()+" and " + this.participant2.getName());
-        System.out.println();
-        System.out.print("      ");
-        System.out.println("First Participant ");
-        this.participant1.show();
-        System.out.println();
-        System.out.print("      ");
-        System.out.println("Second Participant ");
-        this.participant2.show();
-         */
-    }
-
-
-    @Override
-    public boolean equal(Object o) {
-        return false;
-    }
-
-    public static void main(String[] args) {
-        Participant p1 = new Participant("10","P1","meat","20","male","yes","2.0","8.677666037868752","50.593429237868754");
-        Participant p2 = new Participant("11","P2","meat","30","female","no","","","");
-
-        Pair test_pair = new Pair(p1,p2);
-        System.out.println(test_pair.calculateDistanceBetweenKitchenAndParty(8.6746166676233,50.5909317660173));
+    public FOOD_PREFERENCE getFoodPreference() {
+        return foodPreference;
     }
 }

@@ -1,11 +1,8 @@
 package models;
-
-import models.FOOD_PREFERENCE;
-import models.Participant;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PaticipantTest {
+public class ParticipantTest {
 
     //Participant pError = new Participant("13","p4","none","-1","other","no","","","");
     Participant p0 = new Participant("13","p4","none","0","other","no","","","");
@@ -94,19 +91,19 @@ public class PaticipantTest {
      * Test for assignFoodPreference
      */
     @Test
-    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEmeat(){
+    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEMeat(){
         assertEquals(FOOD_PREFERENCE.meat,p1.getFoodPreference());
     }
     @Test
-    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEnone(){
+    public void assignFoodPreferenceTest_returnFOOD_PREFERENCENone(){
         assertEquals(FOOD_PREFERENCE.none,p0.getFoodPreference());
     }
     @Test
-    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEveggie(){
+    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEVeggie(){
         assertEquals(FOOD_PREFERENCE.veggie,p3.getFoodPreference());
     }
     @Test
-    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEvegan(){
+    public void assignFoodPreferenceTest_returnFOOD_PREFERENCEVegan(){
         assertEquals(FOOD_PREFERENCE.vegan,p5.getFoodPreference());
     }
 }

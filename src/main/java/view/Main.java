@@ -3,8 +3,8 @@ package view;
 import java.io.File;
 import java.util.List;
 
-import controller.ListManagement;
-import controller.readCSV;
+import logic.ListManagement;
+import logic.readCSV;
 import models.Group;
 import models.Pair;
 import models.Participant;
@@ -36,7 +36,11 @@ public class Main {
         }
     }
     public static void showParticipantSuccessorList(){
-        lm.dataList.getEvent().getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
+        lm.dataList.getParticipantSuccessorList().getParticipantSuccessorList().forEach(Participant::show);
+    }
+
+    public static void showPairSuccesorList(){
+        lm.dataList.getPairSuccessorList().getPairSuccessorList().forEach(Pair::show);
     }
 
     public static void showPairList(){
@@ -96,42 +100,35 @@ public class Main {
             System.out.println("---------------------------");
         }
     }
-    /**
+    /**ListGang03();
+
+        System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
      * Description: main class is the entry point.
      * @param args
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        /*
-        //Create a file chooser dialog to select the CSV file
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) return; // User canceled or closed the dialog
-        File selectedFile = fileChooser.getSelectedFile();
-         */
-
-        //System.out.println(" dataList.pairList size before match: " +  lm.dataList.getPairList().size());   //before match: 73 pairs
         lm.makeBestPairList();
-        //System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());
-        //lm.dataList.getPairList().forEach(Pair::show);//after match: 155 pairs, sometimes 154
-        //System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListCourse01().size());   //0
         lm.makeBestGroupList();
-        //System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListCourse01().size());    //51
+        //showGroupListGang01();
         lm.makeBestGroupList();
+        //showGroupListGang02();
         lm.makeBestGroupList();
-
-        System.out.println("Gang 1:");
-        showGroupListGang01();
-        System.out.println("Gang 2:");
-        showGroupListGang02();
-        System.out.println("Gang 3:");
         showGroupListGang03();
 
-        showHasCookedPair();
+        System.out.println("Size of all Groups");
+        System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
 
+        System.out.println("Successor List size : " + lm.dataList.getParticipantSuccessorList().getParticipantSuccessorList().size());
 
+        for (Pair p : lm.dataList.getPairList()) {
+            if (p.getVisitedPairs().size() < 6) {
+                p.show();
+            }
+        }
+        System.out.println("Participant List size :" + lm.dataList.getParticipantList().size());
+        System.out.println("Pair List size :" + lm.dataList.getPairList().size());
+
+        showParticipantSuccessorList();
     }
-
-
-
 }

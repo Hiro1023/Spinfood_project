@@ -1,10 +1,5 @@
 package models;
-
-import models.Group;
-import models.Pair;
-import models.Participant;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -30,11 +25,11 @@ public class GroupTest {
     Pair pair4 = new Pair(p1,p6);
     Pair pair5 = new Pair(p4,p5);
     Pair pair6 = new Pair(p8,p7);
-    Group g1 = new Group(pair1,pair2,pair3);
+    Group g1 = new Group(pair1,pair2,pair3,1);
 
     MathContext mtx = new MathContext(3, RoundingMode.DOWN);  //Rounded down to the fourth decimal place
-    BigDecimal foodPreference = new BigDecimal(g1.calculateFoodPreference());
-    BigDecimal kitchenDistance = new BigDecimal(g1.calculatePathLength());
+    BigDecimal foodPreference = BigDecimal.valueOf(g1.calculateFoodPreference());
+    BigDecimal kitchenDistance = BigDecimal.valueOf(g1.calculatePathLength());
 
     /**
      * Test for calculateFoodMatchScore
@@ -55,17 +50,17 @@ public class GroupTest {
     }
     @Test
     public void sexDiversity_onePairHasFemale_return1(){
-        Group g2 = new Group(pair1,pair4,pair5);
+        Group g2 = new Group(pair1,pair4,pair5,1);
         assertEquals(1.0,g2.calculateSexDiversity());
     }
     @Test
     public void sexDiversity_twoPairHaveFemale_return0c5(){
-        Group g3 = new Group(pair1,pair2,pair5);
+        Group g3 = new Group(pair1,pair2,pair5,1);
         assertEquals(0.5,g3.calculateSexDiversity());
     }
     @Test
     public void sexDiversity_noFemale_return1c5(){
-        Group g4 = new Group(pair6,pair4,pair5);
+        Group g4 = new Group(pair6,pair4,pair5,1);
         assertEquals(1.5,g4.calculateSexDiversity());
     }
 

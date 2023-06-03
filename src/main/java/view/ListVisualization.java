@@ -1,6 +1,6 @@
 package view;
 
-import controller.ListManagement;
+import logic.ListManagement;
 
 public class ListVisualization {
     private ListManagement listManagement;

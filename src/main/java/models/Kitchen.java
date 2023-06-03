@@ -1,5 +1,8 @@
 package models;
 
+/**
+ * The Kitchen class contains all the information about the participant's kitchen
+ */
 public class Kitchen {
     private double kitchenStory;
     private double kitchenLongitude;
