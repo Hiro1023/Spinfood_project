@@ -12,6 +12,9 @@ import controller.Utility;
 public class  Pair implements Calculation, Utility {
     private String Pair_ID;
     private boolean isPreMade;
+
+
+
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
@@ -154,7 +157,13 @@ public class  Pair implements Calculation, Utility {
     public void setPreMade(boolean preMade) {
         isPreMade = preMade;
     }
+    public FOOD_PREFERENCE getFoodPreference() {
+        return foodPreference;
+    }
 
+    public void setFoodPreference(FOOD_PREFERENCE foodPreference) {
+        this.foodPreference = foodPreference;
+    }
     public void setHasCooked(Boolean b, int i) {
         this.hasCooked.put(b, i);
     }

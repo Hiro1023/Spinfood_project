@@ -1,7 +1,9 @@
 package view;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import controller.ListManagement;
 import controller.readCSV;
@@ -90,12 +92,26 @@ public class Main {
             System.out.println("----------------------");
         }
     }
+
+    public static int showHasntCookedPair(){
+        int counter = 0;
+        for (Pair pair: lm.dataList.getPairList()) {
+            if(pair.getHasCooked().isEmpty()){
+                counter++;
+            }
+        }
+        return counter;
+    }
     public static void showUnmatchedParticipant(){
         for (Participant par: readCSV.event.getDataList().getUnmatchedParticipants()) {
             par.show();
             System.out.println("---------------------------");
         }
     }
+
+    public static List<Pair> unmatchedAfterGang3 = new ArrayList<>();
+
+
     /**
      * Description: main class is the entry point.
      * @param args
@@ -115,10 +131,14 @@ public class Main {
         //System.out.println(" dataList.pairList size after match: " +  lm.dataList.getPairList().size());
         //lm.dataList.getPairList().forEach(Pair::show);//after match: 155 pairs, sometimes 154
         //System.out.println("dataList.GroupList size before match: " + lm.dataList.getGroupListCourse01().size());   //0
-        lm.makeBestGroupList();
         //System.out.println("dataList.GroupList size after match: " + lm.dataList.getGroupListCourse01().size());    //51
         lm.makeBestGroupList();
         lm.makeBestGroupList();
+        lm.makeBestGroupList();
+
+
+
+
 
         System.out.println("Gang 1:");
         showGroupListGang01();
@@ -129,7 +149,14 @@ public class Main {
 
         showHasCookedPair();
 
+        System.out.println("Cannot find any group: ");
+        lm.cannotFindGroup.forEach(Pair::show);
+        System.out.println("hasnt cooked pair: " + showHasntCookedPair());
+        System.out.println("all cooked group: " + lm.allCookedGroup.size());
 
+        System.out.println(lm.dataList.getGroupListCourse01().size()+""+lm.dataList.getGroupListCourse02().size()+""+lm.dataList.getGroupListCourse03().size());
+        lm.dataList.getPairList().get(100).show();
+        System.out.println(lm.dataList.getPairList().get(100).getFoodPreference());
     }
 
 
