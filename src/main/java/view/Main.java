@@ -137,9 +137,6 @@ public class Main {
         lm.makeBestGroupList();
 
 
-
-
-
         System.out.println("Gang 1:");
         showGroupListGang01();
         System.out.println("Gang 2:");
@@ -155,8 +152,10 @@ public class Main {
         System.out.println("all cooked group: " + lm.allCookedGroup.size());
 
         System.out.println(lm.dataList.getGroupListCourse01().size()+""+lm.dataList.getGroupListCourse02().size()+""+lm.dataList.getGroupListCourse03().size());
-        lm.dataList.getPairList().get(100).show();
-        System.out.println(lm.dataList.getPairList().get(100).getFoodPreference());
+
+
+
+
     }
 
 

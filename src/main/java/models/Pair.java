@@ -13,8 +13,6 @@ public class  Pair implements Calculation, Utility {
     private String Pair_ID;
     private boolean isPreMade;
 
-
-
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private Participant participant1;
@@ -26,6 +24,7 @@ public class  Pair implements Calculation, Utility {
         this.participant2 = participant2;
         this.Pair_ID = participant1.getID() + "-" + participant2.getID();
         hasCooked = new HashMap<>();
+        this.foodPreference = participant1.getFoodPreference();
     }
 
     /**

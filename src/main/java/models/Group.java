@@ -10,12 +10,36 @@ public class Group implements Calculation, Utility {
     private List<Pair> Pairs = new ArrayList<>();
     private Pair cookingPair;
     private COURSE course;
+
+    public FOOD_PREFERENCE getFoodPreference() {
+        return foodPreference;
+    }
+    public void setFoodPreference(FOOD_PREFERENCE foodPreference) {
+        this.foodPreference = foodPreference;
+    }
+
     private FOOD_PREFERENCE foodPreference;
 
     public Group(Pair pair1, Pair pair2, Pair pair3) {
         Pairs.add(pair1);
         Pairs.add(pair2);
         Pairs.add(pair3);
+        //this.foodPreference = findFoodPreferenceGroup(pair1,pair2,pair3);
+    }
+    public FOOD_PREFERENCE findFoodPreferenceGroup(Pair p1, Pair p2, Pair p3){
+        if(p1.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.meat)||p2.getFoodPreference().equals(FOOD_PREFERENCE.meat)||p3.getFoodPreference().equals(FOOD_PREFERENCE.meat))
+            return  FOOD_PREFERENCE.meat;
+        else if (p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p3.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
+            return FOOD_PREFERENCE.vegan;
+        else if(p1.getFoodPreference().equals(FOOD_PREFERENCE.veggie)
+                ||p2.getFoodPreference().equals(FOOD_PREFERENCE.veggie)
+                ||p3.getFoodPreference().equals(FOOD_PREFERENCE.veggie))
+            return FOOD_PREFERENCE.veggie;
+        else
+            return FOOD_PREFERENCE.none;
+
     }
 
     /**
@@ -34,7 +58,7 @@ public class Group implements Calculation, Utility {
     @Override
     public double calculateFoodPreference() {
         double groupScore = 0;
-        for (Pair pair : getPairs()) {
+        for (Pair pair : this.getPairs()) {
             groupScore += pair.calculateFoodPreference();
         }
         return groupScore/3;

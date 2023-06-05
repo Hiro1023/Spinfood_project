@@ -10,6 +10,8 @@ public class ListManagement{
     public List<Pair> cannotFindGroup = new ArrayList<>();
     //public int allCookedGroup = 0;
     public List<Group> allCookedGroup = new ArrayList<>();
+    public List<Group> pairDidntCookGroup = new ArrayList<>();
+    public List<Pair> pairDidntCookList = new ArrayList<>();
     public ListManagement(DataList dataList){
         this.dataList = dataList;
     }
@@ -136,7 +138,7 @@ public class ListManagement{
         pairListTemp = new ArrayList<>(dataList.pairList);
 
         while (pairListTemp.size() > 2) {
-            boolean impossibleGroup = pairListTemp.size()==3 && makeBestGroup(pairListTemp.get(0))==null;
+            boolean impossibleGroup = pairListTemp.size() == 3 && makeBestGroup(pairListTemp.get(0)) == null;
             if (impossibleGroup)
                 break;
             else {
@@ -155,8 +157,8 @@ public class ListManagement{
 
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
-
-                    if(addMetAndCookPair(g)) { //mark all pair in this group as met
+                    findFoodPreferenceGroup(g);
+                    if (addMetAndCookPair(g)) { //mark all pair in this group as met
                         addToGroup(g);  //add this group g to the dataList->groupList 1,2 or 3
                     }
 
@@ -165,19 +167,105 @@ public class ListManagement{
                 }
             }
         }
-        //increase counter, go to next Gang
-        System.out.println("Group List Gang " + courseCounter );
-        courseCounter++;
-        //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
-        for (Pair p : pairListTemp) {
-            if (p.getIsPreMade()) {
-                dataList.pairList.remove(p);
-                dataList.event.getPairSuccesorList().addPair(p);
-            } else {
-                dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(), p.getParticipant2());
+
+
+            if (courseCounter == 3 && !allCookedGroup.isEmpty()) {
+                for (Group group1 : pairDidntCookGroup) {
+                    for (Group group2 : allCookedGroup) {
+                        boolean sameFoodPreference = group1.getFoodPreference().equals(group2.getFoodPreference())
+                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.none)
+                                || group2.getFoodPreference().equals(FOOD_PREFERENCE.none)
+                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.veggie))
+                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.veggie) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.vegan));
+
+                        if (sameFoodPreference) {
+                            List<Group> bestGroup = makeBestRestGroupGang3(group2, group1);
+                            dataList.getGroupListCourse03().remove(group1);
+                            dataList.getGroupListCourse03().remove(group2);
+                            findFoodPreferenceGroup(bestGroup.get(0));
+                            findFoodPreferenceGroup(bestGroup.get(1));
+                            dataList.getGroupListCourse03().add(bestGroup.get(0));//add this group g to the dataList->groupList 1,2 or 3
+                            dataList.getGroupListCourse03().add(bestGroup.get(1));
+                            break;
+                        }
+
+                    }
+
+                }
+            }
+
+
+
+            //increase counter, go to next Gang
+            System.out.println("Group List Gang " + courseCounter);
+            courseCounter++;
+            //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
+            for (Pair p : pairListTemp) {
+                if (p.getIsPreMade()) {
+                    dataList.pairList.remove(p);
+                    dataList.event.getPairSuccesorList().addPair(p);
+                } else {
+                    dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(), p.getParticipant2());
+                }
+            }
+    }
+
+    public List<Group> makeBestRestGroupGang3(Group allCookedGroup,Group didntCookGroup){
+        Pair didntCookPair = null;
+        int count = 0;
+        for (int i=0;i<didntCookGroup.getPairs().size();i++) {
+            Pair pair = didntCookGroup.getPairs().get(i);
+            if(pair.getHasCooked().isEmpty()) {
+                didntCookPair = pair;
+                didntCookPair.setHasCooked(true,3);
+                count=i;
             }
         }
+
+        Pair p1_1 = allCookedGroup.getPairs().get(0);
+        Pair p2_1 = allCookedGroup.getPairs().get(1);
+        Pair p3_1 = allCookedGroup.getPairs().get(2);
+
+        Pair p1_2 = didntCookGroup.getPairs().get(0);
+        Pair p2_2 = didntCookGroup.getPairs().get(1);
+        Pair p3_2 = didntCookGroup.getPairs().get(2);
+
+        double g1 = new Group(didntCookPair, p1_1, p2_1).calculateGroupWeightedScore();
+        double g2 = new Group(didntCookPair, p1_1, p3_1).calculateGroupWeightedScore();
+        double g3 = new Group(didntCookPair, p2_1, p3_1).calculateGroupWeightedScore();
+
+        double max = Math.max(Math.max(g1,g2),g3);
+        List<Group> res = new ArrayList<>();
+        if(max==g1){
+            res.add(new Group(didntCookPair, p1_1, p2_1));
+            if(count==0)
+                res.add(new Group(p3_1,p2_2,p3_2));
+            if(count==1)
+                res.add(new Group(p3_1,p1_2,p3_2));
+            if(count==2)
+                res.add(new Group(p3_1,p1_2,p2_2));
+        } else if (max==g2) {
+            res.add(new Group(didntCookPair, p1_1, p3_1));
+            if(count==0)
+                res.add(new Group(p2_1,p2_2,p3_2));
+            if(count==1)
+                res.add(new Group(p2_1,p1_2,p3_2));
+            if(count==2)
+                res.add(new Group(p2_1,p1_2,p2_2));
+        } else if (max==g3) {
+            res.add(new Group(didntCookPair, p2_1, p3_1));
+            if(count==0)
+                res.add(new Group(p1_1,p2_2,p3_2));
+            if(count==1)
+                res.add(new Group(p1_1,p1_2,p3_2));
+            if(count==2)
+                res.add(new Group(p1_1,p1_2,p2_2));
+        }
+
+
+        return res;
     }
+
 
 
     /**
@@ -302,6 +390,7 @@ public class ListManagement{
 
         if(allCooked(group)) {
             System.out.println("All cooked");
+            findFoodPreferenceGroup(group);
             allCookedGroup.add(group);
             return false;
         }
@@ -315,6 +404,12 @@ public class ListManagement{
         }
 
         if(courseCounter==3 && !allCooked(group)) {
+            pairDidntCookGroup.add(group);
+            for (Pair p : group.getPairs()) {
+                if(p.getHasCooked().isEmpty()){
+                    pairDidntCookList.add(p);
+                }
+            }
             System.out.println("not all pair are cook");
             return false;
         }
@@ -339,6 +434,24 @@ public class ListManagement{
             pair.setFoodPreference(FOOD_PREFERENCE.meat);
         if(p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
             pair.setFoodPreference(FOOD_PREFERENCE.vegan);
+    }
+
+    public void findFoodPreferenceGroup(Group group){
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+
+        if(containsMeat(p1)||containsMeat(p2)||containsMeat(p3))
+            group.setFoodPreference(FOOD_PREFERENCE.meat);
+        else if (p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p3.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
+            group.setFoodPreference(FOOD_PREFERENCE.vegan);
+        else if(containsVeganOrVeggie(p1)||containsVeganOrVeggie(p2)||containsVeganOrVeggie(p3))
+            group.setFoodPreference(FOOD_PREFERENCE.veggie);
+        else
+            group.setFoodPreference(FOOD_PREFERENCE.none);
+
     }
 
     /**
