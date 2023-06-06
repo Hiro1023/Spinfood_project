@@ -5,10 +5,10 @@ package models;
  * Each preference has a corresponding value associated with it.
  */
 public enum FOOD_PREFERENCE {
-        meat(0),
+        meat(1),
         none(0),
-        vegan(2),
-        veggie(1);
+        vegan(3),
+        veggie(2);
 
         public int getValue() {
                 return value;

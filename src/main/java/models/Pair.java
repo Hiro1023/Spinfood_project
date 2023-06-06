@@ -157,6 +157,7 @@ public class  Pair implements Calculation, Utility {
     @Override
     public void show() {
         System.out.println("This is a pair: " + this.participant1.getName() + " " + this.participant2.getName());
+        System.out.println(getFoodPreference() + " p1 :" + participant1.getFoodPreference() + " p2 :" + participant2.getFoodPreference());
     }
 
     /**

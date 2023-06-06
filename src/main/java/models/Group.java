@@ -117,6 +117,11 @@ public class Group implements Calculation, Utility {
         System.out.println(this.getPairs().get(1).getHasCooked());
         System.out.print(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName());
         System.out.println(this.getPairs().get(2).getHasCooked());
+        for (Pair p : this.getPairs()) {
+            System.out.println(p.getParticipant1().getFoodPreference());
+            System.out.println(p.getParticipant2().getFoodPreference());
+        }
+        System.out.println("Main Food Pref : " + this.getFoodPreference());
     }
 
     /**

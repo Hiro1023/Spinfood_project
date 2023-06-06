@@ -108,26 +108,26 @@ public class Main {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        lm.makeBestPairList();
-        lm.makeBestGroupList();
-        //showGroupListGang01();
-        lm.makeBestGroupList();
-        //showGroupListGang02();
-        lm.makeBestGroupList();
-        showGroupListGang03();
+            lm.makeBestPairList();
+            lm.makeBestGroupList();
+            //showGroupListGang01();
+            lm.makeBestGroupList();
+            //showGroupListGang02();
+            lm.makeBestGroupList();
+            //showGroupListGang03();
 
-        System.out.println("Size of all Groups");
-        System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
-
-        System.out.println("Successor List size : " + lm.dataList.getParticipantSuccessorList().getParticipantSuccessorList().size());
-
-        for (Pair p : lm.dataList.getPairList()) {
-            if (p.getVisitedPairs().size() < 6) {
-                p.show();
-            }
-        }
-        System.out.println("Participant List size :" + lm.dataList.getParticipantList().size());
-        System.out.println("Pair List size :" + lm.dataList.getPairList().size());
+            System.out.println("Size of all Groups");
+            System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
+//
+//        System.out.println("Successor List size : " + lm.dataList.getParticipantSuccessorList().getParticipantSuccessorList().size());
+//
+//        for (Pair p : lm.dataList.getPairList()) {
+//            if (p.getVisitedPairs().size() < 6) {
+//                p.show();
+//            }
+//        }
+//        System.out.println("Participant List size :" + lm.dataList.getParticipantList().size());
+//        System.out.println("Pair List size :" + lm.dataList.getPairList().size());
 
         showParticipantSuccessorList();
     }

@@ -147,7 +147,7 @@ public class ListManagement{
 
         while (pairListTemp.size() > 2) {
             // first course
-            if (courseCounter == 1) {
+            if (courseCounter == 1 || courseCounter == 2) {
                 invalidPair.clear();
                 boolean impossibleGroup = pairListTemp.size() == 3 && makeBestGroup(pairListTemp.get(0), pairListTemp) == null;
                 if (impossibleGroup)
@@ -178,50 +178,7 @@ public class ListManagement{
                                 .collect(Collectors.toList()); //filter only the pair which is not paired
                     }
                 }
-            // second course
-            } else if (courseCounter == 2) {
-                invalidPair = invalidPair.stream()
-                        .filter(x -> x.getVisitedPairs().size() < 2)
-                        .collect(Collectors.toList());
-                pairListTemp.removeAll(invalidPair);
-                List<Pair> possible_partners = new ArrayList<>(pairListTemp);
-                // we choose all cooked pairs as our candidates
-                List<Pair> candidates = pairListTemp.stream().filter(x -> x.getHasCooked().containsKey(true)).collect(Collectors.toList());
-                // all pairs that haven't cooked will be the possible partners
-                possible_partners.removeAll(candidates);
-
-                boolean impossibleGroup = candidates.size() == 1
-                        && possible_partners.size() == 2
-                        && makeBestGroup(candidates.get(0), possible_partners) == null;
-                if (impossibleGroup)
-                    break;
-                else {
-                    // Create a Hashmap that contains the temporary Groups and their corresponding Scores
-                    Map<Group, Double> tempGroups = new HashMap<>();
-                    for (Pair p : candidates) { //O(n)
-                        Group bestGroup = makeBestGroup(p,possible_partners);
-                        if (bestGroup != null)
-                            tempGroups.put(bestGroup, bestGroup.calculateWeightedScore());
-                    }
-                    List<Group> tempGroupList = new ArrayList<>();
-                    //sort the tempGroup in descending order
-                    tempGroups.entrySet().stream()
-                            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                            .forEach(x -> tempGroupList.add(x.getKey()));
-
-                    List<Group> list = tempGroupList;
-
-                    for (int i = 0; i < list.size(); i++) {
-                        Group g = list.get(0);
-                        addToGroup(g);  //add this group g to the dataList->groupList 1,2 or 3
-                        addMetAndCookPair(g);   //mark all pair in this group as met
-                        pairListTemp.removeAll(g.getPairs()); // remove all the pairs, which was grouped
-                        list = list.stream()
-                                .filter(x -> notContainsPairedPairs(x, g))
-                                .collect(Collectors.toList()); //filter only the pair which is not paired
-                    }
-                }
-                // third course
+            // third course
             } else {
                 invalidPair = invalidPair.stream()
                         .filter(x -> x.getVisitedPairs().size() < 4)
@@ -342,16 +299,22 @@ public class ListManagement{
             return bestGroup;
         }
 
-        if (containsMeat(pair))
-            unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
-        if (containsVeganOrVeggie(pair))
-            unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsMeat(x)).collect(Collectors.toList());
+        if (pair.getFoodPreference().equals(FOOD_PREFERENCE.meat))
+            unmatchedPairs = unmatchedPairs.stream().filter(x -> !(x.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || x.getFoodPreference().equals(FOOD_PREFERENCE.veggie))).collect(Collectors.toList());
+        if (pair.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair.getFoodPreference().equals(FOOD_PREFERENCE.veggie))
+            unmatchedPairs = unmatchedPairs.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.meat)).collect(Collectors.toList());
 
         //O(n^2)
         for (int i = 0; i < unmatchedPairs.size() - 1; i++) {
             for (int j = i + 1; j < unmatchedPairs.size(); j++) {
                 Pair pair1 = unmatchedPairs.get(i);
                 Pair pair2 = unmatchedPairs.get(j);
+                if (pair1.getFoodPreference().equals(FOOD_PREFERENCE.meat) && (pair2.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair2.getFoodPreference().equals(FOOD_PREFERENCE.veggie))) {
+                    continue;
+                }
+                if (pair2.getFoodPreference().equals(FOOD_PREFERENCE.meat) && (pair1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair1.getFoodPreference().equals(FOOD_PREFERENCE.veggie))) {
+                    continue;
+                }
                 if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
                     Group tempGroup = new Group(pair, pair1, pair2, courseCounter);
                     double score = tempGroup.calculateWeightedScore();
@@ -416,24 +379,6 @@ public class ListManagement{
             p3.setHasCooked(true, courseCounter);
             group.setCookingPair(p3);
         }
-    }
-
-    /**
-     * This method checks whether the given pair contains a participant who prefers meat.
-     * @param pair the pair of participants to be checked.
-     * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
-     */
-    private boolean containsMeat (Pair pair) {
-        return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.meat) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.meat);
-    }
-    /**
-     * This method checks whether the given pair contains a participant who is vegan or veggie.
-     * @param pair the pair of participants to be checked.
-     * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
-     */
-    private boolean containsVeganOrVeggie (Pair pair){
-        return pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.vegan) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.vegan)
-                || pair.getParticipant1().getFoodPreference().equals(FOOD_PREFERENCE.veggie) || pair.getParticipant2().getFoodPreference().equals(FOOD_PREFERENCE.veggie);
     }
 
     /**
