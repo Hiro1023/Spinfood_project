@@ -1,0 +1,45 @@
+Generelle Anmerkung:
+- Bitte erstellt für den nächsten Meilenstein einen release. Ich sehe nur einen Release für Meilenstein 1 und eigentlich soll für jeden Meilenstein ein Release erstellt werden
+- Frau Taentzer hat uns darauf hingewiesen, das bisher alle Gruppen noch kein Controller haben und wir deshalb die Klassen, die in Controller sind eigentlich in das Paket Model machen sollten
+- Es fehlt oft Java Docs, das muss dringend nachgeholt werden 
+- Ich finde es sehr schön, das Ihr mit den Interfaces Utility und Calculate arbeitet
+
+Klasse ListManagement:
+- Methode makeBestGroupList ist zu lang. Man kann Blöcke davon in kleiner Methoden auslagern, z.b. der boolean in Zeile 175-179 kann in eine eigene Methode oder Teile von Zeile 144-169
+_ Methode makeBestRestGroupGang3: Hier habt Ihr Duplikate (240-246, 247-254, 256-263), die in eine Methode ausgelagert werden können 
+
+Klasse readCSV:
+- Methode addParticipantAndPair ist zu lang. Ihr könntet z.B. das handling von Pairs ab Zeile 99 in eine einzelne Methode machen
+
+Klasse CanceledList:
+- Was hat die Klasse für eine Funktion?
+
+Klasse Group:
+- Die Methode findFoodPreferenceGroup stimmt nicht ganz. Das erste else if ist nicht ganz korrekt. Es müssen nicht alle vegan in einer Veganer Gruppe sein. Es reicht das ein Pärchen vegan ist, dann ist die ganze Gruppe vegan und es darf maximal ein Fleischi in einer vegetarischen/veganen Gruppe sein.
+Ihr könnt also einfach die If Statements umdrehen und zuerst anfangen zu gucken ob mindestens einer der Pärchen vegena ist (first == vegan) || (second == vegan) || (third == vegan) und dann mit vegie so weiter machen und am ende das Fleisch. Durch die Änderung der Reihenfolge habt ihr dafür gesorgt, dass die Gruppen dann richtig gesetzt wurden. Allerdings braucht ihr dann noch eine Methode, die überprüft, ob mehr als ein Fleischi in einer vegetarischen/veganen Gruppe ist. Das geht nämlich nicht
+- equals hat nicht wirklich eine Funktion, aber ist nicht so schlimm. Optimal wäre es wenn es implementiert ist, das hat aber nicht so hohe Priorität
+
+
+Klasse Kitchen:
+- Ihr habt kein boolean Feld in dem Ihr euch merkt ob es nur eine emergency Kitchen ist, die nur im Notfall benutzt werden soll
+
+Klasse Pair:
+- Für equals gilt das gleich wie für Group
+
+Klasse Main:
+- Es wäre ganz cool wenn man entweder den Dateinamen für die CSV über einen Scanner beim ausführen der Main eingeben kann, damit er nicht hard-gedodet ist oder über ein view element (aber das dauert glaub ich zu lang)
+
+Testklassen:
+- Ihr müsst dringend Java Docs zu euren Tests hinzufügen, in der Ihr kurz beschreibt was eure Tests machen. Ihr müsst dann auch nicht mehr diese ausführliche schriftliche Testdokumentation mit Vorbedingung etc. machen
+
+Testklasse ListManagementTest:
+- makeBestGroupListValidPairList hier habt Ihr @Test vergessen
+- Es wäre schön wenn Ihr bei euren Test für List Management noch für Eure Lösung die checks einbaut, die überprüfen, ob:
+A) Jedes Pärchen der Gruppenliste kocht genau 1 mal
+B) Jedes Pärchen der Gruppenliste isst drei mal/ist in 3 Gruppen vorhanden
+C) Jedes Pärchen der Gruppenliste ist nur einmal mit einem anderen Pärchen gepaart 
+D) In einer vegetarischen Gruppe ist nicht mehr als ein Fleishi/Egali Pärchen
+
+Sonst gut!
+
+
