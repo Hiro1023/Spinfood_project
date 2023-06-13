@@ -11,7 +11,7 @@ public class Participant implements Utility {
     private int age;
     private SEX sex;
     private Kitchen kitchen;
-    private AGE_RANGE agerange;
+    private AGE_RANGE ageRange;
 
     private int KitchenCount = 0;
 
@@ -22,8 +22,9 @@ public class Participant implements Utility {
         this.foodPreference = assignFoodPreference(foodPreference);
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
-        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
-        this.agerange = assignAgeRange(this.age);
+        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),
+                Double.parseDouble(Kitchen_Latitude), availability.equals("maybe"));
+        this.ageRange = assignAgeRange(this.age);
     }
 
     /**
@@ -108,8 +109,8 @@ public class Participant implements Utility {
         this.kitchen = kitchen;
     }
 
-    public void setAgerange(AGE_RANGE agerange) {
-        this.agerange = agerange;
+    public void setAgeRange(AGE_RANGE ageRange) {
+        this.ageRange = ageRange;
     }
 
     public Kitchen getKitchen() {
@@ -136,8 +137,8 @@ public class Participant implements Utility {
         return sex;
     }
 
-    public AGE_RANGE getAgerange() {
-        return agerange;
+    public AGE_RANGE getAgeRange() {
+        return ageRange;
     }
 
     public int getKitchenCount() {

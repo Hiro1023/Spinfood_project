@@ -252,7 +252,9 @@ public class ListManagement{
      * @param res the group list
      */
     private void addValidatedGroupIntoGroupList(Pair didntCookPair, int count, Pair p1_1, Pair p2_1, Pair p3_1, Pair p1_2, Pair p2_2, Pair p3_2, List<Group> res) {
-        res.add(new Group(didntCookPair, p1_1, p2_1,this.courseCounter));
+        Group g1 = new Group(didntCookPair, p1_1, p2_1,this.courseCounter);
+        g1.setCourse(COURSE.fromValue(courseCounter));
+        res.add(g1);
         if(count==0)
             res.add(new Group(p3_1,p2_2,p3_2,this.courseCounter));
         if(count==1)
@@ -334,6 +336,7 @@ public class ListManagement{
         if(bestGroup==null){
             UngroupedPair.add(pair);
         }
+        bestGroup.setCourse(COURSE.fromValue(courseCounter));
         return bestGroup;
     }
 
@@ -379,10 +382,13 @@ public class ListManagement{
 
         if (distanceToParty1==max || (!p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p1.getHasCooked().isEmpty()) ) {
             p1.setHasCooked(true, courseCounter);
+            group.setCookingPair(p1);
         } else if(distanceToParty2==max || (!p1.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p2.getHasCooked().isEmpty())){
             p2.setHasCooked(true, courseCounter);
+            group.setCookingPair(p2);
         } else if(distanceToParty3==max || (!p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && p3.getHasCooked().isEmpty())) {
             p3.setHasCooked(true, courseCounter);
+            group.setCookingPair(p3);
         }
 
         if(courseCounter==3 && !allCooked(group)) {

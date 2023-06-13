@@ -133,7 +133,7 @@ public class  Pair implements Calculation, Utility {
      */
     @Override
     public int calculateAgeDifference() {
-        return Math.abs(participant1.getAgerange().getValue() - participant2.getAgerange().getValue());
+        return Math.abs(participant1.getAgeRange().getValue() - participant2.getAgeRange().getValue());
     }
 
     /**

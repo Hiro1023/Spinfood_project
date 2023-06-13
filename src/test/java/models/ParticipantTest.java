@@ -27,64 +27,64 @@ public class ParticipantTest {
      */
     @Test
     public void ageRangeTest_age0_return0(){
-        assertEquals(0,p0.getAgerange().getValue());
+        assertEquals(0,p0.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age17_return0(){
-        assertEquals(0,p1.getAgerange().getValue());
+        assertEquals(0,p1.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age23_return1(){
-        assertEquals(1,p2.getAgerange().getValue());
+        assertEquals(1,p2.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age24_return2(){
-        assertEquals(2,p3.getAgerange().getValue());
+        assertEquals(2,p3.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age28_return3(){
-        assertEquals(3,p13.getAgerange().getValue());
+        assertEquals(3,p13.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age30_return3(){
-        assertEquals(3,p14.getAgerange().getValue());
+        assertEquals(3,p14.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age31_return4(){
-        assertEquals(4,p4.getAgerange().getValue());
+        assertEquals(4,p4.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age36_return5(){
-        assertEquals(5,p5.getAgerange().getValue());
+        assertEquals(5,p5.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age41_return5(){
-        assertEquals(5,p6.getAgerange().getValue());
+        assertEquals(5,p6.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age42_return6(){
-        assertEquals(6,p7.getAgerange().getValue());
+        assertEquals(6,p7.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age46_return6(){
-        assertEquals(6,p8.getAgerange().getValue());
+        assertEquals(6,p8.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age47_return7(){
-        assertEquals(7,p9.getAgerange().getValue());
+        assertEquals(7,p9.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age56_return7(){
-        assertEquals(7,p10.getAgerange().getValue());
+        assertEquals(7,p10.getAgeRange().getValue());
     }
     @Test
     public void ageRangeTest_age57_return8(){
-        assertEquals(8,p11.getAgerange().getValue());
+        assertEquals(8,p11.getAgeRange().getValue());
     }
 
     @Test
     public void ageRangeTest_age80_return8(){
-        assertEquals(8,p12.getAgerange().getValue());
+        assertEquals(8,p12.getAgeRange().getValue());
     }
 
     /**

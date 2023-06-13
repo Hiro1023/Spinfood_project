@@ -1,17 +1,25 @@
 package view;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import logic.ListManagement;
 import logic.readCSV;
+import logicWrapper.DataListWrapper;
 import models.Group;
 import models.Pair;
 import models.Participant;
+import modelsWrapper.GroupWrapper;
+import modelsWrapper.PairWrapper;
+import modelsWrapper.ParticipantWrapper;
 
 public class Main {
-    static String participantCSVFile = "Dokumentation/teilnehmerliste.csv";
-    static String partyLocationCSVFile = "Dokumentation/partylocation.csv";
+    static String participantCSVFile = "Resources/teilnehmerliste.csv";
+    static String partyLocationCSVFile = "Resources/partylocation.csv";
     static readCSV readCSV;
     static {
         try {
@@ -100,6 +108,17 @@ public class Main {
             System.out.println("---------------------------");
         }
     }
+
+    public static void exportToJsonFile(Object object, String filePath) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            objectMapper.writeValue(new File(filePath), object);
+            System.out.println("JSON file exported successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**ListGang03();
 
         System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
@@ -115,6 +134,10 @@ public class Main {
             //showGroupListGang02();
             lm.makeBestGroupList();
             //showGroupListGang03();
+
+        DataListWrapper dtw = new DataListWrapper(lm.dataList);
+        exportToJsonFile(dtw,"Resources/output.json");
+
 
             System.out.println("Size of all Groups");
             System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());

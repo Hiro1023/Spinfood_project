@@ -4,14 +4,16 @@ package models;
  * The Kitchen class contains all the information about the participant's kitchen
  */
 public class Kitchen {
+    private boolean IsEmergencyKitchen;
     private double kitchenStory;
     private double kitchenLongitude;
     private double kitchenLatitude;
 
-    public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
+    public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude,boolean emergency) {
         this.kitchenStory = kitchenStory;
         this.kitchenLongitude = kitchenLongitude;
         this.kitchenLatitude = kitchenLatitude;
+        this.IsEmergencyKitchen = emergency;
     }
 
     public Kitchen(){}
@@ -42,5 +44,13 @@ public class Kitchen {
 
     public void setKitchenLatitude(double kitchenLatitude) {
         this.kitchenLatitude = kitchenLatitude;
+    }
+
+    public boolean isEmergencyKitchen() {
+        return IsEmergencyKitchen;
+    }
+
+    public void setEmergencyKitchen(boolean emergencyKitchen) {
+        IsEmergencyKitchen = emergencyKitchen;
     }
 }
