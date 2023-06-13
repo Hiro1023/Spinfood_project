@@ -1,14 +1,9 @@
-package controller;
+package logic;
 
-import controller.readCSV;
-import models.Event;
-import models.Participant;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,15 +12,15 @@ class readCSVTest {
 
     String[] p1 = {"0","004670cb-47f5-40a4-87d8-5276c18616ec","Person1","veggie","21","male","maybe","3.0","8.673368271555807","50.5941282715558","","","",""};
 
-    public readCSVTest() throws Exception {
+    public readCSVTest() {
         test = new readCSV();
     }
 
     /**
      * Test for read_File()
      * Whether this method can read .csv File, is checked
-     * Checking, whether all lines on table is readed
-     * @throws Exception
+     * Checking, whether all lines on table is read
+     * @throws Exception if the file is not found
      */
     @Test
     void read_FileTest_checkSumOfLinesOnTable() throws Exception{
@@ -35,7 +30,7 @@ class readCSVTest {
     /**
      * Test for read_File()
      * checking the Data of first Participant on the Table
-     * @throws Exception
+     * @throws Exception if the file is not found
      */
     @Test
     void read_FileTest_checkFirstParticipantOnTable() throws Exception{
@@ -49,14 +44,14 @@ class readCSVTest {
      * Checking count of all participant
      */
     @Test
-    void addParticipantTest_checkSumOfAllparticipant() throws Exception {
+    void addParticipantTest_checkSumOfAllParticipant() throws Exception {
         test.addParticipantAndPair(test.read_File(new File("Dokumentation/teilnehmerliste.csv")));
         assertEquals(310, test.countParticipant);
     }
 
     /**
      * Checking count of alone_participant
-     * @throws Exception
+     * @throws Exception if the file is not found
      */
     @Test
     void addParticipantTest_checkSumOfAlone_participant() throws Exception {
@@ -66,7 +61,7 @@ class readCSVTest {
 
     /**
      * Checking count of pair
-     * @throws Exception
+     * @throws Exception if the file is not found
      */
     @Test
     void addParticipantTest_checkSumOfPair() throws Exception {
@@ -75,8 +70,8 @@ class readCSVTest {
     }
 
     /**
-     * Checking, whether result between count of all patricipant and sum of pair and alone_participant is equal
-     * @throws Exception
+     * Checking, whether result between count of all participant and sum of pair and alone_participant is equal
+     * @throws Exception if the file is not found
      */
     @Test
     void addParticipantTest() throws Exception {
@@ -88,7 +83,7 @@ class readCSVTest {
     @Test
     void addPartyLocationTest_checkLongitude(){
         List<String[]> dataCSV = new ArrayList<>();
-        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"Longitude","Latitude"});
         dataCSV.add(new String[]{"5.0","6.0"});
         test.addPartyLocation(dataCSV);
         assertEquals("5.0",Double.toString(test.event.getPartyLongitude()));
@@ -97,7 +92,7 @@ class readCSVTest {
     @Test
     void addPartyLocationTest_checkLatitude(){
         List<String[]> dataCSV = new ArrayList<>();
-        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"Longitude","Latitude"});
         dataCSV.add(new String[]{"5.0","6.0"});
         test.addPartyLocation(dataCSV);
         assertEquals("6.0",Double.toString(test.event.getPartyLatitude()));

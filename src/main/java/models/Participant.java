@@ -1,17 +1,17 @@
 package models;
+import utility.Utility;
 
-import controller.Utility;
-
+/**
+ * The Participant class contains all information about a Participant
+ */
 public class Participant implements Utility {
-
     private String ID;
     private String name;
     private FOOD_PREFERENCE foodPreference;
     private int age;
-    private SEX sex; //enum
+    private SEX sex;
     private Kitchen kitchen;
-    private AGE_RANGE agerange; //enem
-
+    private AGE_RANGE ageRange;
 
     private int KitchenCount = 0;
 
@@ -22,13 +22,14 @@ public class Participant implements Utility {
         this.foodPreference = assignFoodPreference(foodPreference);
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
-        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
-        this.agerange = assignAgeRange(this.age);
+        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),
+                Double.parseDouble(Kitchen_Latitude), availability.equals("maybe"));
+        this.ageRange = assignAgeRange(this.age);
     }
 
     /**
-     * @description: for each age groups we are assigning them to a specific enum
-     * @param age
+     * This method assigns the corresponding enum for each age group
+     * @param age the age of the Participant
      * @return AGE_RANGE
      */
     private AGE_RANGE assignAgeRange(int age) {
@@ -55,9 +56,9 @@ public class Participant implements Utility {
 
 
     /**
-     * @description: assigns food prefrence for each case of preffered
-     * @param foodPreference
-     * @return FOOD_PREFRENCE
+     * This method assigns FOOD_PREFERENCE for each participant's food preference
+     * @param foodPreference the participant's food preference
+     * @return FOOD_PREFERENCE the corresponding food preference
      */
     private FOOD_PREFERENCE assignFoodPreference(String foodPreference) {
         switch (foodPreference) {
@@ -76,20 +77,12 @@ public class Participant implements Utility {
     @Override
     public void show(){
         System.out.println("Participant Name: " + name);
-        System.out.println("Infos: ");
-        System.out.println("ID: " + this.ID);
-        System.out.println("Name: " + this.name);
-        System.out.println("Food Preference: " + this.foodPreference);
-        System.out.println("Age: " + this.age);
-        System.out.println("Sex: " + this.sex);
-        System.out.println("Kitchen: " + ((this.kitchen==null)?   "null":this.kitchen.showKitchen()) );
-        System.out.println("Age Range: " + this.agerange);
-        System.out.println("Kitchen Count: " + this.getKitchenCount());
     }
 
     @Override
     public boolean equal(Object o) {
-        return this.equals(o);
+        Participant p = (Participant) o;
+        return ID.equals(p.ID);
     }
 
     public void setID(String ID) {
@@ -116,8 +109,8 @@ public class Participant implements Utility {
         this.kitchen = kitchen;
     }
 
-    public void setAgerange(AGE_RANGE agerange) {
-        this.agerange = agerange;
+    public void setAgeRange(AGE_RANGE ageRange) {
+        this.ageRange = ageRange;
     }
 
     public Kitchen getKitchen() {
@@ -144,8 +137,8 @@ public class Participant implements Utility {
         return sex;
     }
 
-    public AGE_RANGE getAgerange() {
-        return agerange;
+    public AGE_RANGE getAgeRange() {
+        return ageRange;
     }
 
     public int getKitchenCount() {

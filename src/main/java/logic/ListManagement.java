@@ -1,14 +1,13 @@
-package controller;
+package logic;
 import java.util.*;
 import java.util.stream.Collectors;
 import models.*;
 
 public class ListManagement{
     public DataList dataList;
-    public List<Pair> pairListTemp;
+    public List<Pair> pairListTemp ;
     private int courseCounter = 1;
-    public List<Pair> cannotFindGroup = new ArrayList<>();
-    //public int allCookedGroup = 0;
+    public List<Pair> UngroupedPair = new ArrayList<>();
     public List<Group> allCookedGroup = new ArrayList<>();
     public List<Group> pairDidntCookGroup = new ArrayList<>();
     public List<Pair> pairDidntCookList = new ArrayList<>();
@@ -20,31 +19,29 @@ public class ListManagement{
      *  This method is used to give a criteria and updated weight or setting a new weight for the criteria
      * @param criteria the criteria to be modified
      * @param newWeight the weight to be given to this criteria
-     * @return void
      */
     public void editCriteria(CRITERIA criteria, int newWeight) {
         criteria.setWeight(newWeight);
     }
+
     /**
      * This method creates the best possible list of pairs. It keeps forming pairs of participants and take the best weight for each pair until
      * no more suitable pairs can be formed.
      * After forming each pair, it removes the paired participants from the unmatched participants list and adds the pair to the pairList.
-     *
-     * @return void
      */
     public void makeBestPairList() {
-        while (dataList.unmatchedParticipants.size() > 1) {
-            boolean impossiblePair = dataList.unmatchedParticipants.size() == 2 && makeBestPair(dataList.unmatchedParticipants.get(0))==null;
-            boolean atLeastOneKitchen = checkKitchen(dataList.unmatchedParticipants);
+        while (dataList.getUnmatchedParticipants().size() > 1) {
+            boolean impossiblePair = dataList.getUnmatchedParticipants().size() == 2 && makeBestPair(dataList.getUnmatchedParticipants().get(0))==null;
+            boolean atLeastOneKitchen = checkKitchen(dataList.getUnmatchedParticipants());
             if (impossiblePair || !atLeastOneKitchen) {
                 break;
             } else {
                 Map<Pair, Double> tempPairs = new HashMap<>();
-                List<Participant> tempParticipants = new ArrayList<>(dataList.unmatchedParticipants);
+                List<Participant> tempParticipants = new ArrayList<>(dataList.getUnmatchedParticipants());
                 for (Participant p : tempParticipants) {
                     Pair bestPair = makeBestPair(p);
                     if (bestPair != null) {
-                        tempPairs.put(bestPair, bestPair.calculatePairWeightedScore());
+                        tempPairs.put(bestPair, bestPair.calculateWeightedScore());
                     }
                 }
                 List<Pair> tempPairList = new ArrayList<>();
@@ -53,26 +50,25 @@ public class ListManagement{
                 List<Pair> list = tempPairList;
                 for (int i = 0; i < list.size(); i++) {
                     Pair a = list.get(0);
-                    dataList.pairList.add(a);
-                    findFoodPreference(a);
-                    dataList.unmatchedParticipants.remove(a.getParticipant1());
-                    dataList.unmatchedParticipants.remove(a.getParticipant2());
+                    dataList.getPairList().add(a);
+                    dataList.getUnmatchedParticipants().remove(a.getParticipant1());
+                    dataList.getUnmatchedParticipants().remove(a.getParticipant2());
                     list = list.stream().filter(x -> !containsPairedParticipant(x, a.getParticipant1(), a.getParticipant2())).collect(Collectors.toList());
                 }
             }
         }
-        for (Participant p : dataList.unmatchedParticipants) {
-            dataList.event.getParticipantSuccessorList().addParticipant(p);
+        for (Participant p : dataList.getUnmatchedParticipants()) {
+            dataList.getParticipantSuccessorList().addParticipant(p);
         }//copy everything from data after all Participants is matched to Pairs
     }
 
     /**
      *  this method checks a list of participants if they own a kitchen to cook in
-     * @param unmatchedParticipants
+     * @param Participants the chosen participant list
      * @return boolean if a participant owns a kitchen
      */
-    private boolean checkKitchen(List<Participant> unmatchedParticipants) {
-        for (Participant p : unmatchedParticipants) {
+    private boolean checkKitchen(List<Participant> Participants) {
+        for (Participant p : Participants) {
             if (p.getKitchen() != null)
                 return true;
         }
@@ -81,7 +77,6 @@ public class ListManagement{
 
     /**
      * This method checks whether a given pair contains a certain participant.
-     *
      * @param p The pair to be checked.
      * @param a The first participant to be checked against the pair.
      * @param b The second participant to be checked against the pair.
@@ -94,14 +89,13 @@ public class ListManagement{
     /**
      * This method attempts to make the best pair for a given participant. It first filters out suitable candidates based on kitchen availability and food preference.
      * Then, it calculates the pair score for each candidate and chooses the one with the highest score.
-     *
      * @param participant The participant for whom the best pair is to be found.
      * @return Pair, the best pair for the given participant.
      */
     public Pair makeBestPair(Participant participant) {
         Pair bestPair = null;
         double bestScore = -1;
-        List<Participant> candidates = new ArrayList<>(dataList.unmatchedParticipants);
+        List<Participant> candidates = new ArrayList<>(dataList.getUnmatchedParticipants());
         candidates.remove(participant);
         if (participant.getKitchen() == null) {
             candidates = candidates.stream().filter(x -> x.getKitchen()!=null).collect(Collectors.toList());
@@ -112,10 +106,9 @@ public class ListManagement{
         if (participant.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || participant.getFoodPreference().equals(FOOD_PREFERENCE.veggie)) {
             candidates = candidates.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.meat)).collect(Collectors.toList());
         }
-
         for (Participant p : candidates) {
             Pair tempPair = new Pair(participant,p);
-            double score = tempPair.calculatePairWeightedScore();
+            double score = tempPair.calculateWeightedScore();
             if (score == 1000) {
                 return tempPair;
             } else {
@@ -131,11 +124,10 @@ public class ListManagement{
     /**
      * This method creates the best possible list of groups. It keeps forming groups of pairs until no more suitable groups can be formed.
      * After forming each group, it removes the grouped pairs from the temporary pair list and adds the group to the appropriate group list.
-     * @return void
      */
     public void makeBestGroupList() {
         //find best Group and terminate if there is only 2 pairs left
-        pairListTemp = new ArrayList<>(dataList.pairList);
+        pairListTemp = new ArrayList<>(dataList.getPairList());
 
         while (pairListTemp.size() > 2) {
             boolean impossibleGroup = pairListTemp.size() == 3 && makeBestGroup(pairListTemp.get(0)) == null;
@@ -146,7 +138,7 @@ public class ListManagement{
                 for (Pair p : pairListTemp) { //O(n)
                     Group bestGroup = makeBestGroup(p);
                     if (bestGroup != null)
-                        tempGroups.put(bestGroup, bestGroup.calculateGroupWeightedScore());
+                        tempGroups.put(bestGroup, bestGroup.calculateWeightedScore());
                 }
                 List<Group> tempGroupList = new ArrayList<>();
                 //sort the tempGroup in descending order
@@ -157,11 +149,7 @@ public class ListManagement{
 
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
-                    findFoodPreferenceGroup(g);
-                    if (addMetAndCookPair(g)) { //mark all pair in this group as met
-                        addToGroup(g);  //add this group g to the dataList->groupList 1,2 or 3
-                    }
-
+                    addToGroup(g);
                     pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
                     list = list.stream().filter(x -> notContainsPairedPairs(x, g)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
@@ -169,45 +157,50 @@ public class ListManagement{
         }
 
 
-            if (courseCounter == 3 && !allCookedGroup.isEmpty()) {
-                for (Group group1 : pairDidntCookGroup) {
-                    for (Group group2 : allCookedGroup) {
-                        boolean sameFoodPreference = group1.getFoodPreference().equals(group2.getFoodPreference())
-                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.none)
-                                || group2.getFoodPreference().equals(FOOD_PREFERENCE.none)
-                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.veggie))
-                                || group1.getFoodPreference().equals(FOOD_PREFERENCE.veggie) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.vegan));
+        if (courseCounter == 3 && !allCookedGroup.isEmpty()) {
+            List<Group> pairDidntCookGroupTemp = new ArrayList<>(pairDidntCookGroup);
+            for (Group group1 : pairDidntCookGroup) {
+                for (Group group2 : allCookedGroup) {
+                    boolean sameFoodPreference = group1.getFoodPreference().equals(group2.getFoodPreference())
+                            || group1.getFoodPreference().equals(FOOD_PREFERENCE.none)
+                            || group2.getFoodPreference().equals(FOOD_PREFERENCE.none)
+                            || ( group1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.veggie)) )
+                            || ( group1.getFoodPreference().equals(FOOD_PREFERENCE.veggie) && (group2.getFoodPreference().equals(FOOD_PREFERENCE.vegan)) );
 
-                        if (sameFoodPreference) {
-                            List<Group> bestGroup = makeBestRestGroupGang3(group2, group1);
-                            dataList.getGroupListCourse03().remove(group1);
-                            dataList.getGroupListCourse03().remove(group2);
-                            findFoodPreferenceGroup(bestGroup.get(0));
-                            findFoodPreferenceGroup(bestGroup.get(1));
-                            dataList.getGroupListCourse03().add(bestGroup.get(0));//add this group g to the dataList->groupList 1,2 or 3
-                            dataList.getGroupListCourse03().add(bestGroup.get(1));
-                            break;
-                        }
-
+                    if (sameFoodPreference) {
+                        List<Group> bestGroup = makeBestRestGroupGang3(group2, group1);
+                        dataList.getGroupListCourse03().remove(group1);
+                        dataList.getGroupListCourse03().remove(group2);
+                        pairDidntCookGroupTemp.remove(group1);
+                        addMetAndCookPair(bestGroup.get(0));
+                        addMetAndCookPair(bestGroup.get(1));
+                        dataList.getGroupListCourse03().add(bestGroup.get(0));//add this group g to the dataList->groupList 1,2 or 3
+                        dataList.getGroupListCourse03().add(bestGroup.get(1));
+                        allCookedGroup.remove(group2);
+                        break;
                     }
-
                 }
             }
+            dataList.getGroupListCourse03().addAll(new ArrayList<>(pairDidntCookGroupTemp));
+            pairDidntCookGroup = pairDidntCookGroupTemp;
+            dataList.getGroupListCourse03().addAll(allCookedGroup);
+        }
 
+        //increase counter, go to next Gang
+        System.out.println("Group List Gang " + courseCounter);
+        courseCounter++;
+        //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
 
-
-            //increase counter, go to next Gang
-            System.out.println("Group List Gang " + courseCounter);
-            courseCounter++;
-            //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
+        if(courseCounter==1) {
             for (Pair p : pairListTemp) {
+                dataList.getPairList().remove(p);
                 if (p.getIsPreMade()) {
-                    dataList.pairList.remove(p);
-                    dataList.event.getPairSuccesorList().addPair(p);
+                    dataList.getPairSuccessorList().addPair(p);
                 } else {
-                    dataList.event.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(), p.getParticipant2());
+                    dataList.getParticipantSuccessorList().addAllParticipant(p.getParticipant1(), p.getParticipant2());
                 }
             }
+        }
     }
 
     public List<Group> makeBestRestGroupGang3(Group allCookedGroup,Group didntCookGroup){
@@ -230,57 +223,58 @@ public class ListManagement{
         Pair p2_2 = didntCookGroup.getPairs().get(1);
         Pair p3_2 = didntCookGroup.getPairs().get(2);
 
-        double g1 = new Group(didntCookPair, p1_1, p2_1).calculateGroupWeightedScore();
-        double g2 = new Group(didntCookPair, p1_1, p3_1).calculateGroupWeightedScore();
-        double g3 = new Group(didntCookPair, p2_1, p3_1).calculateGroupWeightedScore();
+        double g1 = new Group(didntCookPair, p1_1, p2_1,courseCounter).calculateWeightedScore();
+        double g2 = new Group(didntCookPair, p1_1, p3_1,courseCounter).calculateWeightedScore();
+        double g3 = new Group(didntCookPair, p2_1, p3_1,courseCounter).calculateWeightedScore();
 
         double max = Math.max(Math.max(g1,g2),g3);
         List<Group> res = new ArrayList<>();
         if(max==g1){
-            res.add(new Group(didntCookPair, p1_1, p2_1));
-            if(count==0)
-                res.add(new Group(p3_1,p2_2,p3_2));
-            if(count==1)
-                res.add(new Group(p3_1,p1_2,p3_2));
-            if(count==2)
-                res.add(new Group(p3_1,p1_2,p2_2));
+            addValidatedGroupIntoGroupList(didntCookPair, count, p1_1, p2_1, p3_1, p1_2, p2_2, p3_2, res);
         } else if (max==g2) {
-            res.add(new Group(didntCookPair, p1_1, p3_1));
-            if(count==0)
-                res.add(new Group(p2_1,p2_2,p3_2));
-            if(count==1)
-                res.add(new Group(p2_1,p1_2,p3_2));
-            if(count==2)
-                res.add(new Group(p2_1,p1_2,p2_2));
+            addValidatedGroupIntoGroupList(didntCookPair, count, p1_1, p3_1, p2_1, p1_2, p2_2, p3_2, res);
         } else if (max==g3) {
-            res.add(new Group(didntCookPair, p2_1, p3_1));
-            if(count==0)
-                res.add(new Group(p1_1,p2_2,p3_2));
-            if(count==1)
-                res.add(new Group(p1_1,p1_2,p3_2));
-            if(count==2)
-                res.add(new Group(p1_1,p1_2,p2_2));
+            addValidatedGroupIntoGroupList(didntCookPair, count, p2_1, p3_1, p1_1, p1_2, p2_2, p3_2, res);
         }
-
-
         return res;
     }
 
+    /**
+     * This method add the two new validated Groups into the Group List
+     * @param didntCookPair the chosen Pair that has not cooked
+     * @param count the current count
+     * @param p1_1 the first pair in first group
+     * @param p2_1 the second pair in first group
+     * @param p3_1 the third pair in first group
+     * @param p1_2 the first pair in second group
+     * @param p2_2 the second pair in second group
+     * @param p3_2 the third pair in second group
+     * @param res the group list
+     */
+    private void addValidatedGroupIntoGroupList(Pair didntCookPair, int count, Pair p1_1, Pair p2_1, Pair p3_1, Pair p1_2, Pair p2_2, Pair p3_2, List<Group> res) {
+        Group g1 = new Group(didntCookPair, p1_1, p2_1,this.courseCounter);
+        g1.setCourse(COURSE.fromValue(courseCounter));
+        res.add(g1);
+        if(count==0)
+            res.add(new Group(p3_1,p2_2,p3_2,this.courseCounter));
+        if(count==1)
+            res.add(new Group(p3_1,p1_2,p3_2,this.courseCounter));
+        if(count==2)
+            res.add(new Group(p3_1,p1_2,p2_2,this.courseCounter));
+    }
 
 
     /**
      * This method adds a given group to the appropriate group list based on the course.
-     *
      * @param g The group to be added.
-     * @return void
      */
     private void addToGroup(Group g){
-       if(courseCounter ==1)
-                dataList.groupListCourse01.add(g);
-       else if(courseCounter ==2)
-                dataList.groupListCourse02.add(g);
-       else if(courseCounter ==3)
-                dataList.groupListCourse03.add(g);
+        if(courseCounter ==1)
+            dataList.getGroupListCourse01().add(g);
+        else if(courseCounter ==2)
+            dataList.getGroupListCourse02().add(g);
+        else if(courseCounter ==3)
+            dataList.getGroupListCourse03().add(g);
     }
 
     /**
@@ -314,8 +308,7 @@ public class ListManagement{
         unmatchedPairs.remove(pair);
         unmatchedPairs.removeAll(pair.getVisitedPairs());
 
-        if(unmatchedPairs.size()<2)
-            return bestGroup;
+        if(unmatchedPairs.size()<2) return bestGroup;
         if (containsMeat(pair))
             unmatchedPairs = unmatchedPairs.stream().filter(x -> !containsVeganOrVeggie(x)).collect(Collectors.toList());
         if (containsVeganOrVeggie(pair))
@@ -328,11 +321,11 @@ public class ListManagement{
                 Pair pair2 = unmatchedPairs.get(j);
 
                 if (!pair1.getVisitedPairs().contains(pair2) && !pair2.getVisitedPairs().contains(pair1)) {
-                    if(allCooked(new Group(pair,pair1,pair2)) && courseCounter<=2){
+                    if(allCooked(new Group(pair,pair1,pair2,this.courseCounter)) && courseCounter<=2){
                         continue;
                     }
-                    Group tempGroup = new Group(pair, pair1, pair2);
-                    double score = tempGroup.calculateGroupWeightedScore();
+                    Group tempGroup = new Group(pair, pair1, pair2,courseCounter);
+                    double score = tempGroup.calculateWeightedScore();
                     if (score > bestScore) {
                         bestScore = score;
                         bestGroup = tempGroup;
@@ -341,47 +334,42 @@ public class ListManagement{
             }
         }
         if(bestGroup==null){
-            System.out.println("cannot find any group");
-            cannotFindGroup.add(pair);
+            UngroupedPair.add(pair);
         }
-
+        bestGroup.setCourse(COURSE.fromValue(courseCounter));
         return bestGroup;
     }
+
 
     /**
      * This method is used to add a  pair that cooked to the group. It calculates the distance of each pair's kitchen to the party location,
      * sets the pair with the maximum distance as having cooked and which course, and updates the meetings between the pairs.
-     *
      * @param group the group of pairs participating in the cooking event.
-     * @return void
      */
-    public boolean addMetAndCookPair(Group group){
-        //find pair that will cook in this gang
+    public void addMetAndCookPair(Group group){
         //each pair in group
-        if(findCookPair(group)) {
-            Pair p1 = group.getPairs().get(0);
-            Pair p2 = group.getPairs().get(1);
-            Pair p3 = group.getPairs().get(2);
-            //add met pair
-            p1.meetPair(p2, p3);
-            p2.meetPair(p1, p3);
-            p3.meetPair(p1, p2);
-            return true;
-        }
-        return false;
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+        //add met pair
+        p1.meetPair(p2,p3);
+        p2.meetPair(p1,p3);
+        p3.meetPair(p1,p2);
+        //find pair that will cook in this gang
+        findCookPair(group);
     }
 
     /**
-     *
-     * @param group
+     * This methode decides which pair is responsible to cook in this group
+     * @param group the group that is chosen to be evaluated
      */
-    public boolean findCookPair(Group group) {
+    public void findCookPair(Group group) {
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);
 
-        double partyLongitude = dataList.event.getPartyLongitude();
-        double partyLatitude = dataList.event.getPartyLatitude();
+        double partyLongitude = dataList.getEvent().getPartyLongitude();
+        double partyLatitude = dataList.getEvent().getPartyLatitude();
 
         double distanceToParty1 = p1.calculateDistanceBetweenKitchenAndParty(partyLongitude, partyLatitude);
         double distanceToParty2 = p2.calculateDistanceBetweenKitchenAndParty(partyLongitude, partyLatitude);
@@ -389,18 +377,18 @@ public class ListManagement{
         double max = Math.max(Math.max(distanceToParty1, distanceToParty2), distanceToParty3);
 
         if(allCooked(group)) {
-            System.out.println("All cooked");
-            findFoodPreferenceGroup(group);
             allCookedGroup.add(group);
-            return false;
         }
 
         if (distanceToParty1==max || (!p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p1.getHasCooked().isEmpty()) ) {
             p1.setHasCooked(true, courseCounter);
+            group.setCookingPair(p1);
         } else if(distanceToParty2==max || (!p1.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p2.getHasCooked().isEmpty())){
             p2.setHasCooked(true, courseCounter);
+            group.setCookingPair(p2);
         } else if(distanceToParty3==max || (!p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && p3.getHasCooked().isEmpty())) {
             p3.setHasCooked(true, courseCounter);
+            group.setCookingPair(p3);
         }
 
         if(courseCounter==3 && !allCooked(group)) {
@@ -410,53 +398,11 @@ public class ListManagement{
                     pairDidntCookList.add(p);
                 }
             }
-            System.out.println("not all pair are cook");
-            return false;
         }
-
-        return true;
-    }
-
-    /**
-     *
-     * @param pair
-     */
-    public void findFoodPreference(Pair pair){
-        Participant p1 = pair.getParticipant1();
-        Participant p2 = pair.getParticipant2();
-        if(p1.getFoodPreference().equals(p2.getFoodPreference()))
-            pair.setFoodPreference(p1.getFoodPreference());
-        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.none))
-            pair.setFoodPreference(p2.getFoodPreference());
-        if(p2.getFoodPreference().equals(FOOD_PREFERENCE.none))
-            pair.setFoodPreference(p1.getFoodPreference());
-        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.meat) || p2.getFoodPreference().equals(FOOD_PREFERENCE.meat))
-            pair.setFoodPreference(FOOD_PREFERENCE.meat);
-        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
-            pair.setFoodPreference(FOOD_PREFERENCE.vegan);
-    }
-
-    public void findFoodPreferenceGroup(Group group){
-        Pair p1 = group.getPairs().get(0);
-        Pair p2 = group.getPairs().get(1);
-        Pair p3 = group.getPairs().get(2);
-
-        if(containsMeat(p1)||containsMeat(p2)||containsMeat(p3))
-            group.setFoodPreference(FOOD_PREFERENCE.meat);
-        else if (p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
-                && p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
-                && p3.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
-            group.setFoodPreference(FOOD_PREFERENCE.vegan);
-        else if(containsVeganOrVeggie(p1)||containsVeganOrVeggie(p2)||containsVeganOrVeggie(p3))
-            group.setFoodPreference(FOOD_PREFERENCE.veggie);
-        else
-            group.setFoodPreference(FOOD_PREFERENCE.none);
-
     }
 
     /**
      * This method checks whether the given pair contains a participant who prefers meat.
-     *
      * @param pair the pair of participants to be checked.
      * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
      */
@@ -465,7 +411,6 @@ public class ListManagement{
     }
     /**
      * This method checks whether the given pair contains a participant who is vegan or veggie.
-     *
      * @param pair the pair of participants to be checked.
      * @return boolean, returns true if either participant in the pair prefers meat, false otherwise.
      */
@@ -476,7 +421,6 @@ public class ListManagement{
 
     /**
      *  this method takes all pairs from a group and checks if they have cooked or not
-     *
      * @return boolean , returns true if all pairs have cooked
      */
     private boolean allCooked(Group group){

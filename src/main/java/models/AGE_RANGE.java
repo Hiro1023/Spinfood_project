@@ -1,5 +1,9 @@
 package models;
 
+/**
+ The AGE_RANGE enum represents different age range for all participants.
+ Each age range has a corresponding value associated with it.
+ */
 public enum AGE_RANGE {
     LessThan18(0),
     LessThan24(1),
@@ -14,8 +18,7 @@ public enum AGE_RANGE {
     public int getValue() {
         return value;
     }
-
-    private int value;
+    private final int value;
     AGE_RANGE(int i) {
         this.value = i;
     }
