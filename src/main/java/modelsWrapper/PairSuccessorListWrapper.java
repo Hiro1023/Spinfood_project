@@ -3,15 +3,13 @@ package modelsWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import models.Pair;
 import models.PairSuccessorList;
-import models.Participant;
-import models.ParticipantSuccessorList;
 import utility.MapUtility;
 
 import java.util.List;
 
 public class PairSuccessorListWrapper implements MapUtility {
 
-    @JsonProperty("participantSuccessorList")
+    @JsonProperty("pairSuccessorList")
     private List<PairWrapper> pairSuccessorList;
 
     public PairSuccessorListWrapper(PairSuccessorList pl) {
