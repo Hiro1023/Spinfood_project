@@ -165,7 +165,7 @@ class ListManagementTest {
         lm.pairListTemp.add(pair4);
 
         // Invoke the method under test
-        Group testGroup = lm.makeBestGroup(pair1,lm.pairListTemp);
+        Group testGroup = lm.makeBestGroup(pair1);
 
         // Prepare expected result
         List<Pair> expectedResult = new ArrayList<>();
@@ -194,7 +194,7 @@ class ListManagementTest {
         lm.pairListTemp.add(pair6);
 
         // Invoke the method under test
-        Group testGroup = lm.makeBestGroup(pair3,lm.pairListTemp);
+        Group testGroup = lm.makeBestGroup(pair3);
 
         // Prepare expected result
         List<Pair> expectedResult = new ArrayList<>();
@@ -215,7 +215,7 @@ class ListManagementTest {
         lm.pairListTemp = new ArrayList<>();
         lm.pairListTemp.add(pair1);
         lm.pairListTemp.add(pair2);
-        assertNull(lm.makeBestGroup(pair1,lm.pairListTemp));
+        assertNull(lm.makeBestGroup(pair1));
     }
 
 }

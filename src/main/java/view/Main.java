@@ -128,7 +128,6 @@ public class Main {
 //        }
 //        System.out.println("Participant List size :" + lm.dataList.getParticipantList().size());
 //        System.out.println("Pair List size :" + lm.dataList.getPairList().size());
-
         showParticipantSuccessorList();
     }
 }
