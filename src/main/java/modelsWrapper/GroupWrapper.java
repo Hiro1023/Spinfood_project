@@ -15,7 +15,6 @@ import java.util.List;
 public class GroupWrapper implements MapUtility {
     @JsonProperty("pairs")
     private List<PairWrapper> Pairs;
-
     @JsonProperty("cookingPair")
     private PairWrapper cookingPair;
 
@@ -70,7 +69,45 @@ public class GroupWrapper implements MapUtility {
         }
         return foodPref;
     }
+    public List<PairWrapper> getPairs() {
+        return Pairs;
+    }
 
+    public void setPairs(List<PairWrapper> pairs) {
+        Pairs = pairs;
+    }
+
+    public PairWrapper getCookingPair() {
+        return cookingPair;
+    }
+
+    public void setCookingPair(PairWrapper cookingPair) {
+        this.cookingPair = cookingPair;
+    }
+
+    public COURSEWrapper getCourse() {
+        return course;
+    }
+
+    public void setCourse(COURSEWrapper course) {
+        this.course = course;
+    }
+
+    public FOOD_PREFERENCEWrapper getFoodPreference() {
+        return foodPreference;
+    }
+
+    public void setFoodPreference(FOOD_PREFERENCEWrapper foodPreference) {
+        this.foodPreference = foodPreference;
+    }
+
+    public double getWeightedScore() {
+        return weightedScore;
+    }
+
+    public void setWeightedScore(double weightedScore) {
+        this.weightedScore = weightedScore;
+    }
     @Override
     public List<ParticipantWrapper> mapParticipantList(Object o) {
         return null;

@@ -18,6 +18,7 @@ import modelsWrapper.PairWrapper;
 import modelsWrapper.ParticipantWrapper;
 
 public class Main {
+    static ObjectMapper objectMapper = new ObjectMapper();
     static String participantCSVFile = "Resources/teilnehmerliste.csv";
     static String partyLocationCSVFile = "Resources/partylocation.csv";
     static readCSV readCSV;
@@ -119,6 +120,17 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    // Convert the list to JSON
+    public static void writeFileToJson(List<?> list) {
+        try {
+            // Write the JSON to a file
+            objectMapper.writeValue(new File("output2.json"),list);
+            System.out.println("JSON file created successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**ListGang03();
 
         System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
@@ -137,6 +149,8 @@ public class Main {
 
         DataListWrapper dtw = new DataListWrapper(lm.dataList);
         exportToJsonFile(dtw,"Resources/output.json");
+        exportToJsonFile(dtw.makeTable(),"Resources/output2.json");
+
 
 
             System.out.println("Size of all Groups");

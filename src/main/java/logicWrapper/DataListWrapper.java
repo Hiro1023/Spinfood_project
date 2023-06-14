@@ -8,6 +8,10 @@ import models.Pair;
 import models.Participant;
 import modelsWrapper.*;
 import utility.MapUtility;
+
+import java.sql.Wrapper;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @JsonPropertyOrder({ "participantList", "pairList", "groupListCourse01",
@@ -71,5 +75,86 @@ public class DataListWrapper implements MapUtility {
             wrapperList.add(new GroupWrapper(g));
         }
         return wrapperList;
+    }
+
+    public List<HashMap<?,Double>> makeTable() {
+        HashMap<PairWrapper,Double> ht = new HashMap<>();
+        for (PairWrapper p : this.getPairList()) {
+            ht.put(p,p.getWeightedScore());
+        }
+        List<HashMap<?,Double>> res = new ArrayList<>();
+        res.add(ht);
+        HashMap<GroupWrapper,Double> ht2 = new HashMap<>();
+        for (GroupWrapper g1 : this.getGroupListCourse01()) {
+            ht2.put(g1,g1.getWeightedScore());
+        }
+        res.add(ht2);
+        HashMap<GroupWrapper,Double> ht3 = new HashMap<>();
+        for (GroupWrapper g2 : this.getGroupListCourse02()) {
+            ht3.put(g2,g2.getWeightedScore());
+        }
+        res.add(ht3);
+        HashMap<GroupWrapper,Double> ht4 = new HashMap<>();
+        for (GroupWrapper g3 : this.getGroupListCourse03()) {
+            ht4.put(g3,g3.getWeightedScore());
+        }
+        res.add(ht4);
+        return res;
+    }
+
+    public List<ParticipantWrapper> getParticipantList() {
+        return participantList;
+    }
+
+    public void setParticipantList(List<ParticipantWrapper> participantList) {
+        this.participantList = participantList;
+    }
+
+    public List<PairWrapper> getPairList() {
+        return pairList;
+    }
+
+    public void setPairList(List<PairWrapper> pairList) {
+        this.pairList = pairList;
+    }
+
+    public List<GroupWrapper> getGroupListCourse01() {
+        return groupListCourse01;
+    }
+
+    public void setGroupListCourse01(List<GroupWrapper> groupListCourse01) {
+        this.groupListCourse01 = groupListCourse01;
+    }
+
+    public List<GroupWrapper> getGroupListCourse02() {
+        return groupListCourse02;
+    }
+
+    public void setGroupListCourse02(List<GroupWrapper> groupListCourse02) {
+        this.groupListCourse02 = groupListCourse02;
+    }
+
+    public List<GroupWrapper> getGroupListCourse03() {
+        return groupListCourse03;
+    }
+
+    public void setGroupListCourse03(List<GroupWrapper> groupListCourse03) {
+        this.groupListCourse03 = groupListCourse03;
+    }
+
+    public ParticipantSuccessorListWrapper getParticipantSuccessorList() {
+        return participantSuccessorList;
+    }
+
+    public void setParticipantSuccessorList(ParticipantSuccessorListWrapper participantSuccessorList) {
+        this.participantSuccessorList = participantSuccessorList;
+    }
+
+    public PairSuccessorListWrapper getPairSuccessorList() {
+        return pairSuccessorList;
+    }
+
+    public void setPairSuccessorList(PairSuccessorListWrapper pairSuccessorList) {
+        this.pairSuccessorList = pairSuccessorList;
     }
 }
