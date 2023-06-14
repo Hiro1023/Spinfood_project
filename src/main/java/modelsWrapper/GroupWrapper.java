@@ -11,7 +11,7 @@ import utility.MapUtility;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonPropertyOrder({ "pairs", "cookingPair", "course", "foodPreference" })
+@JsonPropertyOrder({ "pairs", "cookingPair", "course", "foodPreference","weightedScore"})
 public class GroupWrapper implements MapUtility {
     @JsonProperty("pairs")
     private List<PairWrapper> Pairs;
@@ -24,12 +24,15 @@ public class GroupWrapper implements MapUtility {
 
     @JsonProperty("foodPreference")
     private FOOD_PREFERENCEWrapper foodPreference;
+    @JsonProperty("WeightedScore")
+    private double weightedScore;
 
     public GroupWrapper(Group group) {
         this.Pairs = mapPairList(group.getPairs());
         this.cookingPair = (group.getCookingPair() == null)? null:new PairWrapper(group.getCookingPair());
         this.course = (group.getCourse() == null)? null:mapCourse(group.getCourse());
         this.foodPreference = mapFoodPreference(group.getFoodPreference());
+        this.weightedScore = group.calculateWeightedScore();
     }
 
     private COURSEWrapper mapCourse(COURSE course) {

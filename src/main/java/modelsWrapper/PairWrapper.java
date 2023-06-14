@@ -14,7 +14,8 @@ import java.util.List;
         "visitedPairs",
         "participant1",
         "participant2",
-        "hasCooked"
+        "hasCooked",
+        "WeightedScore"
 })
 public class PairWrapper implements MapUtility {
     @JsonProperty("pairId")
@@ -38,6 +39,9 @@ public class PairWrapper implements MapUtility {
     @JsonProperty("hasCooked")
     private java.util.Map<Boolean, Integer> hasCooked;
 
+    @JsonProperty("WeightedScore")
+    private double WeightedScore;
+
     public PairWrapper(Pair pair) {
         this.pairId = pair.getPairId();
         this.isPreMade = pair.getIsPreMade();
@@ -46,6 +50,7 @@ public class PairWrapper implements MapUtility {
         this.participant1 = new ParticipantWrapper(pair.getParticipant1());
         this.participant2 = new ParticipantWrapper(pair.getParticipant2());
         this.hasCooked = pair.getHasCooked();
+        this.WeightedScore = pair.calculateWeightedScore();
     }
     @Override
     public FOOD_PREFERENCEWrapper mapFoodPreference(Object o) {
