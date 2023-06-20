@@ -346,24 +346,31 @@ public class ListManagement{
      * sets the pair with the maximum distance as having cooked and which course, and updates the meetings between the pairs.
      * @param group the group of pairs participating in the cooking event.
      */
-    public void addMetAndCookPair(Group group){
-        //each pair in group
-        Pair p1 = group.getPairs().get(0);
-        Pair p2 = group.getPairs().get(1);
-        Pair p3 = group.getPairs().get(2);
-        //add met pair
-        p1.meetPair(p2,p3);
-        p2.meetPair(p1,p3);
-        p3.meetPair(p1,p2);
+    public boolean addMetAndCookPair(Group group){
         //find pair that will cook in this gang
-        findCookPair(group);
+        //each pair in group
+        if(findCookPair(group)) {
+            Pair p1 = group.getPairs().get(0);
+            Pair p2 = group.getPairs().get(1);
+            Pair p3 = group.getPairs().get(2);
+            //add met pair
+            p1.meetPair(p2, p3);
+            p2.meetPair(p1, p3);
+            p3.meetPair(p1, p2);
+            return true;
+        }
+        return false;
     }
 
     /**
      * This methode decides which pair is responsible to cook in this group
      * @param group the group that is chosen to be evaluated
      */
-    public void findCookPair(Group group) {
+    /**
+     *
+     * @param group
+     */
+    public boolean findCookPair(Group group) {
         Pair p1 = group.getPairs().get(0);
         Pair p2 = group.getPairs().get(1);
         Pair p3 = group.getPairs().get(2);
@@ -377,18 +384,18 @@ public class ListManagement{
         double max = Math.max(Math.max(distanceToParty1, distanceToParty2), distanceToParty3);
 
         if(allCooked(group)) {
+            //System.out.println("All cooked");
+            findFoodPreferenceGroup(group);
             allCookedGroup.add(group);
+            return false;
         }
 
         if (distanceToParty1==max || (!p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p1.getHasCooked().isEmpty()) ) {
             p1.setHasCooked(true, courseCounter);
-            group.setCookingPair(p1);
         } else if(distanceToParty2==max || (!p1.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p2.getHasCooked().isEmpty())){
             p2.setHasCooked(true, courseCounter);
-            group.setCookingPair(p2);
         } else if(distanceToParty3==max || (!p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && p3.getHasCooked().isEmpty())) {
             p3.setHasCooked(true, courseCounter);
-            group.setCookingPair(p3);
         }
 
         if(courseCounter==3 && !allCooked(group)) {
@@ -398,8 +405,50 @@ public class ListManagement{
                     pairDidntCookList.add(p);
                 }
             }
+            //System.out.println("not all pair are cook");
+            return false;
         }
+
+        return true;
     }
+
+    /**
+     *
+     * @param pair
+     */
+    public void findFoodPreference(Pair pair){
+        Participant p1 = pair.getParticipant1();
+        Participant p2 = pair.getParticipant2();
+        if(p1.getFoodPreference().equals(p2.getFoodPreference()))
+            pair.setFoodPreference(p1.getFoodPreference());
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.none))
+            pair.setFoodPreference(p2.getFoodPreference());
+        if(p2.getFoodPreference().equals(FOOD_PREFERENCE.none))
+            pair.setFoodPreference(p1.getFoodPreference());
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.meat) || p2.getFoodPreference().equals(FOOD_PREFERENCE.meat))
+            pair.setFoodPreference(FOOD_PREFERENCE.meat);
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
+            pair.setFoodPreference(FOOD_PREFERENCE.vegan);
+    }
+
+    public void findFoodPreferenceGroup(Group group){
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+
+        if(containsMeat(p1)||containsMeat(p2)||containsMeat(p3))
+            group.setFoodPreference(FOOD_PREFERENCE.meat);
+        else if (p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan)
+                && p3.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
+            group.setFoodPreference(FOOD_PREFERENCE.vegan);
+        else if(containsVeganOrVeggie(p1)||containsVeganOrVeggie(p2)||containsVeganOrVeggie(p3))
+            group.setFoodPreference(FOOD_PREFERENCE.veggie);
+        else
+            group.setFoodPreference(FOOD_PREFERENCE.none);
+
+    }
+
 
     /**
      * This method checks whether the given pair contains a participant who prefers meat.

@@ -16,7 +16,7 @@ import utility.Utility;
 public class  Pair implements Calculation, Utility {
     private final String Pair_ID;
     private boolean isPreMade;
-    private final FOOD_PREFERENCE foodPreference;
+    private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
     private final Participant participant1;
     private final Participant participant2;
@@ -176,6 +176,10 @@ public class  Pair implements Calculation, Utility {
      */
     public void setPreMade(boolean preMade) {
         isPreMade = preMade;
+    }
+
+    public void setFoodPreference(FOOD_PREFERENCE foodPreference) {
+        this.foodPreference = foodPreference;
     }
 
     public void setHasCooked(Boolean b, int i) {
