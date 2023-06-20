@@ -143,6 +143,15 @@ public class Group implements Calculation, Utility {
         return count == 3;
     }
 
+    public double calculateGroupWeightedScore(){
+        double foodMatchScore = calculateFoodPreference() * CRITERIA.FOOD_PREFERENCES.getWeight();
+        double ageDifferenceScore = calculatePathLength() * CRITERIA.PATH_LENGTH.getWeight();
+        double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
+        double travelDistanceScore = (double) calculateAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
+        double score =  foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
+
+        return score;
+    }
     public List<Pair> getPairs() {
         return Pairs;
     }

@@ -150,7 +150,10 @@ public class ListManagement{
 
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
-                    addToGroup(g);
+                    findFoodPreferenceGroup(g);
+                    //if(addMetAndCookPair(g)) {  //mark all pair in this group as met
+                        addToGroup(g);
+                    //}
                     pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
                     list = list.stream().filter(x -> notContainsPairedPairs(x, g)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
