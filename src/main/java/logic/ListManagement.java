@@ -51,6 +51,7 @@ public class ListManagement{
                 for (int i = 0; i < list.size(); i++) {
                     Pair a = list.get(0);
                     dataList.getPairList().add(a);
+                    findFoodPreferencePair(a);
                     dataList.getUnmatchedParticipants().remove(a.getParticipant1());
                     dataList.getUnmatchedParticipants().remove(a.getParticipant2());
                     list = list.stream().filter(x -> !containsPairedParticipant(x, a.getParticipant1(), a.getParticipant2())).collect(Collectors.toList());
@@ -416,7 +417,7 @@ public class ListManagement{
      *
      * @param pair
      */
-    public void findFoodPreference(Pair pair){
+    public void findFoodPreferencePair(Pair pair){
         Participant p1 = pair.getParticipant1();
         Participant p2 = pair.getParticipant2();
         if(p1.getFoodPreference().equals(p2.getFoodPreference()))
