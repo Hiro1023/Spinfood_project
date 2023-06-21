@@ -1,5 +1,7 @@
 package models;
 
+import org.json.JSONObject;
+
 /**
  * The Kitchen class contains all the information about the participant's kitchen
  */
@@ -17,6 +19,16 @@ public class Kitchen {
     }
 
     public Kitchen(){}
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("emergencyKitchen", this.isEmergencyKitchen());
+        jsonObject.put("story", this.getKitchenStory());
+        jsonObject.put("longitude", this.getKitchenLongitude());
+        jsonObject.put("latitude", this.getKitchenLatitude());
+        return jsonObject;
+    }
+
 
     public String showKitchen(){
         return "Kitchen Floor: "+this.kitchenStory+", "+"Kitchen kitchenLongitude: "+ this.kitchenLongitude+", "+"Kitchen kitchenLatitude: "+this.kitchenLatitude;

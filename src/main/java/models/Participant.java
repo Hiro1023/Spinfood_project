@@ -1,4 +1,5 @@
 package models;
+import org.json.JSONObject;
 import utility.Utility;
 
 /**
@@ -26,6 +27,20 @@ public class Participant implements Utility {
                 Double.parseDouble(Kitchen_Latitude), availability.equals("maybe"));
         this.ageRange = assignAgeRange(this.age);
     }
+
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", String.valueOf(this.getID()));
+        jsonObject.put("name", this.getName());
+        jsonObject.put("foodPreference", this.getFoodPreference().toString());
+        jsonObject.put("age", this.getAge());
+        jsonObject.put("gender", this.getSex().toString());
+        // Kitchen can be null.
+        jsonObject.put("kitchen", this.getKitchen() == null ? JSONObject.NULL : this.getKitchen().toJson());
+        return jsonObject;
+    }
+
 
     /**
      * This method assigns the corresponding enum for each age group

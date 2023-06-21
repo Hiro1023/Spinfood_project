@@ -7,6 +7,7 @@ import java.util.Map;
 
 import logic.CRITERIA;
 import logic.Calculation;
+import org.json.JSONObject;
 import utility.Utility;
 
 /**
@@ -84,6 +85,17 @@ public class  Pair implements Calculation, Utility {
 
         return EARTH_RADIUS * angularDistanceInRadians;
     }
+
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("premade", this.isPreMade);
+        jsonObject.put("foodPreference", this.getFoodPreference().toString());
+        jsonObject.put("firstParticipant", this.getParticipant1().toJson());
+        jsonObject.put("secondParticipant", this.getParticipant2().toJson());
+        return jsonObject;
+    }
+
 
 
     /**

@@ -1,6 +1,8 @@
 package logic;
 
 import models.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,51 @@ public class DataList {
             participantSuccessorList.addParticipant(participant);
         }
     }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray arraySuccessorParticipants = new JSONArray();
+        for (Participant participant : this.getParticipantSuccessorList().getParticipantSuccessorList()) {
+            arraySuccessorParticipants.put(participant.toJson());
+        }
+        JSONArray arraySuccessorPairs = new JSONArray();
+        for (Pair pair : this.getPairSuccessorList().getPairSuccessorList()) {
+            arraySuccessorPairs.put(pair.toJson());
+        }
+        JSONArray arrayGroups = new JSONArray();
+        for (Group group : this.getAllGroups()) {
+            arrayGroups.put(group.toJson());
+        }
+        JSONArray arrayPairs = new JSONArray();
+        for (Pair pair : this.getPairList()) {
+            arrayPairs.put(pair.toJson());
+        }
+
+        jsonObject.put("successorParticipants", arraySuccessorParticipants);
+        jsonObject.put("successorPairs", arraySuccessorPairs);
+        jsonObject.put("groups", arrayGroups);
+        jsonObject.put("pairs", arrayPairs);
+        return jsonObject;
+    }
+
+
+
+    private List<Group> getAllGroups() {
+        List<Group> allGroups = new ArrayList<>();
+        allGroups.addAll(getGroupListCourse01());
+        allGroups.addAll(getGroupListCourse02());
+        allGroups.addAll(getGroupListCourse03());
+        return allGroups;
+    }
+
+
+
+    public void exportToJsonFile(String fileName) {
+        JSONObject jsonObject = this.toJson();
+        JsonExport jsonExport = new JsonExport();
+        jsonExport.writeJsonToFile(jsonObject, fileName);
+    }
+
 
     /**
      * This method add a Participant to the unmatchedparticipant List

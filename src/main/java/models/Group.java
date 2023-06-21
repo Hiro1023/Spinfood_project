@@ -4,6 +4,7 @@ import java.util.List;
 
 import logic.CRITERIA;
 import logic.Calculation;
+import org.json.JSONObject;
 import utility.Utility;
 
 /**
@@ -40,9 +41,20 @@ public class Group implements Calculation, Utility {
     public double calculateFoodPreference() {
         double groupScore = 0;
         for (Pair pair : getPairs()) {
-            groupScore += pair.calculateFoodPreference();
+            groupScore += pair.calculateFoodPreference() * 10;
         }
         return groupScore/3;
+    }
+
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("course", this.getCourse().toString());
+        jsonObject.put("foodType", this.getFoodPreference().toString());
+        jsonObject.put("kitchen", JSONObject.NULL); // If there's a kitchen associated with the group, replace JSONObject.NULL with this.getKitchen().toJson()
+        jsonObject.put("cookingPair", this.getPairs().get(0).toJson());
+        jsonObject.put("secondPair", this.getPairs().get(1).toJson());
+        jsonObject.put("thirdPair", this.getPairs().get(2).toJson());
+        return jsonObject;
     }
 
 
