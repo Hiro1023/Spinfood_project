@@ -192,9 +192,9 @@ public class ListManagement{
 
         //increase counter, go to next Gang
         System.out.println("Group List Gang " + courseCounter);
-        courseCounter++;
         //add the rest pair in the list to pairSuccessorList  or ParticipantSuccessorList
 
+        courseCounter++;
         if(courseCounter==1) {
             for (Pair p : pairListTemp) {
                 dataList.getPairList().remove(p);

@@ -5,9 +5,9 @@ package models;
  * Each course has a corresponding value associated with it.
  */
 public enum COURSE {
-    Starter(0),
-    mainCourse(1),
-    Dessert(2);
+    Starter(1),
+    mainCourse(2),
+    Dessert(3);
     public int getValue() {
         return value;
     }

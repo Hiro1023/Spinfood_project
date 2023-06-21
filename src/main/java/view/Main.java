@@ -3,22 +3,13 @@ package view;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import logic.ListManagement;
 import logic.readCSV;
-import logicWrapper.DataListWrapper;
 import models.Group;
 import models.Pair;
 import models.Participant;
-import modelsWrapper.GroupWrapper;
-import modelsWrapper.PairWrapper;
-import modelsWrapper.ParticipantWrapper;
 
 public class Main {
-    static ObjectMapper objectMapper = new ObjectMapper();
     static String participantCSVFile = "Resources/teilnehmerliste.csv";
     static String partyLocationCSVFile = "Resources/partylocation.csv";
     static readCSV readCSV;
@@ -110,29 +101,29 @@ public class Main {
         }
     }
 
-    public static void exportToJsonFile(Object object, String filePath) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            objectMapper.writeValue(new File(filePath), object);
-            System.out.println("JSON file exported successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void exportToJsonFile(Object object, String filePath) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        try {
+//            objectMapper.writeValue(new File(filePath), object);
+//            System.out.println("JSON file exported successfully!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     // Convert the list to JSON
-    public static void writeFileToJson(List<?> list) {
-        try {
-            // Write the JSON to a file
-            objectMapper.writeValue(new File("output2.json"),list);
-            System.out.println("JSON file created successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    /**ListGang03();
+//    public static void writeFileToJson(List<?> list) {
+//        try {
+//            // Write the JSON to a file
+//            objectMapper.writeValue(new File("output2.json"),list);
+//            System.out.println("JSON file created successfully.");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
+    /**ListGang03();
         System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
      * Description: main class is the entry point.
      * @param args
@@ -140,27 +131,13 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         lm.makeBestPairList();
-
         lm.makeBestGroupList();
         //showGroupListGang01();
         lm.makeBestGroupList();
         //showGroupListGang02();
         lm.makeBestGroupList();
-        System.out.println("showGroupListGang03: ");
-        showGroupListGang03();
-
-
-/*
-        DataListWrapper dtw = new DataListWrapper(lm.dataList);
-        exportToJsonFile(dtw,"Resources/output.json");
-        exportToJsonFile(dtw.makeTable(),"Resources/output2.json");
-
- */
-
-
-
-            System.out.println("Size of all Groups");
-            System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
+        System.out.println("Size of all Groups");
+        System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
 
         //showParticipantSuccessorList();
     }
