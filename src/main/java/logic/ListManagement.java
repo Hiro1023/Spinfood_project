@@ -103,7 +103,12 @@ public class ListManagement{
         if (participant.getKitchen() == null) {
             candidates = candidates.stream().filter(x -> x.getKitchen()!=null).collect(Collectors.toList());
         }
+        if (participant.getFoodPreference().equals(FOOD_PREFERENCE.meat))
+            candidates = candidates.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.vegan)).filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.veggie)).collect(Collectors.toList());
 
+        if (participant.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || participant.getFoodPreference().equals(FOOD_PREFERENCE.veggie)) {
+            candidates = candidates.stream().filter(x -> !x.getFoodPreference().equals(FOOD_PREFERENCE.meat)).collect(Collectors.toList());
+        }
         for (Participant p : candidates) {
             Pair tempPair = new Pair(participant,p);
             double score = tempPair.calculateWeightedScore();
