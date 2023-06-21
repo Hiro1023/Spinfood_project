@@ -136,6 +136,7 @@ public class Main {
         lm.makeBestGroupList();
         //showGroupListGang02();
         lm.makeBestGroupList();
+        showGroupListGang03();
         System.out.println("Size of all Groups");
         System.out.println(lm.dataList.getGroupListCourse01().size() + " " + lm.dataList.getGroupListCourse02().size() + " " + lm.dataList.getGroupListCourse03().size());
 
