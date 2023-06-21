@@ -151,9 +151,9 @@ public class ListManagement{
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
                     findFoodPreferenceGroup(g);
-                    //if(addMetAndCookPair(g)) {  //mark all pair in this group as met
+                    if(addMetAndCookPair(g)) {  //mark all pair in this group as met
                         addToGroup(g);
-                    //}
+                    }
                     pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
                     list = list.stream().filter(x -> notContainsPairedPairs(x, g)).collect(Collectors.toList()); //filter only the pair which is not paired
                 }
@@ -176,8 +176,8 @@ public class ListManagement{
                         dataList.getGroupListCourse03().remove(group1);
                         dataList.getGroupListCourse03().remove(group2);
                         pairDidntCookGroupTemp.remove(group1);
-                        addMetAndCookPair(bestGroup.get(0));
-                        addMetAndCookPair(bestGroup.get(1));
+                        addMetPair(bestGroup.get(0));
+                        addMetPair(bestGroup.get(1));
                         dataList.getGroupListCourse03().add(bestGroup.get(0));//add this group g to the dataList->groupList 1,2 or 3
                         dataList.getGroupListCourse03().add(bestGroup.get(1));
                         allCookedGroup.remove(group2);
@@ -364,6 +364,20 @@ public class ListManagement{
             return true;
         }
         return false;
+    }
+
+    public void addMetPair(Group group){
+        //find pair that will cook in this gang
+        //each pair in group
+
+        Pair p1 = group.getPairs().get(0);
+        Pair p2 = group.getPairs().get(1);
+        Pair p3 = group.getPairs().get(2);
+        //add met pair
+        p1.meetPair(p2, p3);
+        p2.meetPair(p1, p3);
+        p3.meetPair(p1, p2);
+
     }
 
     /**
