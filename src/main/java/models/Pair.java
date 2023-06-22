@@ -22,6 +22,8 @@ public class  Pair implements Calculation, Utility {
     private final Participant participant1;
     private final Participant participant2;
     private Map<Boolean, Integer> hasCooked; //ex <true,1>
+    private Kitchen kitchen1;
+    private Kitchen kitchen2;
 
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
@@ -29,6 +31,8 @@ public class  Pair implements Calculation, Utility {
         this.Pair_ID = participant1.getID() + "-" + participant2.getID();
         hasCooked = new HashMap<>();
         this.foodPreference = FOOD_PREFERENCE.fromValue(Math.max(participant1.getFoodPreference().getValue(),participant2.getFoodPreference().getValue()));
+        this.kitchen1 = participant1.getKitchen();
+        this.kitchen2 = participant2.getKitchen();
     }
 
     /**
@@ -224,5 +228,20 @@ public class  Pair implements Calculation, Utility {
 
     public FOOD_PREFERENCE getFoodPreference() {
         return foodPreference;
+    }
+    public Kitchen getKitchen1() {
+        return kitchen1;
+    }
+
+    public void setKitchen1(Kitchen kitchen1) {
+        this.kitchen1 = kitchen1;
+    }
+
+    public Kitchen getKitchen2() {
+        return kitchen2;
+    }
+
+    public void setKitchen2(Kitchen kitchen2) {
+        this.kitchen2 = kitchen2;
     }
 }

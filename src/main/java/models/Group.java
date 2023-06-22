@@ -16,13 +16,14 @@ public class Group implements Calculation, Utility {
     private Pair cookingPair;
     private COURSE course;
     private FOOD_PREFERENCE foodPreference;
-
+    private Kitchen kitchen;
     public Group(Pair pair1, Pair pair2, Pair pair3, int course) {
         Pairs.add(pair1);
         Pairs.add(pair2);
         Pairs.add(pair3);
         this.foodPreference = FOOD_PREFERENCE.fromValue(Math.max(pair1.getFoodPreference().getValue(),Math.max(pair2.getFoodPreference().getValue(),pair3.getFoodPreference().getValue())));
         this.course = COURSE.fromValue(course);
+//        this.kitchen = (cookingPair.getKitchen1()==null)? cookingPair.getKitchen2():cookingPair.getKitchen1();
     }
 
     /**

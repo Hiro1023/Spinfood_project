@@ -153,7 +153,8 @@ public class ListManagement{
                 for (int i = 0; i < list.size(); i++) {
                     Group g = list.get(0);
                     findFoodPreferenceGroup(g);
-                    if(addMetAndCookPair(g)) {  //mark all pair in this group as met
+                    if(addMetAndCookPair(g)) {  //
+                        g.setCourse(COURSE.fromValue(courseCounter)); // mark all pair in this group as met
                         addToGroup(g);
                     }
                     pairListTemp.removeAll(g.getPairs()); //remove all the pairs, which was grouped
@@ -259,14 +260,21 @@ public class ListManagement{
      */
     private void addValidatedGroupIntoGroupList(Pair didntCookPair, int count, Pair p1_1, Pair p2_1, Pair p3_1, Pair p1_2, Pair p2_2, Pair p3_2, List<Group> res) {
         Group g1 = new Group(didntCookPair, p1_1, p2_1,this.courseCounter);
+        g1.setCookingPair(didntCookPair);
         g1.setCourse(COURSE.fromValue(courseCounter));
         res.add(g1);
-        if(count==0)
-            res.add(new Group(p3_1,p2_2,p3_2,this.courseCounter));
-        if(count==1)
-            res.add(new Group(p3_1,p1_2,p3_2,this.courseCounter));
-        if(count==2)
-            res.add(new Group(p3_1,p1_2,p2_2,this.courseCounter));
+        if(count==0) {
+            Group g2 = new Group(p3_1, p2_2, p3_2, this.courseCounter);
+            res.add(new Group(p3_1, p2_2, p3_2, this.courseCounter));
+        }
+        if(count==1) {
+            Group g2 = new Group(p3_1, p1_2, p3_2, this.courseCounter);
+            res.add(new Group(p3_1, p1_2, p3_2, this.courseCounter));
+        }
+        if(count==2) {
+            Group g2 = new Group(p3_1, p1_2, p2_2, this.courseCounter);
+            res.add(new Group(p3_1, p1_2, p2_2, this.courseCounter));
+        }
     }
 
 
@@ -412,10 +420,13 @@ public class ListManagement{
 
         if (distanceToParty1==max || (!p2.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p1.getHasCooked().isEmpty()) ) {
             p1.setHasCooked(true, courseCounter);
+            group.setCookingPair(p1);
         } else if(distanceToParty2==max || (!p1.getHasCooked().isEmpty() && !p3.getHasCooked().isEmpty() && p2.getHasCooked().isEmpty())){
             p2.setHasCooked(true, courseCounter);
+            group.setCookingPair(p2);
         } else if(distanceToParty3==max || (!p1.getHasCooked().isEmpty() && !p2.getHasCooked().isEmpty() && p3.getHasCooked().isEmpty())) {
             p3.setHasCooked(true, courseCounter);
+            group.setCookingPair(p3);
         }
 
         if(courseCounter==3 && !allCooked(group)) {

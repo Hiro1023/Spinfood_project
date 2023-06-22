@@ -42,7 +42,10 @@ public class Main {
         lm.makeBestGroupList();
         lm.makeBestGroupList();
         lm.makeBestGroupList();
-        showGroupListGang03();
+        for (Group g : lm.dataList.getGroupListCourse03()) {
+            g.show();
+            System.out.println(g.getCookingPair());
+        }
 
 //        DataListWrapper dtw = new DataListWrapper(lm.dataList);
 //        exportToJsonFile(dtw, "Resources/output.json");
