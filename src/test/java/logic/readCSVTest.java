@@ -112,7 +112,7 @@ class readCSVTest {
     @Test
     void addPartyLocationTest_checkLongitude(){
         List<String[]> dataCSV = new ArrayList<>();
-        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"Longitude","Latitude"});
         dataCSV.add(new String[]{"5.0","6.0"});
         test.addPartyLocation(dataCSV);
         assertEquals("5.0",Double.toString(test.event.getPartyLongitude()));
@@ -121,7 +121,7 @@ class readCSVTest {
     @Test
     void addPartyLocationTest_checkLatitude(){
         List<String[]> dataCSV = new ArrayList<>();
-        dataCSV.add(new String[]{"Longitutde","Latizude"});
+        dataCSV.add(new String[]{"Longitude","Latitude"});
         dataCSV.add(new String[]{"5.0","6.0"});
         test.addPartyLocation(dataCSV);
         assertEquals("6.0",Double.toString(test.event.getPartyLatitude()));
