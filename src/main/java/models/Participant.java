@@ -6,6 +6,7 @@ import utility.Utility;
  * The Participant class contains all information about a Participant
  */
 public class Participant implements Utility {
+
     private String ID;
     private String name;
     private FOOD_PREFERENCE foodPreference;
@@ -13,7 +14,6 @@ public class Participant implements Utility {
     private SEX sex;
     private Kitchen kitchen;
     private AGE_RANGE ageRange;
-
     private int KitchenCount = 0;
 
     public Participant(String ID, String name, String foodPreference, String age, String sex, String availability,
@@ -23,12 +23,11 @@ public class Participant implements Utility {
         this.foodPreference = assignFoodPreference(foodPreference);
         this.age = (int) Double.parseDouble(age);
         this.sex = (sex.equals(""))? SEX.other: SEX.valueOf(sex);
-        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),
-                Double.parseDouble(Kitchen_Latitude), availability.equals("maybe"));
+        this.kitchen = (availability.equals("no"))?  null:new Kitchen (Double.parseDouble(Kitchen_Story), Double.parseDouble(Kitchen_Longitude),Double.parseDouble(Kitchen_Latitude));
         this.ageRange = assignAgeRange(this.age);
     }
 
-
+    @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", String.valueOf(this.getID()));
@@ -92,12 +91,24 @@ public class Participant implements Utility {
     @Override
     public void show(){
         System.out.println("Participant Name: " + name);
+        System.out.println("Infos: ");
+        System.out.println("ID: " + this.ID);
+        System.out.println("Name: " + this.name);
+        System.out.println("Food Preference: " + this.foodPreference);
+        System.out.println("Age: " + this.age);
+        System.out.println("Sex: " + this.sex);
+        System.out.println("Kitchen: ");
+        if (this.kitchen==null)
+            System.out.println("null");
+        else
+            this.getKitchen().show();
+        System.out.println("Age Range: " + this.ageRange);
+        System.out.println("Kitchen Count: " + this.getKitchenCount());
     }
 
     @Override
     public boolean equal(Object o) {
-        Participant p = (Participant) o;
-        return ID.equals(p.ID);
+        return this.equals(o);
     }
 
     public void setID(String ID) {

@@ -10,7 +10,7 @@ import java.util.List;
 public class PairSuccessorList extends SuccessorList {
     private List<Pair> pairSuccessorList = new ArrayList<>();
 
-    public PairSuccessorList() {}
+    public PairSuccessorList() {};
 
     /**
      * This method add a chosen Pair into the List
@@ -29,16 +29,12 @@ public class PairSuccessorList extends SuccessorList {
     }
 
     /**
-     * This method finds the first pair in the list
-     * @return the first pair
+     * This method remove the first pair from the list
      */
     public Pair getFirst(){
         return pairSuccessorList.get(0);
     }
 
-    /**
-     * This method remove the first pair from the list
-     */
     public void removeFirst(){
         pairSuccessorList.remove(0);
     }

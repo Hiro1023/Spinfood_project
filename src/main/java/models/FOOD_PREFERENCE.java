@@ -5,17 +5,16 @@ package models;
  * Each preference has a corresponding value associated with it.
  */
 public enum FOOD_PREFERENCE {
-        meat(1),
+        meat(0),
         none(0),
-        vegan(3),
-        veggie(2);
-
-        public int getValue() {
-                return value;
-        }
+        vegan(2),
+        veggie(1);
         private final int value;
         FOOD_PREFERENCE(int i) {
                 this.value = i;
+        }
+        public int getValue() {
+                return value;
         }
 
         /**
@@ -29,6 +28,7 @@ public enum FOOD_PREFERENCE {
                                 return foodPreference;
                         }
                 }
-                return null; // Value not found
+                return null;
         }
+
 }

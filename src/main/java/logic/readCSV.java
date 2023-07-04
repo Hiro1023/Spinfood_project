@@ -11,15 +11,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The readCSV class is responsible for reading and processing CSV files containing participant and party location data.
+ * It provides methods to read the files, set the party location, and add participants and pairs to the event.
+ */
 public class readCSV {
-    public List<String[]> alone_participant = new ArrayList<>();
-    public List<String[]> not_alone_participant = new ArrayList<>();
     public Event event = new Event();
 
     //hash map if String (as address: combination of Longitude and Latitude)
+    //
     public HashMap<String, List<Participant>> AddressTable = new HashMap<>();
-    public int countParticipant = 0;
-    public int countPair = 0;
+
+    //public ListManagement listManagement = new ListManagement(event.getDataList());
 
     public readCSV(){}
 
@@ -69,13 +72,14 @@ public class readCSV {
 
             String Kitchen_key = kitchenLongitude + kitchenLatitude;
 
-            if (participant_String[10].equals("")) {
-                alone_participant.add(participant_String); //later this will be added to list of alone_registration Class
+            if (participant_String[10].equals("") &&
+                    participant_String[11].equals("") &&
+                    participant_String[12].equals("") &&
+                    participant_String[13].equals("")) {
                 Participant participant = new Participant(ID, name, foodPreference, age, sex, kitchen, kitchenStory,
                         kitchenLongitude, kitchenLatitude);
                 event.getDataList().addUnmatchedParticipantToList(participant); //add alone_participant to un-match list
                 event.getDataList().addParticipantToList(participant);
-                countParticipant++;
 
                 if (!AddressTable.containsKey(Kitchen_key)) {    //if the hashmap doesn't have the key as string
                     List<Participant> IDList = new ArrayList<>();
@@ -84,6 +88,7 @@ public class readCSV {
                 } else {
                     AddressTable.get(Kitchen_key).add(participant);
                 }
+
 
             } else {//is Pair
                 String ID_2 = participant_String[10];
@@ -97,10 +102,6 @@ public class readCSV {
                 Participant participant_2 = new Participant(ID_2, name_2, foodPreference, age_2, sex_2, kitchen, kitchenStory,
                         kitchenLongitude, kitchenLatitude);
                 event.getDataList().addParticipantToList(participant_2);
-
-                not_alone_participant.add(participant_String);
-                countPair += 1;
-                countParticipant += 2;
 
                 //make Pairs
                 Pair pair = new Pair(participant_1, participant_2);
@@ -119,6 +120,7 @@ public class readCSV {
             }
 
         }
+
         for (Participant p : event.getDataList().getParticipantList()) {
             if (p.getKitchen() != null) {
                 String key = String.valueOf(p.getKitchen().getKitchenLongitude()) + String.valueOf(p.getKitchen().getKitchenLatitude());

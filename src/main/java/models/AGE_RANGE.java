@@ -18,7 +18,8 @@ public enum AGE_RANGE {
     public int getValue() {
         return value;
     }
-    private final int value;
+
+    private int value;
     AGE_RANGE(int i) {
         this.value = i;
     }

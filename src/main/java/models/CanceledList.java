@@ -7,12 +7,12 @@ import java.util.List;
  * The ListManagement class contains the Lists of Participants and Pairs that are canceled from the event.
  */
 public class CanceledList {
-    private List<Participant> canceledParticipants;
-    private List<Pair> canceledPair;
+    private List<Participant> canceledParticipants = new ArrayList<>();
+    private List<Pair> canceledPair = new ArrayList<>();
+
     public CanceledList() {
-        this.canceledPair = new ArrayList<>();
-        this.canceledParticipants = new ArrayList<>();
     }
+
 
     public List<Participant> getCanceledParticipants() {
         return canceledParticipants;

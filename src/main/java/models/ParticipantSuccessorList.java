@@ -7,9 +7,9 @@ import java.util.List;
  * The ParticipantSuccessorList class extends the SuccessorList class and represents a list of participants
  * It provides methods for adding participants to the list, retrieving the list's size, and accessing the participant successor list.
  */
+
 public class ParticipantSuccessorList extends SuccessorList {
     private List<Participant> participantSuccessorList = new ArrayList<>();
-
 
     public ParticipantSuccessorList(){}
 
@@ -17,6 +17,7 @@ public class ParticipantSuccessorList extends SuccessorList {
      * This method adds one participant into the list
      * @param participant the selected participant
      */
+
     public void addParticipant(Participant participant) {
         participantSuccessorList.add(participant);
     }
@@ -39,4 +40,5 @@ public class ParticipantSuccessorList extends SuccessorList {
     public int getSize() {
         return participantSuccessorList.size();
     }
+
 }

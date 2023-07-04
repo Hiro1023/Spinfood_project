@@ -1,25 +1,38 @@
 package models;
-
+import jdk.jshell.execution.Util;
 import org.json.JSONObject;
+import utility.Utility;
 
 /**
  * The Kitchen class contains all the information about the participant's kitchen
  */
-public class Kitchen {
-    private boolean IsEmergencyKitchen;
+public class Kitchen implements Utility {
+
+    private boolean isEmergencyKitchen;
     private double kitchenStory;
     private double kitchenLongitude;
     private double kitchenLatitude;
 
-    public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude,boolean emergency) {
+    public Kitchen(double kitchenStory, double kitchenLongitude, double kitchenLatitude) {
         this.kitchenStory = kitchenStory;
         this.kitchenLongitude = kitchenLongitude;
         this.kitchenLatitude = kitchenLatitude;
-        this.IsEmergencyKitchen = emergency;
     }
 
     public Kitchen(){}
 
+    @Override
+    public void show() {
+        System.out.println("Kitchen Floor: "+this.kitchenStory+", "+"Kitchen kitchenLongitude: "+ this.kitchenLongitude+", "+"Kitchen kitchenLatitude: "+this.kitchenLatitude);
+
+    }
+
+    @Override
+    public boolean equal(Object o) {
+        return false;
+    }
+
+   @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("emergencyKitchen", this.isEmergencyKitchen());
@@ -29,11 +42,12 @@ public class Kitchen {
         return jsonObject;
     }
 
-
-    public String showKitchen(){
-        return "Kitchen Floor: "+this.kitchenStory+", "+"Kitchen kitchenLongitude: "+ this.kitchenLongitude+", "+"Kitchen kitchenLatitude: "+this.kitchenLatitude;
+    public void setEmergencyKitchen(boolean emergencyKitchen) {
+        isEmergencyKitchen = emergencyKitchen;
     }
-
+    public boolean isEmergencyKitchen() {
+        return isEmergencyKitchen;
+    }
     public double getKitchenStory() {
         return kitchenStory;
     }
@@ -56,13 +70,5 @@ public class Kitchen {
 
     public void setKitchenLatitude(double kitchenLatitude) {
         this.kitchenLatitude = kitchenLatitude;
-    }
-
-    public boolean isEmergencyKitchen() {
-        return IsEmergencyKitchen;
-    }
-
-    public void setEmergencyKitchen(boolean emergencyKitchen) {
-        IsEmergencyKitchen = emergencyKitchen;
     }
 }

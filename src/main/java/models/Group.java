@@ -1,11 +1,10 @@
 package models;
-import java.util.ArrayList;
-import java.util.List;
-
 import logic.CRITERIA;
 import logic.Calculation;
 import org.json.JSONObject;
 import utility.Utility;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Group class represents a group of pairs in an event
@@ -13,17 +12,16 @@ import utility.Utility;
  */
 public class Group implements Calculation, Utility {
     private List<Pair> Pairs = new ArrayList<>();
-    private Pair cookingPair;
+    private Pair cookingPair = null;
     private COURSE course;
     private FOOD_PREFERENCE foodPreference;
-    private Kitchen kitchen;
+    private Kitchen GroupKitchen;
     public Group(Pair pair1, Pair pair2, Pair pair3, int course) {
         Pairs.add(pair1);
         Pairs.add(pair2);
         Pairs.add(pair3);
-        this.foodPreference = FOOD_PREFERENCE.fromValue(Math.max(pair1.getFoodPreference().getValue(),Math.max(pair2.getFoodPreference().getValue(),pair3.getFoodPreference().getValue())));
+        this.foodPreference = FOOD_PREFERENCE.fromValue (Math.max(pair1.getFoodPreference().getValue(), Math.max(pair2.getFoodPreference().getValue(),pair3.getFoodPreference().getValue())));
         this.course = COURSE.fromValue(course);
-//        this.kitchen = (cookingPair.getKitchen1()==null)? cookingPair.getKitchen2():cookingPair.getKitchen1();
     }
 
     /**
@@ -42,21 +40,24 @@ public class Group implements Calculation, Utility {
     public double calculateFoodPreference() {
         double groupScore = 0;
         for (Pair pair : getPairs()) {
-            groupScore += pair.calculateFoodPreference() * 10;
+            groupScore += pair.calculateFoodPreference();
         }
         return groupScore/3;
     }
 
+    @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("course", this.getCourse().toString());
         jsonObject.put("foodType", this.getFoodPreference().toString());
-        jsonObject.put("kitchen", JSONObject.NULL); // If there's a kitchen associated with the group, replace JSONObject.NULL with this.getKitchen().toJson()
+        jsonObject.put("kitchen", this.getGroupKitchen()); // If there's a kitchen associated with the group, replace JSONObject.NULL with this.getKitchen().toJson()
         jsonObject.put("cookingPair", this.getPairs().get(0).toJson());
         jsonObject.put("secondPair", this.getPairs().get(1).toJson());
         jsonObject.put("thirdPair", this.getPairs().get(2).toJson());
         return jsonObject;
     }
+
+
 
 
     /**
@@ -87,17 +88,19 @@ public class Group implements Calculation, Utility {
     }
 
     @Override
-    public double calculateDistanceBetweenKitchenAndParty(double p1,double p2) {
-        return 0;
-    }
+    /**
+     * This method is not used
+     * but we need this method because of Interface utility
+     */
+    public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) { return 0;}
 
     /**
      * This method calculates age difference score for each pair in the group
      * @return age diff score for the group
      */
     @Override
-    public int calculateAgeDifference() {
-        int totalAgeDiff = 0;
+    public double calculateAgeDifference() {
+        double totalAgeDiff = 0;
         for(Pair pair : getPairs()){
             totalAgeDiff += pair.calculateAgeDifference();
         }
@@ -114,8 +117,8 @@ public class Group implements Calculation, Utility {
         double foodMatchScore = calculateFoodPreference() * CRITERIA.FOOD_PREFERENCES.getWeight();
         double ageDifferenceScore = calculatePathLength() * CRITERIA.PATH_LENGTH.getWeight();
         double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = (double) calculateAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
-        return foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
+        double travelDistanceScore = calculateAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
+        return foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
     }
 
     /**
@@ -124,20 +127,14 @@ public class Group implements Calculation, Utility {
     @Override
     public void show() {
         System.out.println("Group : ");
-        System.out.print(this.getPairs().get(0).getParticipant1().getName()+" "+this.getPairs().get(0).getParticipant2().getName());
-        System.out.println(this.getPairs().get(0).getHasCooked());
-        System.out.print(this.getPairs().get(1).getParticipant1().getName()+" "+this.getPairs().get(1).getParticipant2().getName());
-        System.out.println(this.getPairs().get(1).getHasCooked());
-        System.out.print(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName());
-        System.out.println(this.getPairs().get(2).getHasCooked());
-        /*
-        for (Pair p : this.getPairs()) {
-            System.out.println(p.getParticipant1().getFoodPreference());
-            System.out.println(p.getParticipant2().getFoodPreference());
-        }
-        System.out.println("Main Food Pref : " + this.getFoodPreference());
-
-         */
+        System.out.println(this.getPairs().get(0).getParticipant1().getName()+" "+this.getPairs().get(0).getParticipant2().getName() + " " + this.getPairs().get(0).getHasCooked() +
+                " " + this.getPairs().get(0).getFoodPreference());
+        System.out.println(this.getPairs().get(1).getParticipant1().getName()+" "+this.getPairs().get(1).getParticipant2().getName() + " " + this.getPairs().get(1).getHasCooked() +
+                " " + this.getPairs().get(1).getFoodPreference());
+        System.out.println(this.getPairs().get(2).getParticipant1().getName()+" "+this.getPairs().get(2).getParticipant2().getName() + " " + this.getPairs().get(2).getHasCooked() +
+                " " + this.getPairs().get(2).getFoodPreference());
+        System.out.println("Group Food Preference: " + this.foodPreference.toString());
+//        System.out.println(cookingPair.getVisitedPairs().size());
     }
 
     /**
@@ -159,15 +156,6 @@ public class Group implements Calculation, Utility {
         return count == 3;
     }
 
-    public double calculateGroupWeightedScore(){
-        double foodMatchScore = calculateFoodPreference() * CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = calculatePathLength() * CRITERIA.PATH_LENGTH.getWeight();
-        double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = (double) calculateAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
-        double score =  foodMatchScore  + ageDifferenceScore + genderDiversityScore + travelDistanceScore;
-
-        return score;
-    }
     public List<Pair> getPairs() {
         return Pairs;
     }
@@ -199,5 +187,12 @@ public class Group implements Calculation, Utility {
         this.foodPreference = foodPreference;
     }
 
- 
+    public Kitchen getGroupKitchen() {
+        return GroupKitchen;
+    }
+
+    public void setGroupKitchen(Kitchen groupKitchen) {
+        GroupKitchen = groupKitchen;
+    }
+
 }

@@ -1,5 +1,9 @@
 package models;
 
+import logic.DataList;
+import logic.ListManagement;
+import models.Pair;
+import models.Participant;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,19 +17,55 @@ public class PairTest {
     Participant p3 = new Participant("12","p3","veggie","60","female","no","","","");
     Participant p4 = new Participant("13","p4","none","15","other","no","","","");
     Participant p5 = new Participant("14","p5","vegan","15","other","no","","","");
+    Participant p6 = new Participant("15","p6","vegan","15","male","no","","","");
+    Participant p7 = new Participant("34","p7","veggie","60","female","no","","","");
+
+
+    /**
+     * Test for find Food preference
+     */
+    @Test
+    void findFoodPreference_P1withNone(){
+        Pair withNone = new Pair(p1,p4);
+        assertEquals(FOOD_PREFERENCE.meat,withNone.getFoodPreference());
+    }
+    @Test
+    void findFoodPreference_P2withNone(){
+        Pair withNone = new Pair(p4,p1);
+        assertEquals(FOOD_PREFERENCE.meat,withNone.getFoodPreference());
+    }
+
+    @Test
+    void findFoodPreference_withMeat(){
+        Pair withMeat = new Pair(p2,p1);
+        assertEquals(FOOD_PREFERENCE.meat,withMeat.getFoodPreference());
+    }
+
+    @Test
+    void findFoodPreference_withVegan(){
+        Pair withMeat = new Pair(p3,p5);
+        assertEquals(FOOD_PREFERENCE.vegan,withMeat.getFoodPreference());
+    }
+
+    @Test
+    void findFoodPreference_onlyVeggie(){
+        Pair withMeat = new Pair(p3,p7);
+        assertEquals(FOOD_PREFERENCE.veggie,withMeat.getFoodPreference());
+    }
+
 
     /**
      * Test for calculatePairAgeDifference
      */
     @Test
     void calculatePairAgeDifference_return1(){
-        Pair ageDiff = new Pair(p1,p5);
-        assertEquals(1,ageDiff.calculateAgeDifference());
+        Pair ageDiff = new Pair(p1,p2);
+        assertEquals(10,ageDiff.calculateAgeDifference());
     }
     /**
      * Test for method "calculateSexDiversity"
      * with Female -> the Result 0.0
-     * without Female -> the result 0.5
+     * without Female -> the result 1.0
      */
     @Test
     void calculateSexDiversityTest_withFemale_return0(){
@@ -34,9 +74,9 @@ public class PairTest {
     }
 
     @Test
-    void calculateSexDiversityTest_withoutFemale_return05(){
-        Pair equalSex = new Pair(p1,p4);
-        assertEquals(0.5,equalSex.calculateSexDiversity());
+    void calculateSexDiversityTest_withoutFemale_return1(){
+        Pair equalSex = new Pair(p1,p6);
+        assertEquals(1.0,equalSex.calculateSexDiversity());
     }
 
     /**
@@ -62,72 +102,77 @@ public class PairTest {
      */
 
     @Test
-    void foodMatchScore_meatAndMeat_return0(){
+    void foodMatchScore_meatmeat_return0(){
         Pair mm = new Pair(p1,p2);
         assertEquals(0.0,mm.calculateFoodPreference());
     }
     @Test
-    void foodMatchScore_meatAndNone_return0() {
+    void foodMatchScore_meatnone_return0() {
         Pair mn = new Pair(p1, p4);
         assertEquals(0.0, mn.calculateFoodPreference());
     }
 
     @Test
-    void foodMatchScore_noneAndMeat_return0(){
+    void foodMatchScore_nonemeat_return0(){
         Pair nm = new Pair(p4,p1);
         Pair mn = new Pair(p1, p4);
         assertEquals(mn.calculateFoodPreference(),nm.calculateFoodPreference());
     }
     @Test
-    void foodMatchScore_noneAndVegan_return2(){
-        Pair n_vegan = new Pair(p4,p5);
-        assertEquals(2.0,n_vegan.calculateFoodPreference());
+    void foodMatchScore_nonevegan_return2(){
+        Pair nveg = new Pair(p4,p5);
+        assertEquals(2.0,nveg.calculateFoodPreference());
     }
     @Test
-    void foodMatchScore_noneAndVeggie_return1() {
-        Pair n_veggie = new Pair(p4, p3);
-        assertEquals(1.0, n_veggie.calculateFoodPreference());
+    void foodMatchScore_nonevegie_return1() {
+        Pair nveggi = new Pair(p4, p3);
+        assertEquals(1.0, nveggi.calculateFoodPreference());
     }
     @Test
-    void foodMatchScore_noneAndNone_return0() {
+    void foodMatchScore_nonenone_return0() {
         Pair nn = new Pair(p4, p4);
         assertEquals(0.0, nn.calculateFoodPreference());
     }
 
 
     @Test
-    void  foodMatchScore_veganAndVegan_return0() {
+    void  foodMatchScore_veganvegan_return0() {
         Pair vv = new Pair(p5, p5);
         assertEquals(0.0, vv.calculateFoodPreference());
     }
 
     @Test
-    void  foodMatchScore_veganAndNone_return2() {
+    void  foodMatchScore_vegannone_return2() {
         Pair vn = new Pair(p5, p4);
         Pair nv = new Pair(p4, p5);
         assertEquals(vn.calculateFoodPreference(), nv.calculateFoodPreference());
     }
 
     @Test
-    void calculateFoodMatchScore_veganAndVeggie_return1() {
-        Pair veg_veggie = new Pair(p5, p3);
-        assertEquals(1.0, veg_veggie.calculateFoodPreference());
+    void calculateFoodMatchScore_veganveggie_return1() {
+        Pair vvegi = new Pair(p5, p3);
+        assertEquals(1.0, vvegi.calculateFoodPreference());
     }
 
     /**
      * Test for calculatePairWeightedScore
      * Priority(Weight) of Criteria is default
      * Check numbers to three decimal places.
-     * food_Preference : 200
+     * food_Prefernce : 2000
      * age_difference : 100
      * gender_diversity : 50
-     * path_length : 50
+     * path_length : 100
+     * Each Score of the pair (p1 and p2)
+     * - foodpreference 0
+     * - betweenKitchen 432
+     * - sexDiversity 0
+     * - ageDiff 10
      */
     @Test
     void calculatePairWeightedScore_return114(){
         Pair pair = new Pair(p1,p2);
-        System.out.print(Double.POSITIVE_INFINITY);
-        assertEquals(11,Math.floor(pair.calculateWeightedScore()*1000));
+
+        assertEquals(44712,Math.floor(pair.calculateWeightedScore()));
     }
 
 }

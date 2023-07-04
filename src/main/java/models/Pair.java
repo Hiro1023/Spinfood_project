@@ -1,9 +1,6 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import logic.CRITERIA;
 import logic.Calculation;
@@ -15,24 +12,36 @@ import utility.Utility;
  * It includes methods for calculating weighted scores and displaying pair information
  */
 public class  Pair implements Calculation, Utility {
-    private final String Pair_ID;
+    private  String Pair_ID;
     private boolean isPreMade;
     private FOOD_PREFERENCE foodPreference;
     private List<Pair> visitedPairs = new ArrayList<>();
-    private final Participant participant1;
-    private final Participant participant2;
-    private Map<Boolean, Integer> hasCooked; //ex <true,1>
-    private Kitchen kitchen1;
-    private Kitchen kitchen2;
+    private  Participant participant1;
+    private  Participant participant2;
+    private EnumMap<COURSE , Boolean> hasCooked;
+    private Kitchen pairKitchen;
 
     public Pair(Participant participant1, Participant participant2) {
         this.participant1 = participant1;
         this.participant2 = participant2;
         this.Pair_ID = participant1.getID() + "-" + participant2.getID();
-        hasCooked = new HashMap<>();
-        this.foodPreference = FOOD_PREFERENCE.fromValue(Math.max(participant1.getFoodPreference().getValue(),participant2.getFoodPreference().getValue()));
-        this.kitchen1 = participant1.getKitchen();
-        this.kitchen2 = participant2.getKitchen();
+        hasCooked = new EnumMap<>(COURSE.class);
+        this.foodPreference = findFoodPreference(participant1,participant2);
+        this.pairKitchen = (participant1.getKitchen()==null)? participant2.getKitchen():participant1.getKitchen();
+    }
+
+    public FOOD_PREFERENCE findFoodPreference(Participant p1, Participant p2){
+
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.none))
+            return p2.getFoodPreference();
+        if(p2.getFoodPreference().equals(FOOD_PREFERENCE.none))
+            return p1.getFoodPreference();
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.meat) || p2.getFoodPreference().equals(FOOD_PREFERENCE.meat))
+            return FOOD_PREFERENCE.meat;
+        if(p1.getFoodPreference().equals(FOOD_PREFERENCE.vegan) || p2.getFoodPreference().equals(FOOD_PREFERENCE.vegan))
+            return FOOD_PREFERENCE.vegan;
+        else
+            return FOOD_PREFERENCE.veggie;
     }
 
     /**
@@ -55,12 +64,16 @@ public class  Pair implements Calculation, Utility {
     }
 
     /**
-     * This method calculates the sex diversity between 2 participants having 0.5 as ideal
+     * This method calculates the sex diversity between 2 participants having 0.0 as ideal
      * @return the calculated deviation
      */
     @Override
     public double calculateSexDiversity() {
-        return Math.abs(0.5 - ((double) this.participant1.getSex().getValue() + this.participant2.getSex().getValue()) / 2);
+        List<SEX> pairSEX = new ArrayList<>();
+        pairSEX.add(participant1.getSex());
+        pairSEX.add(participant2.getSex());
+        Set<SEX> uniqueGenders = new HashSet<>(pairSEX);
+        return Math.abs(2 - uniqueGenders.size());
     }
 
     /**
@@ -82,15 +95,15 @@ public class  Pair implements Calculation, Utility {
         double radLat2 = Math.toRadians(kitchen2.getKitchenLatitude());
         double radLon2 = Math.toRadians(kitchen2.getKitchenLongitude());
 
-        double dlon = radLon2 - radLon1;
-        double dlat = radLat2 - radLat1;
-        double haversineFormula = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(dlon / 2), 2);
+        double distLon = radLon2 - radLon1;
+        double distLat = radLat2 - radLat1;
+        double haversineFormula = Math.pow(Math.sin(distLat / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(distLon / 2), 2);
         double angularDistanceInRadians = 2 * Math.atan2(Math.sqrt(haversineFormula), Math.sqrt(1 - haversineFormula));
 
         return EARTH_RADIUS * angularDistanceInRadians;
     }
 
-
+    @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("premade", this.isPreMade);
@@ -100,8 +113,6 @@ public class  Pair implements Calculation, Utility {
         return jsonObject;
     }
 
-
-
     /**
      * This method uses haversine formula to calculate the distance between each kitchen of the participants and the party location
      * @param partyLongitude the Longitude value of the party's coordination
@@ -109,7 +120,7 @@ public class  Pair implements Calculation, Utility {
      * @return distance between the kitchens to the party
      */
     public double calculateDistanceBetweenKitchenAndParty(double partyLongitude, double partyLatitude) {
-        if (hasCooked.containsKey(true)) {//when the group has already cooked
+        if (hasCooked.containsValue(true)) {//when the group has already cooked
             return 0.0;
         }
         Kitchen kitchen1 = participant1.getKitchen();
@@ -145,11 +156,12 @@ public class  Pair implements Calculation, Utility {
 
     /**
      * This method calculates the absolute value for age diff
+     *
      * @return the calculated age difference
      */
     @Override
-    public int calculateAgeDifference() {
-        return Math.abs(participant1.getAgeRange().getValue() - participant2.getAgeRange().getValue());
+    public double calculateAgeDifference() {
+        return Math.abs(participant1.getAge() - participant2.getAge());
     }
 
     /**
@@ -159,21 +171,21 @@ public class  Pair implements Calculation, Utility {
      */
     @Override
     public double calculateWeightedScore() {
-        double foodMatchScore = calculateFoodPreference() / CRITERIA.FOOD_PREFERENCES.getWeight();
-        double ageDifferenceScore = (double) calculateAgeDifference() / CRITERIA.AGE_DIFFERENCE.getWeight();
-        double genderDiversityScore = calculateSexDiversity() / CRITERIA.GENDER_DIVERSITY.getWeight();
-        double travelDistanceScore = calculatePathLength() / CRITERIA.PATH_LENGTH.getWeight();
+        double foodMatchScore = calculateFoodPreference() * CRITERIA.FOOD_PREFERENCES.getWeight();
+        double ageDifferenceScore = calculateAgeDifference() * CRITERIA.AGE_DIFFERENCE.getWeight();
+        double genderDiversityScore = calculateSexDiversity() * CRITERIA.GENDER_DIVERSITY.getWeight();
+        double travelDistanceScore = calculatePathLength() * CRITERIA.PATH_LENGTH.getWeight();
 
-        double Score = 1 / (foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore);
-        if (Score == Double.POSITIVE_INFINITY)
-            Score = 1000;
-        return Score;
+        if (CRITERIA.getMaxCriteria() != CRITERIA.OPTIMAL) {
+            CRITERIA.OPTIMAL.setWeight(1);
+        }
+
+        return (foodMatchScore + ageDifferenceScore + genderDiversityScore + travelDistanceScore) * CRITERIA.OPTIMAL.getWeight();
     }
 
     @Override
     public void show() {
-        System.out.println("This is a pair: " + this.participant1.getName() + " " + this.participant2.getName());
-        System.out.println(getFoodPreference() + " p1 :" + participant1.getFoodPreference() + " p2 :" + participant2.getFoodPreference());
+        System.out.println(this.participant1.getName() + " " + this.participant2.getName() + " " + this.foodPreference + this.getHasCooked().toString());
     }
 
     /**
@@ -198,12 +210,26 @@ public class  Pair implements Calculation, Utility {
         this.foodPreference = foodPreference;
     }
 
-    public void setHasCooked(Boolean b, int i) {
-        this.hasCooked.put(b, i);
+    public void setHasCooked(int course) {
+        switch (course) {
+            case 1:
+                this.hasCooked.put(COURSE.Starter, true);
+                break;
+            case 2:
+                this.hasCooked.put(COURSE.mainCourse, true);
+                break;
+            case 3:
+                this.hasCooked.put(COURSE.Dessert, true);
+                break;
+        }
     }
 
-    public Map<Boolean, Integer> getHasCooked() {
-        return hasCooked;
+    public void clearHasCooked() {
+        this.hasCooked = new EnumMap<>(COURSE.class);
+    }
+
+    public EnumMap<COURSE, Boolean> getHasCooked() {
+        return this.hasCooked;
     }
 
     public String getPairId() {
@@ -229,19 +255,11 @@ public class  Pair implements Calculation, Utility {
     public FOOD_PREFERENCE getFoodPreference() {
         return foodPreference;
     }
-    public Kitchen getKitchen1() {
-        return kitchen1;
+    public Kitchen getPairKitchen() {
+        return pairKitchen;
     }
 
-    public void setKitchen1(Kitchen kitchen1) {
-        this.kitchen1 = kitchen1;
-    }
-
-    public Kitchen getKitchen2() {
-        return kitchen2;
-    }
-
-    public void setKitchen2(Kitchen kitchen2) {
-        this.kitchen2 = kitchen2;
+    public void setPairKitchen(Kitchen kitchen) {
+        this.pairKitchen = kitchen;
     }
 }

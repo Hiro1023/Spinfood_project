@@ -1,8 +1,12 @@
 package logic;
 
+import jdk.jshell.execution.Util;
 import models.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utility.Utility;
+//import org.json.JSONArray;
+//import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +15,9 @@ import java.util.List;
  * The DataList class represent a data structure that holds various lists and data related to an event
  * It contains lists of Participants, Pairs, Groups for 3 Courses and unmatched Participants
  */
-public class DataList {
+public class DataList implements Utility {
     private List<Participant> participantList;
-    private List<Participant> unmatchedParticipants;
+    private List<Participant> unpairedParticipants;
     private List<Pair> pairList;
     private List<Group> groupListCourse01;
     private List<Group> groupListCourse02;
@@ -26,7 +30,7 @@ public class DataList {
     //Constructor
     public DataList (Event event){
         this.participantList = new ArrayList<>();
-        this.unmatchedParticipants = new ArrayList<>();
+        this.unpairedParticipants = new ArrayList<>();
         this.pairList = new ArrayList<>();
         this.groupListCourse01 = new ArrayList<>();
         this.groupListCourse02 = new ArrayList<>();
@@ -37,7 +41,6 @@ public class DataList {
         this.event = event;
 
     }
-
 
     /**
      * This method add a Participant to the participantList. If it
@@ -52,6 +55,11 @@ public class DataList {
         }
     }
 
+    @Override
+    /**
+     Converts the current object state to a JSONObject.
+     @return The JSONObject representing the object state.
+     */
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         JSONArray arraySuccessorParticipants = new JSONArray();
@@ -78,8 +86,10 @@ public class DataList {
         return jsonObject;
     }
 
-
-
+    /**
+     * this method joins all the group lists for all 3 courses together
+     * @return a group list that contains all groups from all 3 courses
+     */
     private List<Group> getAllGroups() {
         List<Group> allGroups = new ArrayList<>();
         allGroups.addAll(getGroupListCourse01());
@@ -87,7 +97,6 @@ public class DataList {
         allGroups.addAll(getGroupListCourse03());
         return allGroups;
     }
-
 
 
     public void exportToJsonFile(String fileName) {
@@ -98,11 +107,11 @@ public class DataList {
 
 
     /**
-     * This method add a Participant to the unmatchedparticipant List
+     * This method add a Participant to the unmatchedParticipant List
      * @param participant the Participant that is chosen to be added
      */
     public void addUnmatchedParticipantToList(Participant participant){
-        unmatchedParticipants.add(participant);
+        unpairedParticipants.add(participant);
     }
 
     /**
@@ -164,8 +173,8 @@ public class DataList {
      * This method return a list of Participants
      * @return unmatchedParticipants as List of Participants that is not in a Pair
      */
-    public List<Participant> getUnmatchedParticipants() {
-        return unmatchedParticipants;
+    public List<Participant> getUnpairedParticipants() {
+        return unpairedParticipants;
     }
     /**
      * This method return a list of Pairs
@@ -230,8 +239,8 @@ public class DataList {
         this.event = event;
     }
 
-    public void setUnmatchedParticipants(List<Participant> unmatchedParticipants) {
-        this.unmatchedParticipants = unmatchedParticipants;
+    public void setUnpairedParticipants(List<Participant> unpairedParticipants) {
+        this.unpairedParticipants = unpairedParticipants;
     }
 
     public ParticipantSuccessorList getParticipantSuccessorList() {
@@ -256,5 +265,15 @@ public class DataList {
 
     public void setCanceledList(CanceledList canceledList) {
         this.canceledList = canceledList;
+    }
+
+    @Override
+    public void show() {
+        return;
+    }
+
+    @Override
+    public boolean equal(Object o) {
+        return false;
     }
 }
