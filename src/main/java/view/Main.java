@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logic.GenerateSolutions;
 import logic.JsonExport;
 import logic.ListManagement;
 import logic.readCSV;
@@ -144,15 +145,11 @@ public class Main {
         if (result != JFileChooser.APPROVE_OPTION) return; // User canceled or closed the dialog
         File selectedFile = fileChooser.getSelectedFile();
          */
+        GenerateSolutions GS = new GenerateSolutions(lm);
+        GS.generateSolutionFirstCondition();
+        //GS.generateSolutionSecondCondition();
+        //GS.generateSolutionThirdCondition();
 
-        lm.pairAndGroupBuilding();
-
-        System.out.println("Gang 1:------------------------------------------------------------");
-        showGroupListGang01();
-        System.out.println("Gang 2:------------------------------------------------------------");
-        showGroupListGang02();
-        System.out.println("Gang 3:------------------------------------------------------------");
-        showGroupListGang03();
 
         System.out.println("size:"+lm.dataList.getGroupListCourse01().size()+""+lm.dataList.getGroupListCourse02().size()+""+lm.dataList.getGroupListCourse03().size());
 
