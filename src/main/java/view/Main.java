@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import logic.GenerateSolutions;
@@ -17,27 +18,16 @@ import models.Pair;
 import models.Participant;
 import org.json.JSONObject;
 
+import javax.swing.*;
+
 public class Main {
     static ObjectMapper objectMapper = new ObjectMapper();
     static String participantCSVFile = "Resources/teilnehmerliste.csv";
     static String partyLocationCSVFile = "Resources/partylocation.csv";
     static readCSV readCSV;
-    static {
-        try {
-            readCSV = new readCSV(new File(participantCSVFile),new File(partyLocationCSVFile));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
     static List<String[]> list;
-    static {
-        try {
-            list = readCSV.read_File(new File(participantCSVFile));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    static ListManagement lm = new ListManagement(readCSV.event.getDataList());
+    static ListManagement lm;
+
     public static void showParticipantList(){
         for (Participant par: lm.dataList.getParticipantList()) {
             par.show();
@@ -138,13 +128,26 @@ public class Main {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        /*
-        //Create a file chooser dialog to select the CSV file
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) return; // User canceled or closed the dialog
-        File selectedFile = fileChooser.getSelectedFile();
-         */
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please enter the participant CSV file path:");
+        String participantCSVFile = scanner.nextLine();
+
+        System.out.println("Please enter the party location CSV file path:");
+        String partyLocationCSVFile = scanner.nextLine();
+
+        try {
+            readCSV = new readCSV(new File(participantCSVFile), new File(partyLocationCSVFile));
+            list = readCSV.read_File(new File(participantCSVFile));
+            lm = new ListManagement(readCSV.event.getDataList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        ListManagement lm = new ListManagement(readCSV.event.getDataList());
+
+
         GenerateSolutions GS = new GenerateSolutions(lm);
         GS.generateSolutionFirstCondition();
         //GS.generateSolutionSecondCondition();

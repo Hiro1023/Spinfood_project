@@ -209,8 +209,7 @@ public class ListManagement{
                         unCookedPairCourse3.remove(p);
                     }
                     if(bestGroup == null){
-                        System.out.println("error");
-
+                        //System.out.println("error");
                     }
 
                 }
