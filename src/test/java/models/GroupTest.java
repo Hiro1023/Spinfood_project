@@ -16,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class GroupTest {
+    /**
+     * create test participants for testing
+     * each participant have different preference and information
+     */
     Participant p1 = new Participant("10","P1","meat","20","male","yes","2.0","1.1","51.2");
     Participant p2 = new Participant("11","P2","meat","30","female","yes","1.0","7.0","50.0");
     Participant p3 = new Participant("12","p3","veggie","60","female","no","","","");
@@ -46,23 +50,38 @@ public class GroupTest {
     }
 
     /**
-     * Test for calculateFoodMatchScore
+     * Test for calculateSexdiversity when all pair in group have female
      * This methode calculates the Sum of genderdiversity for all Pairs
      */
     @Test
     public void sexDiversity_allPairHaveFemale_return0(){
         assertEquals(0.0,g1.calculateSexDiversity());
     }
+
+    /**
+     * Test for calculateSexDiversity
+     * When one pair has female
+     */
     @Test
     public void sexDiversity_onePairHasFemale_return2(){
         Group g2 = new Group(pair1,pair4,pair5,1);
         assertEquals(2.0,g2.calculateSexDiversity());
     }
+
+    /**
+     * Test for calculateSexDiversity
+     * When 2 pairs have female
+     */
     @Test
     public void sexDiversity_twoPairHaveFemale_return1(){
         Group g3 = new Group(pair1,pair2,pair5,1);
         assertEquals(1.0,g3.calculateSexDiversity());
     }
+
+    /**
+     * Test for calculateSexDiversity
+     * when no pair have female
+     */
     @Test
     public void sexDiversity_noFemale_return3(){
         Group g4 = new Group(pair6,pair4,pair5,1);
@@ -89,7 +108,7 @@ public class GroupTest {
 
 
     /**
-     * Test for equal
+     * Test for 2 pair if they are not equal
      */
     @Test
     public void equalTest_NotEqual(){
@@ -97,12 +116,13 @@ public class GroupTest {
         assertEquals(false,g1.equal(g2));
     }
 
+    /**
+     * Test for 2 pair if they are  equal
+     */
     @Test
     public void equalTest_Equal(){
         Group g2 = new Group(pair2,pair1,pair3,1);
         assertEquals(true,g1.equal(g2));
     }
-
-
 
 }

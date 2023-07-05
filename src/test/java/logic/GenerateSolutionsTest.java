@@ -23,6 +23,9 @@ class GenerateSolutionsTest {
         generateSolutions = new GenerateSolutions(listManagement);
     }
 
+    /**
+     * Test for the first solution generation
+     */
     @Test
     void testGenerateSolutionFirstCondition() {
         generateSolutions.generateSolutionFirstCondition();
@@ -35,6 +38,9 @@ class GenerateSolutionsTest {
         assertTrue(file.exists());
     }
 
+    /**
+     * Test for the second solution generation
+     */
     @Test
     void testGenerateSolutionSecondCondition() {
         // Perform the operation
@@ -47,6 +53,9 @@ class GenerateSolutionsTest {
         assertTrue(file.exists());
     }
 
+    /**
+     * Test for the third solution generation
+     */
     @Test
     void testGenerateSolutionThirdCondition() {
         // Perform the operation
