@@ -1,16 +1,13 @@
 package view;//import necessary libraries
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -47,7 +44,6 @@ public class ListVisualization extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cooking Event");
-
 
         // Create Button
         Button createNewEventButton = new Button("Create New Event");
@@ -207,6 +203,19 @@ public class ListVisualization extends Application {
             }
         });
 
+        Button showParticipantSuccessorListButton = new Button("show participant Successor list");
+
+        showParticipantSuccessorListButton.setOnAction(e -> {
+            if(listManagement.dataList.getParticipantSuccessorList() != null){
+                System.out.println("show Participant Successor list");
+                showParticipantSuccessorListOnScreen();
+            }else{
+                Text errorText = new Text();
+                errorText.setText("Participant Successor list is empty yet");
+                vbox.getChildren().add(errorText);
+            }
+        });
+
         // Create Button to make Group
         Button makeGroupButton = new Button("make Group");
 
@@ -235,13 +244,25 @@ public class ListVisualization extends Application {
 
         // Create Button to show the pair list
         Button showPairListButton = new Button("show pairlist");
-
         showPairListButton.setOnAction(e -> {
             if(listManagement.dataList.getPairList() != null){
                 showPairListOnScreen();
             } else{
                 Text errorText = new Text();
                 errorText.setText("pairList is empty yet");
+                errorText.setText("Please click button make Pair");
+                vbox.getChildren().add(errorText);
+            }
+        });
+
+        // Create Button to show the pair successor list
+        Button showPairSuccessorListButton = new Button("show successor pair list");
+        showPairSuccessorListButton.setOnAction(e -> {
+            if(listManagement.dataList.getPairSuccessorList().getPairSuccessorList() != null){
+                showPairSuccessorListOnScreen();
+            } else{
+                Text errorText = new Text();
+                errorText.setText("successor pair List is empty yet");
                 errorText.setText("Please click button make Pair");
                 vbox.getChildren().add(errorText);
             }
@@ -271,6 +292,8 @@ public class ListVisualization extends Application {
         vbox.getChildren().add(showPairListButton);
         vbox.getChildren().add(makeGroupButton);
         vbox.getChildren().add(showGroupListButton);
+        vbox.getChildren().add(showParticipantSuccessorListButton);
+        vbox.getChildren().add(showPairSuccessorListButton);
         vbox.getChildren().add(setting);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
@@ -280,6 +303,142 @@ public class ListVisualization extends Application {
 
     }
 
+    /**
+     *
+     */
+    public void showParticipantSuccessorListOnScreen(){
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Participant Successor List");
+
+        TableView<Participant> tableView = new TableView<>();
+        // Create Column of Participant ID
+        TableColumn<Participant, String> participantIDColumn = new TableColumn<>("Participant ID");
+        participantIDColumn.setCellValueFactory(cellData -> {  // pick up data "Participant_ID"
+            Participant p = cellData.getValue();
+            return new SimpleStringProperty(p.getID());
+        });
+
+        // Create Column of Participant Name
+        TableColumn<Participant, String> participantNameColumn = new TableColumn<>("Participant Name");
+        participantNameColumn.setCellValueFactory(cellData -> {  // pick up data "Participant_Name"
+            Participant p = cellData.getValue();
+            return new SimpleStringProperty(p.getName());
+        });
+
+        // Create Column of FoodPreference
+        TableColumn<Participant, String> foodPreference = new TableColumn<>("FOOD PREFERENCE");
+        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Participant p = cellData.getValue();
+            return new SimpleStringProperty(p.getFoodPreference().toString());
+        });
+
+        tableView.getColumns().add(participantIDColumn);
+        tableView.getColumns().add(participantNameColumn);
+        tableView.getColumns().add(foodPreference);
+
+        for(Participant p : listManagement.dataList.getParticipantSuccessorList().getParticipantSuccessorList()){
+            tableView.getItems().add(p);
+        }
+
+        StackPane root = new StackPane();
+        root.getChildren().add(tableView);
+
+        Scene scene = new Scene(root, 1000, 600);
+        primaryStage.sizeToScene();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    /**
+     *
+     */
+    public void showPairSuccessorListOnScreen(){
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Pair Successor List");
+
+        TableView<Pair> tableView = new TableView<>();
+
+        // Create Column of pairID
+        TableColumn<Pair, String> pairIDColumn = new TableColumn<>("Pair ID");
+        pairIDColumn.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(pair.getPairId());
+        });
+
+        // Create Column of Name_participant 1
+        TableColumn<Pair, String> participant1Column = new TableColumn<>("Participant1");
+        participant1Column.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(pair.getParticipant1().getName());
+        });
+
+        // Create Column of Name_participant 2
+        TableColumn<Pair, String> participant2Column = new TableColumn<>("Participant 2");
+        participant2Column.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(pair.getParticipant2().getName());
+        });
+
+        // Create Column of FoodPreference
+        TableColumn<Pair, String> foodPreference = new TableColumn<>("FOOD PREFERENCE");
+        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(pair.getFoodPreference().toString());
+        });
+
+        // Create Column of Age Difference
+        TableColumn<Pair, String> ageDif = new TableColumn<>("AGE DIFFERENCE");
+        ageDif.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(Double.toString(pair.calculateAgeDifference()));
+        });
+
+        // Create Column of GenderDiversity
+        TableColumn<Pair, String> genderDiv = new TableColumn<>("GENDER DIVERSITY");
+        genderDiv.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(Double.toString(pair.calculateSexDiversity()));
+        });
+
+        // Create Column of FoodPreference
+        TableColumn<Pair, String> pathLength = new TableColumn<>("PATH LENGTH");
+        pathLength.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(Double.toString(pair.calculatePathLength()));
+        });
+
+        // Create Column of Score
+        TableColumn<Pair, String> score = new TableColumn<>("TOTAL SCORE");
+        score.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+            Pair pair = cellData.getValue();
+            return new SimpleStringProperty(Double.toString(pair.calculateWeightedScore()));
+        });
+
+
+        tableView.getColumns().add(pairIDColumn);
+        tableView.getColumns().add(participant1Column);
+        tableView.getColumns().add(participant2Column);
+        tableView.getColumns().add(foodPreference);
+        tableView.getColumns().add(ageDif);
+        tableView.getColumns().add(genderDiv);
+        tableView.getColumns().add(pathLength);
+        tableView.getColumns().add(score);
+
+
+        for(Pair p : listManagement.dataList.getPairSuccessorList().getPairSuccessorList()){
+            tableView.getItems().add(p);
+        }
+
+
+        StackPane root = new StackPane();
+        root.getChildren().add(tableView);
+
+        Scene scene = new Scene(root, 1000, 600);
+        primaryStage.sizeToScene();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
     /**
      * This Method is called, if Button show PairList is clicked
@@ -287,8 +446,6 @@ public class ListVisualization extends Application {
      */
 
     public void showPairListOnScreen(){
-
-
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Pair List");
 
@@ -659,8 +816,8 @@ public class ListVisualization extends Application {
 
     /**
      * Helper method for changeCriteriaWindow
-     * Choosed Options is changed to Weight(in Integer)
-     * @param x Choosed Option by user in String
+     * Choose Options is changed to Weight(in Integer)
+     * @param x Choose Option by user in String
      * @return  So Important -> 20
      *          Important -> 10
      *          Not Important -> 5

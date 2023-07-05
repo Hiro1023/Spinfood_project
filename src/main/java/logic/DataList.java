@@ -19,6 +19,7 @@ public class DataList implements Utility {
     private List<Participant> participantList;
     private List<Participant> unpairedParticipants;
     private List<Pair> pairList;
+
     private List<Group> groupListCourse01;
     private List<Group> groupListCourse02;
     private List<Group> groupListCourse03;
