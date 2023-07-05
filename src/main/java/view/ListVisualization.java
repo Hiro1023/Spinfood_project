@@ -130,7 +130,7 @@ public class ListVisualization extends Application {
                     }
                     try {
                         // set max Amount of participants in Event
-                       // lm.dataList.getEvent().setMaxParticipant(Integer.parseInt(maxParticipantsField.getText()));
+                        // lm.dataList.getEvent().setMaxParticipant(Integer.parseInt(maxParticipantsField.getText()));
                     } catch(Exception b) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialog");
@@ -446,10 +446,22 @@ public class ListVisualization extends Application {
      */
 
     public void showPairListOnScreen(){
+
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Pair List");
 
         TableView<Pair> tableView = new TableView<>();
+
+        tableView.setRowFactory( tv -> {
+            TableRow<Pair> detailRow = new TableRow<>();
+            detailRow.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!detailRow.isEmpty())) {
+                    Pair rowData = detailRow.getItem();
+                    showPairToCompair(rowData);
+                }
+            });
+            return detailRow;
+        });
 
         // Create Column of pairID
         TableColumn<Pair, String> pairIDColumn = new TableColumn<>("Pair ID");
@@ -532,6 +544,10 @@ public class ListVisualization extends Application {
         primaryStage.show();
     }
 
+    public void showPairToCompair(Pair pair){
+
+    }
+
     /**
      * Setting window is showed on screen
      * User can choose some functions to change saved data on this window
@@ -600,6 +616,44 @@ public class ListVisualization extends Application {
 
             tableViewCourse03.getItems().add(g);
         }
+
+
+
+        tableViewCourse01.setRowFactory( tv -> {
+            TableRow<Group> detailRow = new TableRow<>();
+            detailRow.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!detailRow.isEmpty())) {
+                    Group rowData = detailRow.getItem();
+                    showGroupDetail(rowData);
+                }
+            });
+            return detailRow;
+        });
+
+        tableViewCourse02.setRowFactory( tv -> {
+            TableRow<Group> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Group rowData = row.getItem();
+                    showGroupDetail(rowData);
+                }
+            });
+            return row;
+        });
+
+        tableViewCourse03.setRowFactory( tv -> {
+            TableRow<Group> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Group rowData = row.getItem();
+                    showGroupDetail(rowData);
+                }
+            });
+            return row;
+        });
+
 
         // VBox to stack tables vertically
         VBox vbox = new VBox(tableViewCourse01, tableViewCourse02, tableViewCourse03);
@@ -676,19 +730,6 @@ public class ListVisualization extends Application {
 
 
 
-        /*
-        // Create Column of Pathlength
-        TableColumn<Group, String> pathLength = new TableColumn<>("PATH LENGTH");
-        pathLength.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
-            Group g = cellData.getValue();
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-            return new SimpleStringProperty(Double.toString(g.calculateDistanceBetweenKitchenAndParty(Double.parseDouble(decimalFormat.format(g.getCookingPair().getPairKitchen().getKitchenLatitude()))
-                    , Double.parseDouble(decimalFormat.format(g.getCookingPair().getPairKitchen().getKitchenLatitude())))));
-        });
-
-         */
-
         // Create Column of Score
         TableColumn<Group, String> score = new TableColumn<>("TOTAL SCORE");
         score.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
@@ -704,6 +745,61 @@ public class ListVisualization extends Application {
         return tableView;
     }
 
+    private void showGroupDetail(Group group) {
+        Stage detailStage = new Stage();
+
+        TableView<Pair> tableView = new TableView<>();
+
+        // Create columns and add to the TableView as per your requirement
+        // Assuming Pair class has a property 'name'
+
+        TableColumn<Pair, String> pairNameColumn = new TableColumn<>("Pair Names");
+        pairNameColumn.setCellValueFactory(cellData -> {
+            Pair pair = cellData.getValue();
+            String name = pair.getParticipant1().getName() + " - " + pair.getParticipant2().getName();
+            return new SimpleStringProperty(name);
+        });
+
+        TableColumn<Pair, String> ageDiffColumn = new TableColumn<>("Age Differences");
+        ageDiffColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(Double.toString(group.calculateAgeDifference()));
+        });
+
+        TableColumn<Pair, String> genderDivColumn = new TableColumn<>("Gender Diversity");
+        genderDivColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(Double.toString(group.calculateSexDiversity()));
+        });
+
+        TableColumn<Pair, String> pathColumn = new TableColumn<>("Path Length");
+        pathColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(Double.toString(group.calculatePathLength()));
+        });
+
+        TableColumn<Pair, String> scoreColumn = new TableColumn<>("Total Score");
+        scoreColumn.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(Double.toString(group.calculateWeightedScore()));
+        });
+
+
+        tableView.getColumns().add(pairNameColumn);
+        tableView.getColumns().add(ageDiffColumn);
+        tableView.getColumns().add(genderDivColumn);
+        tableView.getColumns().add(pathColumn);
+        tableView.getColumns().add(scoreColumn);
+
+        // Adding pairs of the group to the TableView
+        for (Pair pair : group.getPairs()) {
+            tableView.getItems().add(pair);
+        }
+
+        VBox vbox = new VBox(tableView);
+        Scene scene = new Scene(vbox, 500, 500);
+
+        detailStage.setScene(scene);
+        detailStage.show();
+    }
+
+
     /**
      * User can remove a patricipant in this window
      */
@@ -714,24 +810,24 @@ public class ListVisualization extends Application {
         Label label = new Label("Name ");
         Button ok = new Button("OK");
         ok.setOnAction( e ->  {
-            try{
-                System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
-                System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
-                String pName = removedParticipant.getText();
-                for(Participant p : listManagement.dataList.getParticipantList()){
-                    if(p.getName().equals(pName)){
-                        listManagement.dataList.getCanceledList().getCanceledParticipants().add(p);
-                        listManagement.dataList.getParticipantSuccessorList().addParticipant(p);
+                    try{
+                        System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
+                        System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
+                        String pName = removedParticipant.getText();
+                        for(Participant p : listManagement.dataList.getParticipantList()){
+                            if(p.getName().equals(pName)){
+                                listManagement.dataList.getCanceledList().getCanceledParticipants().add(p);
+                                listManagement.dataList.getParticipantSuccessorList().addParticipant(p);
+                            }
+                        }
+                        // remove the participant from list
+                        listManagement.dataList.getParticipantList().stream().filter(x -> !x.equals(pName)).collect(Collectors.toList());
+                        System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
+                        System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
+                        primaryStage.close();
+                    }catch(Exception err) {
                     }
                 }
-                // remove the participant from list
-                listManagement.dataList.getParticipantList().stream().filter(x -> !x.equals(pName)).collect(Collectors.toList());
-                System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
-                System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
-                primaryStage.close();
-                }catch(Exception err) {
-            }
-            }
         );
         VBox vbox = new VBox();
         vbox.getChildren().addAll(label,removedParticipant,ok);
@@ -756,6 +852,7 @@ public class ListVisualization extends Application {
         options.add("So Important");
         options.add("Important");
         options.add("Not Important");
+        options.add("Not Neccessary");
 
         // Food preference
         Label l1 = new Label("Food Preference");
@@ -825,16 +922,18 @@ public class ListVisualization extends Application {
 
     public int optionToWeight(String x){
         if(x.equals("So Important")){
-            return 20;
+            return 2000;
         }
         else if(x.equals("Important")){
-            return 10;
+            return 100;
+        }
+        else if(x.equals("Not Important")){
+            return 50;
         }
         else{
-            return 5;
+            return 0;
         }
     }
-
 
 
 }
