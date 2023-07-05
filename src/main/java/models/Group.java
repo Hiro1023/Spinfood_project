@@ -48,7 +48,16 @@ public class Group implements Calculation, Utility {
     @Override
     public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("course", this.getCourse().toString());
+
+        String course = this.getCourse().toString();
+
+        if (course.equals("Starter")) {
+            jsonObject.put("course", "first");
+        } else if (course.equals("Maincourse")) {
+            jsonObject.put("course", "main");
+        } else if (course.equals("Dessert")) {
+            jsonObject.put("course", "dessert");
+        }
         jsonObject.put("foodType", this.getFoodPreference().toString());
         jsonObject.put("kitchen", this.getGroupKitchen()); // If there's a kitchen associated with the group, replace JSONObject.NULL with this.getKitchen().toJson()
         jsonObject.put("cookingPair", this.getPairs().get(0).toJson());
