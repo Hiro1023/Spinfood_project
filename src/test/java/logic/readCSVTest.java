@@ -10,7 +10,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 class readCSVTest {
     readCSV test;
-
     String[] columm = {};
     String[] p1 = {"0","004670cb-47f5-40a4-87d8-5276c18616ec","Person1","veggie","21","male","maybe","3.0","8.673368271555807","50.5941282715558","","","",""};
     String[] p2 = {"2","01be5c1f-4aa1-458d-a530-b1c109ffbb55","Person3","vegan","22","male","yes","1.0","8.681372017093311","50.5820794170933","117ee996-14d3-44e8-8bcb-eb2d29fddda5","Personx1","25.0","male"};
@@ -46,9 +45,6 @@ class readCSVTest {
         assertEquals("Person1",new readCSV().read_File(participantCSV).get(1)[2]);
 
     }
-
-
-
     /**
      * Test for addParticipant
      * Checking count of all participant
@@ -108,7 +104,9 @@ class readCSVTest {
         assertEquals(test.event.getDataList().getParticipantList().size(),2*(test.event.getDataList().getPairList().size())+test.event.getDataList().getUnpairedParticipants().size());
     }
 
-
+    /**
+     * Test for check the party longitude
+     */
     @Test
     void addPartyLocationTest_checkLongitude(){
         List<String[]> dataCSV = new ArrayList<>();
@@ -118,6 +116,9 @@ class readCSVTest {
         assertEquals("5.0",Double.toString(test.event.getPartyLongitude()));
     }
 
+    /**
+     * test for check the party latitude
+     */
     @Test
     void addPartyLocationTest_checkLatitude(){
         List<String[]> dataCSV = new ArrayList<>();

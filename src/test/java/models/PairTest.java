@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PairTest {
 
+    /**
+     * create test participants for testing
+     * each participant have different preference and information
+     */
     Participant p1 = new Participant("10","P1","meat","20","male","yes","2.0","1.1","51.2");
     Participant p2 = new Participant("11","P2","meat","30","female","yes","1.0","7.0","50.0");
     Participant p3 = new Participant("12","p3","veggie","60","female","no","","","");
@@ -22,31 +26,48 @@ public class PairTest {
 
 
     /**
-     * Test for find Food preference
+     * Test for find Food preference for p1, p4
      */
     @Test
     void findFoodPreference_P1withNone(){
         Pair withNone = new Pair(p1,p4);
         assertEquals(FOOD_PREFERENCE.meat,withNone.getFoodPreference());
     }
+
+    /**
+     *  Test for find Food preference for p4, p1
+     *  one of the Participant has FP als none
+     */
     @Test
     void findFoodPreference_P2withNone(){
         Pair withNone = new Pair(p4,p1);
         assertEquals(FOOD_PREFERENCE.meat,withNone.getFoodPreference());
     }
 
+    /**
+     *  Test for find Food preference for p2, p1
+     *  both have FP als meat
+     */
     @Test
     void findFoodPreference_withMeat(){
         Pair withMeat = new Pair(p2,p1);
         assertEquals(FOOD_PREFERENCE.meat,withMeat.getFoodPreference());
     }
 
+    /**
+     *  Test for find Food preference for p3, p5
+     *  both have FP als vegan
+     */
     @Test
     void findFoodPreference_withVegan(){
         Pair withMeat = new Pair(p3,p5);
         assertEquals(FOOD_PREFERENCE.vegan,withMeat.getFoodPreference());
     }
 
+    /**
+     *  Test for find Food preference for p3, p5
+     *  both have FP als veggie
+     */
     @Test
     void findFoodPreference_onlyVeggie(){
         Pair withMeat = new Pair(p3,p7);
@@ -73,6 +94,10 @@ public class PairTest {
         assertEquals(0.0,differentSex.calculateSexDiversity());
     }
 
+    /**
+     * test for calculateSexDiversity
+     * pair without female
+     */
     @Test
     void calculateSexDiversityTest_withoutFemale_return1(){
         Pair equalSex = new Pair(p1,p6);
@@ -90,6 +115,10 @@ public class PairTest {
         assertEquals(437,Math.floor(both.calculatePathLength()));
     }
 
+    /**
+     * test for calculatePathLength
+     * both participant have kitchen
+     */
     @Test
     void calculateDistanceBetweenKitchens_eitherHasKitchen_return0(){
         Pair either = new Pair(p1,p3);
@@ -97,10 +126,9 @@ public class PairTest {
     }
 
     /**
-     * Test for calculateFoodMatchScore()
+     * Test for calculateFoodMatchScore
      * Check all combination of foodPreference
      */
-
     @Test
     void foodMatchScore_meatmeat_return0(){
         Pair mm = new Pair(p1,p2);

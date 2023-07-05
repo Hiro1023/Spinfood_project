@@ -38,9 +38,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.jfoenix.controls.JFXButton;
 
-
-
-
 public class ListVisualization extends Application {
 
     private File partyLocation;
@@ -52,7 +49,6 @@ public class ListVisualization extends Application {
     private TextField maxParticipantsField;
 
     DropShadow shadow = new DropShadow();
-
 
     /**
      * The main entry point for the application
@@ -66,7 +62,8 @@ public class ListVisualization extends Application {
     /**
      * Starts the JavaFX application.
      *
-     * @param primaryStage the primary stage for this application, onto which the application scene can be set.
+     * @param primaryStage the primary stage for this application, onto which the
+     *                     application scene can be set.
      */
     @Override
     public void start(Stage primaryStage) {
@@ -75,7 +72,8 @@ public class ListVisualization extends Application {
     }
 
     /**
-     * This method contains main functions (make Pair and make Group) and user can do it on this window
+     * This method contains main functions (make Pair and make Group) and user can
+     * do it on this window
      *
      * @param primaryStage the stage
      */
@@ -97,9 +95,9 @@ public class ListVisualization extends Application {
         vbox.setSpacing(8);
 
         // Load the image
-        Image logoImage = new Image("C:\\Users\\saif_\\SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan\\Resources\\pic.png");
+        Image logoImage = new Image(
+                "C:\\Users\\saif_\\SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan\\Resources\\pic.png");
         ImageView imageView = new ImageView(logoImage);
-
 
         // Create the button
         Button button = createNewEventButton(primaryStage);
@@ -113,12 +111,10 @@ public class ListVisualization extends Application {
         // Set the Scene to the Stage
         primaryStage.setScene(scene);
 
-
         // Show the Stage
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.show();
     }
-
 
     /**
      * Creates and returns a new event button.
@@ -157,7 +153,6 @@ public class ListVisualization extends Application {
         gridPane.add(createImportPartyLocationButton(primaryStage), 0, 3);
         gridPane.add(createEventButton(primaryStage), 0, 4);
 
-
         // Center the gridPane
         gridPane.setAlignment(Pos.CENTER);
 
@@ -170,7 +165,6 @@ public class ListVisualization extends Application {
 
         // Set the Scene to the Stage
         primaryStage.setScene(scene);
-
 
     }
 
@@ -201,9 +195,9 @@ public class ListVisualization extends Application {
         return eventDatePicker;
     }
 
-
     /**
-     * Creates and returns a text field for entering the maximum number of participants.
+     * Creates and returns a text field for entering the maximum number of
+     * participants.
      *
      * @return the max participants text field
      */
@@ -233,12 +227,10 @@ public class ListVisualization extends Application {
             importCSVButton.setEffect(null);
         });
 
-
         importCSVButton.setOnAction(e -> {
             FileChooser fileChooser_Participant = new FileChooser();
             fileChooser_Participant.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-            );
+                    new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
             fileChooser_Participant.setTitle("Open CSV File");
 
             // Open Dialog to choose file
@@ -270,8 +262,7 @@ public class ListVisualization extends Application {
         importPartyLocationButton.setOnAction(e -> {
             FileChooser fileChooser_PartyLocation = new FileChooser();
             fileChooser_PartyLocation.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-            );
+                    new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
             fileChooser_PartyLocation.setTitle("Open CSV File");
 
             // Open Dialog to choose file
@@ -302,53 +293,52 @@ public class ListVisualization extends Application {
         });
 
         createEventButton.setOnAction(e -> {
-                    // Logic to create event
-                    try {
-                        // Use readCSV instance to read file
-                        readCSV = new readCSV(participantCSVFile, partyLocation);
-                        listManagement = new ListManagement(readCSV.event.getDataList());
-                    } catch (Exception a) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Dialog");
-                        alert.setHeaderText("File Reading Error");
-                        alert.setContentText("There was an error while creating the event, please check if the data is correct!");
-                        alert.showAndWait();
-                    }
-                    try {
-                        listManagement.dataList.getEvent().setMaxParticipant(Integer.parseInt(maxParticipantsField.getText()));
-                    } catch (Exception b) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Dialog");
-                        alert.setHeaderText("Format Error");
-                        alert.setContentText("Please write only number in filed max participant");
-                        alert.showAndWait();
-                    }
-                    try {
-                        // set event date in event
-                        LocalDate eventDate = createEventDatePicker().getValue();
-                        Date date = Date.from(eventDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                        listManagement.dataList.getEvent().setDate(date);
-                    } catch (Exception c) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Dialog");
-                        alert.setHeaderText("Format Error");
-                        alert.setContentText("Please select a valid date!");
-                        alert.showAndWait();
-                    }
+            // Logic to create event
+            try {
+                // Use readCSV instance to read file
+                readCSV = new readCSV(participantCSVFile, partyLocation);
+                listManagement = new ListManagement(readCSV.event.getDataList());
+            } catch (Exception a) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("File Reading Error");
+                alert.setContentText(
+                        "There was an error while creating the event, please check if the data is correct!");
+                alert.showAndWait();
+            }
+            try {
+                listManagement.dataList.getEvent().setMaxParticipant(Integer.parseInt(maxParticipantsField.getText()));
+            } catch (Exception b) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Format Error");
+                alert.setContentText("Please write only number in filed max participant");
+                alert.showAndWait();
+            }
+            try {
+                // set event date in event
+                LocalDate eventDate = createEventDatePicker().getValue();
+                Date date = Date.from(eventDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                listManagement.dataList.getEvent().setDate(date);
+            } catch (Exception c) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Format Error");
+                alert.setContentText("Please select a valid date!");
+                alert.showAndWait();
+            }
 
-                    System.out.println("import participant sucessfully");
-                    for (Participant p : listManagement.dataList.getParticipantList()) {
-                        p.show();
-                    }
-                    System.out.println(listManagement.dataList.getEvent().getPartyLatitude());
-                    System.out.println(listManagement.dataList.getEvent().getPartyLongitude());
-                    mainMenu(primaryStage);
-                }
-        );
+            System.out.println("import participant sucessfully");
+            for (Participant p : listManagement.dataList.getParticipantList()) {
+                p.show();
+            }
+            System.out.println(listManagement.dataList.getEvent().getPartyLatitude());
+            System.out.println(listManagement.dataList.getEvent().getPartyLongitude());
+            mainMenu(primaryStage);
+        });
 
         return createEventButton;
     }
-
 
     /**
      * This method sets up the main menu of the application.
@@ -362,13 +352,23 @@ public class ListVisualization extends Application {
         gridPane.getChildren().clear();
 
         // Add logo image to the gridPane
-        ImageView logoImageView = new ImageView(new Image("C:\\Users\\saif_\\SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan\\Resources\\logo.png")); // Replace "path/to/your/logo.png" with the actual path to your logo image
+        ImageView logoImageView = new ImageView(
+                new Image("C:\\Users\\saif_\\SP23_Gruppe07_Hoangkim_Nakashima_Wan_Shahwan\\Resources\\logo.png")); // Replace
+                                                                                                                   // "path/to/your/logo.png"
+                                                                                                                   // with
+                                                                                                                   // the
+                                                                                                                   // actual
+                                                                                                                   // path
+                                                                                                                   // to
+                                                                                                                   // your
+                                                                                                                   // logo
+                                                                                                                   // image
         gridPane.add(logoImageView, 0, 0, 2, 1);
 
         BorderPane borderPane = new BorderPane();
         // Create a Text object to display messages
         Text messageText = new Text();
-        borderPane.setBottom(messageText);  // Add it to the bottom of the BorderPane
+        borderPane.setBottom(messageText); // Add it to the bottom of the BorderPane
 
         setupButtons(gridPane, messageText); // Pass the Text object to the button setup method
         borderPane.setCenter(gridPane); // Put the GridPane in the center of the BorderPane
@@ -390,17 +390,16 @@ public class ListVisualization extends Application {
         Button makeGroupButton = createAnimatedButton("Make Group", grid, 1, 0);
         Button showPairListButton = createAnimatedButton("Pairs List", grid, 0, 1);
         Button showGroupListButton = createAnimatedButton("Groups List", grid, 1, 1);
-        Button showPSuccessorListButton = createAnimatedButton("Participant SuccessorList",grid,0,2);
+        Button showPSuccessorListButton = createAnimatedButton("Participant SuccessorList", grid, 0, 2);
         Button showPairSuccessorListButton = createAnimatedButton("Pair SuccessorList", grid, 1, 2);
         Button setting = createAnimatedButton("Settings", grid, 0, 3);
-
 
         setupMakePairButton(makePairButton, messageText);
         setupMakeGroupButton(makeGroupButton, messageText);
         setupShowPairListButton(showPairListButton, grid);
         setupShowGroupListButton(showGroupListButton, grid);
-        setupShowPSuccessorListButton(showPSuccessorListButton,grid);
-        setupShowPairSuccessorListButton(showPairSuccessorListButton,grid);
+        setupShowPSuccessorListButton(showPSuccessorListButton, grid);
+        setupShowPairSuccessorListButton(showPairSuccessorListButton, grid);
         setupSettingButton(setting);
 
         // Add spacing between buttons
@@ -422,8 +421,6 @@ public class ListVisualization extends Application {
         GridPane.setConstraints(showPairSuccessorListButton, 1, 3);
         GridPane.setConstraints(setting, 0, 4, 2, 1); // Spanning two columns
 
-
-
     }
 
     private Button createAnimatedButton(String text, GridPane gridPane, int col, int row) {
@@ -441,19 +438,15 @@ public class ListVisualization extends Application {
                 new KeyFrame(
                         Duration.seconds(0),
                         new KeyValue(button.scaleXProperty(), 1),
-                        new KeyValue(button.scaleYProperty(), 1)
-                ),
+                        new KeyValue(button.scaleYProperty(), 1)),
                 new KeyFrame(
                         Duration.seconds(0.2),
                         new KeyValue(button.scaleXProperty(), 1.1),
-                        new KeyValue(button.scaleYProperty(), 1.1)
-                ),
+                        new KeyValue(button.scaleYProperty(), 1.1)),
                 new KeyFrame(
                         Duration.seconds(0.4),
                         new KeyValue(button.scaleXProperty(), 1),
-                        new KeyValue(button.scaleYProperty(), 1)
-                )
-        );
+                        new KeyValue(button.scaleYProperty(), 1)));
         timeline.setAutoReverse(true);
         button.setOnMouseEntered(e -> timeline.play());
         button.setOnMouseExited(e -> timeline.stop());
@@ -476,7 +469,6 @@ public class ListVisualization extends Application {
         });
     }
 
-
     private void setupMakeGroupButton(Button makeGroupButton, Text messageText) {
         makeGroupButton.setOnAction(e -> {
             try {
@@ -493,12 +485,12 @@ public class ListVisualization extends Application {
         });
     }
 
-    public void setupShowPSuccessorListButton(Button showPSListButton, GridPane vBox){
+    public void setupShowPSuccessorListButton(Button showPSListButton, GridPane vBox) {
         showPSListButton.setOnAction(e -> {
-            if(listManagement.dataList.getParticipantSuccessorList() != null){
+            if (listManagement.dataList.getParticipantSuccessorList() != null) {
                 System.out.println("show Participant Successor list");
                 showParticipantSuccessorListOnScreen();
-            }else{
+            } else {
                 Text errorText = new Text();
                 errorText.setText("Participant Successor list is empty yet");
                 vBox.getChildren().add(errorText);
@@ -514,21 +506,21 @@ public class ListVisualization extends Application {
         TableView<Participant> tableView = new TableView<>();
         // Create Column of Participant ID
         TableColumn<Participant, String> participantIDColumn = new TableColumn<>("Participant ID");
-        participantIDColumn.setCellValueFactory(cellData -> {  // pick up data "Participant_ID"
+        participantIDColumn.setCellValueFactory(cellData -> { // pick up data "Participant_ID"
             Participant p = cellData.getValue();
             return new SimpleStringProperty(p.getID());
         });
 
         // Create Column of Participant Name
         TableColumn<Participant, String> participantNameColumn = new TableColumn<>("Participant Name");
-        participantNameColumn.setCellValueFactory(cellData -> {  // pick up data "Participant_Name"
+        participantNameColumn.setCellValueFactory(cellData -> { // pick up data "Participant_Name"
             Participant p = cellData.getValue();
             return new SimpleStringProperty(p.getName());
         });
 
         // Create Column of FoodPreference
         TableColumn<Participant, String> foodPreference = new TableColumn<>("FOOD PREFERENCE");
-        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        foodPreference.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Participant p = cellData.getValue();
             return new SimpleStringProperty(p.getFoodPreference().toString());
         });
@@ -551,11 +543,11 @@ public class ListVisualization extends Application {
 
     }
 
-    public void setupShowPairSuccessorListButton(Button showPairSuccessorListButton, GridPane vBox){
+    public void setupShowPairSuccessorListButton(Button showPairSuccessorListButton, GridPane vBox) {
         showPairSuccessorListButton.setOnAction(e -> {
-            if(listManagement.dataList.getPairSuccessorList().getPairSuccessorList() != null){
+            if (listManagement.dataList.getPairSuccessorList().getPairSuccessorList() != null) {
                 showPairSuccessorListOnScreen();
-            } else{
+            } else {
                 Text errorText = new Text();
                 errorText.setText("successor pair List is empty yet");
                 errorText.setText("Please click button make Pair");
@@ -564,7 +556,7 @@ public class ListVisualization extends Application {
         });
     }
 
-    public void showPairSuccessorListOnScreen(){
+    public void showPairSuccessorListOnScreen() {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Pair Successor List");
 
@@ -572,60 +564,59 @@ public class ListVisualization extends Application {
 
         // Create Column of pairID
         TableColumn<Pair, String> pairIDColumn = new TableColumn<>("Pair ID");
-        pairIDColumn.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+        pairIDColumn.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getPairId());
         });
 
         // Create Column of Name_participant 1
         TableColumn<Pair, String> participant1Column = new TableColumn<>("Participant1");
-        participant1Column.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+        participant1Column.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getParticipant1().getName());
         });
 
         // Create Column of Name_participant 2
         TableColumn<Pair, String> participant2Column = new TableColumn<>("Participant 2");
-        participant2Column.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        participant2Column.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getParticipant2().getName());
         });
 
         // Create Column of FoodPreference
         TableColumn<Pair, String> foodPreference = new TableColumn<>("FOOD PREFERENCE");
-        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        foodPreference.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getFoodPreference().toString());
         });
 
         // Create Column of Age Difference
         TableColumn<Pair, String> ageDif = new TableColumn<>("AGE DIFFERENCE");
-        ageDif.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        ageDif.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateAgeDifference()));
         });
 
         // Create Column of GenderDiversity
         TableColumn<Pair, String> genderDiv = new TableColumn<>("GENDER DIVERSITY");
-        genderDiv.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        genderDiv.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateSexDiversity()));
         });
 
         // Create Column of FoodPreference
         TableColumn<Pair, String> pathLength = new TableColumn<>("PATH LENGTH");
-        pathLength.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        pathLength.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculatePathLength()));
         });
 
         // Create Column of Score
         TableColumn<Pair, String> score = new TableColumn<>("TOTAL SCORE");
-        score.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        score.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateWeightedScore()));
         });
-
 
         tableView.getColumns().add(pairIDColumn);
         tableView.getColumns().add(participant1Column);
@@ -636,11 +627,9 @@ public class ListVisualization extends Application {
         tableView.getColumns().add(pathLength);
         tableView.getColumns().add(score);
 
-
-        for(Pair p : listManagement.dataList.getPairSuccessorList().getPairSuccessorList()){
+        for (Pair p : listManagement.dataList.getPairSuccessorList().getPairSuccessorList()) {
             tableView.getItems().add(p);
         }
-
 
         StackPane root = new StackPane();
         root.getChildren().add(tableView);
@@ -651,7 +640,7 @@ public class ListVisualization extends Application {
         primaryStage.show();
     }
 
-        private void setupShowPairListButton(Button showPairListButton, GridPane vBox) {
+    private void setupShowPairListButton(Button showPairListButton, GridPane vBox) {
         showPairListButton.setOnAction(e -> {
             if (listManagement.dataList.getPairList() != null) {
                 showPairListOnScreen();
@@ -699,7 +688,6 @@ public class ListVisualization extends Application {
         primaryStage.show();
     }
 
-
     /**
      * This Method is called, if Button show PairList is clicked
      * it shows pair_id and both of participants in pair on table
@@ -725,60 +713,59 @@ public class ListVisualization extends Application {
 
         // Create Column of pairID
         TableColumn<Pair, String> pairIDColumn = new TableColumn<>("Pair ID");
-        pairIDColumn.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+        pairIDColumn.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getPairId());
         });
 
         // Create Column of Name_participant 1
         TableColumn<Pair, String> participant1Column = new TableColumn<>("Participant1");
-        participant1Column.setCellValueFactory(cellData -> {  // pick up data "Pair_ID"
+        participant1Column.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getParticipant1().getName());
         });
 
         // Create Column of Name_participant 2
         TableColumn<Pair, String> participant2Column = new TableColumn<>("Participant 2");
-        participant2Column.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        participant2Column.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getParticipant2().getName());
         });
 
         // Create Column of FoodPreference
         TableColumn<Pair, String> foodPreference = new TableColumn<>("FOOD PREFERENCE");
-        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        foodPreference.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(pair.getFoodPreference().toString());
         });
 
         // Create Column of Age Difference
         TableColumn<Pair, String> ageDif = new TableColumn<>("AGE DIFFERENCE");
-        ageDif.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        ageDif.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateAgeDifference()));
         });
 
         // Create Column of GenderDiversity
         TableColumn<Pair, String> genderDiv = new TableColumn<>("GENDER DIVERSITY");
-        genderDiv.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        genderDiv.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateSexDiversity()));
         });
 
         // Create Column of FoodPreference
         TableColumn<Pair, String> pathLength = new TableColumn<>("PATH LENGTH");
-        pathLength.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        pathLength.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculatePathLength()));
         });
 
         // Create Column of Score
         TableColumn<Pair, String> score = new TableColumn<>("TOTAL SCORE");
-        score.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        score.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Pair pair = cellData.getValue();
             return new SimpleStringProperty(Double.toString(pair.calculateWeightedScore()));
         });
-
 
         tableView.getColumns().add(pairIDColumn);
         tableView.getColumns().add(participant1Column);
@@ -789,11 +776,9 @@ public class ListVisualization extends Application {
         tableView.getColumns().add(pathLength);
         tableView.getColumns().add(score);
 
-
         for (Pair p : listManagement.dataList.getPairList()) {
             tableView.getItems().add(p);
         }
-
 
         StackPane root = new StackPane();
         root.getChildren().add(tableView);
@@ -805,7 +790,7 @@ public class ListVisualization extends Application {
     }
 
     public void showPairToCompair(Pair pair) {
-        //to be implemented
+        // to be implemented
     }
 
     /**
@@ -829,8 +814,10 @@ public class ListVisualization extends Application {
         removeParticipantButton.setOnAction(e -> {
             removeParticipantWindow();
         });
-        changePairButton.setOnAction(e -> { /*...*/ });
-        changeGroupButton.setOnAction(e -> { /*...*/ });
+        changePairButton.setOnAction(e -> {
+            /* ... */ });
+        changeGroupButton.setOnAction(e -> {
+            /* ... */ });
 
         VBox vbox = new VBox();
         vbox.getChildren().addAll(settingCriteriaButton, removeParticipantButton, changePairButton, changeGroupButton);
@@ -843,25 +830,6 @@ public class ListVisualization extends Application {
         primaryStage.show();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Display the list of groups on the screen.
      */
@@ -873,8 +841,7 @@ public class ListVisualization extends Application {
         vbox.getChildren().addAll(
                 createAndFillTableView("Pair names for Starter", listManagement.dataList.getGroupListCourse01()),
                 createAndFillTableView("Pair names for main course", listManagement.dataList.getGroupListCourse02()),
-                createAndFillTableView("Pair names for dessert", listManagement.dataList.getGroupListCourse03())
-        );
+                createAndFillTableView("Pair names for dessert", listManagement.dataList.getGroupListCourse03()));
 
         Scene scene = new Scene(new StackPane(vbox), 1000, 600);
         primaryStage.setScene(scene);
@@ -883,9 +850,12 @@ public class ListVisualization extends Application {
     }
 
     /**
-     * Helper method to create and fill a TableView for Groups with predefined columns.
-     * @param courseName The name of the course for which the table is being created.
-     * @param groupList The list of groups to be added to the table.
+     * Helper method to create and fill a TableView for Groups with predefined
+     * columns.
+     * 
+     * @param courseName The name of the course for which the table is being
+     *                   created.
+     * @param groupList  The list of groups to be added to the table.
      * @return A TableView configured for displaying Group objects.
      */
     private TableView<Group> createAndFillTableView(String courseName, List<Group> groupList) {
@@ -905,11 +875,11 @@ public class ListVisualization extends Application {
         return tableView;
     }
 
-
-
     /**
      * Helper method to create a TableView for Groups with predefined columns.
-     * @param courseName The name of the course for which the table is being created.
+     * 
+     * @param courseName The name of the course for which the table is being
+     *                   created.
      * @return A TableView configured for displaying Group objects.
      */
     private TableView<Group> createTableView(String courseName) {
@@ -938,56 +908,55 @@ public class ListVisualization extends Application {
         });
 
         TableColumn<Group, String> foodPreference = new TableColumn<>("FOOD");
-        foodPreference.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        foodPreference.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Group g = cellData.getValue();
             return new SimpleStringProperty(g.getFoodPreference().toString());
         });
 
         // Create Column of Age Difference
         TableColumn<Group, String> ageDif = new TableColumn<>("AGE DIFFERENCE");
-        ageDif.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        ageDif.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Group g = cellData.getValue();
             return new SimpleStringProperty(Double.toString(g.calculateAgeDifference()));
         });
 
         // Create Column of GenderDiversity
         TableColumn<Group, String> genderDiv = new TableColumn<>("GENDER DIVERSITY");
-        genderDiv.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        genderDiv.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Group g = cellData.getValue();
             return new SimpleStringProperty(Double.toString(g.calculateSexDiversity()));
         });
 
-
-
         // Create Column of Place
         TableColumn<Group, String> place = new TableColumn<>("PLACE(Latitude / Longitude)");
-        place.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        place.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Group g = cellData.getValue();
             String latitude = Double.toString(g.getCookingPair().getPairKitchen().getKitchenLatitude());
             String longitude = Double.toString(g.getCookingPair().getPairKitchen().getKitchenLongitude());
-            //return new SimpleStringProperty(placeString.append(latitude+longitude).append(" , ").toString());
+            // return new
+            // SimpleStringProperty(placeString.append(latitude+longitude).append(" ,
+            // ").toString());
             return new SimpleStringProperty(latitude);
         });
 
-
-
         // Create Column of Score
         TableColumn<Group, String> score = new TableColumn<>("TOTAL SCORE");
-        score.setCellValueFactory(cellData -> {   // pick up data "Pair_ID"
+        score.setCellValueFactory(cellData -> { // pick up data "Pair_ID"
             Group g = cellData.getValue();
             return new SimpleStringProperty(Double.toString(g.calculateWeightedScore()));
         });
 
         // Adding columns to the table
 
-        tableView.getColumns().addAll(groupPairsColumnName,groupPairsColumn,foodPreference,genderDiv,score);
-        //System.out.println("***********************");
-        //tableView.getColumns().add(place);
+        tableView.getColumns().addAll(groupPairsColumnName, groupPairsColumn, foodPreference, genderDiv, score);
+        // System.out.println("***********************");
+        // tableView.getColumns().add(place);
         return tableView;
     }
 
     /**
      * Shows the detail of a group in a new stage.
+     * 
      * @param group The group for which the detail should be shown.
      */
     private void showGroupDetail(Group group) {
@@ -1025,7 +994,6 @@ public class ListVisualization extends Application {
             return new SimpleStringProperty(Double.toString(group.calculateWeightedScore()));
         });
 
-
         tableView.getColumns().add(pairNameColumn);
         tableView.getColumns().add(ageDiffColumn);
         tableView.getColumns().add(genderDivColumn);
@@ -1044,38 +1012,39 @@ public class ListVisualization extends Application {
         detailStage.show();
     }
 
-
     /**
      * User can remove a patricipant in this window
      */
-    public void removeParticipantWindow(){
+    public void removeParticipantWindow() {
         Stage primaryStage = new Stage();
         TextField removedParticipant = new TextField();
         removedParticipant.setPromptText("Please enter the participant's name");
         Label label = new Label("Name ");
         Button ok = new Button("OK");
-        ok.setOnAction( e ->  {
-            try{
+        ok.setOnAction(e -> {
+            try {
                 System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
-                System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
+                System.out.println("P CanceledListSize : "
+                        + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
                 String pName = removedParticipant.getText();
-                for(Participant p : listManagement.dataList.getParticipantList()){
-                    if(p.getName().equals(pName)){
+                for (Participant p : listManagement.dataList.getParticipantList()) {
+                    if (p.getName().equals(pName)) {
                         listManagement.dataList.getCanceledList().getCanceledParticipants().add(p);
                         listManagement.dataList.getParticipantSuccessorList().addParticipant(p);
                     }
                 }
                 // remove the participant from list
-                listManagement.dataList.getParticipantList().stream().filter(x -> !x.equals(pName)).collect(Collectors.toList());
+                listManagement.dataList.getParticipantList().stream().filter(x -> !x.equals(pName))
+                        .collect(Collectors.toList());
                 System.out.println("P ListSize : " + listManagement.dataList.getParticipantList().size());
-                System.out.println("P CanceledListSize : " + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
+                System.out.println("P CanceledListSize : "
+                        + listManagement.dataList.getCanceledList().getCanceledParticipants().size());
                 primaryStage.close();
-                }catch(Exception err) {
+            } catch (Exception err) {
             }
-            }
-        );
+        });
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(label,removedParticipant,ok);
+        vbox.getChildren().addAll(label, removedParticipant, ok);
         Scene scene = new Scene(vbox);
         primaryStage.setTitle("remove participant");
         primaryStage.setScene(scene);
@@ -1083,9 +1052,10 @@ public class ListVisualization extends Application {
     }
 
     /**
-     * Changes the weights of the criteria by displaying a window with selection options.
+     * Changes the weights of the criteria by displaying a window with selection
+     * options.
      */
-    public void changeCriteriaWindow(){
+    public void changeCriteriaWindow() {
 
         Stage primaryStage = new Stage();
 
@@ -1120,8 +1090,8 @@ public class ListVisualization extends Application {
         pathLength.getItems().addAll(options);
 
         Button ok = new Button("OK");
-        ok.setOnAction( e -> {
-            try{
+        ok.setOnAction(e -> {
+            try {
                 int foodPreferences = optionToWeight(foodPreference.getValue());
                 int ageDifferences = optionToWeight(ageDiff.getValue());
                 int genderDiversity = optionToWeight(genderDiv.getValue());
@@ -1135,19 +1105,16 @@ public class ListVisualization extends Application {
                 System.out.println("gender : " + CRITERIA.GENDER_DIVERSITY.getWeight());
                 System.out.println("path : " + CRITERIA.PATH_LENGTH.getWeight());
                 primaryStage.close();
-            }
-            catch (Exception er){
+            } catch (Exception er) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setHeaderText("Error Setting Criteria");
-                alert.setContentText("Please choose one of all Options for each criteria" );
+                alert.setContentText("Please choose one of all Options for each criteria");
             }
-
 
         });
 
-
-        vbox.getChildren().addAll(l1,foodPreference,l2,ageDiff,l3,genderDiv,l4,pathLength,ok);
+        vbox.getChildren().addAll(l1, foodPreference, l2, ageDiff, l3, genderDiv, l4, pathLength, ok);
 
         Scene scene = new Scene(vbox);
 
@@ -1158,24 +1125,20 @@ public class ListVisualization extends Application {
 
     /**
      * Converts user's choice of criteria importance to a weight.
+     * 
      * @param x The user's choice of the importance of a criterion.
      * @return The weight corresponding to the user's choice.
      */
-    public int optionToWeight(String x){
-        if(x.equals("So Important")){
+    public int optionToWeight(String x) {
+        if (x.equals("So Important")) {
             return 2000;
-        }
-        else if(x.equals("Important")){
+        } else if (x.equals("Important")) {
             return 100;
-        }
-        else if(x.equals("Not Important")){
+        } else if (x.equals("Not Important")) {
             return 50;
-        }
-        else{
+        } else {
             return 0;
         }
     }
-
-
 
 }

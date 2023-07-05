@@ -59,6 +59,7 @@ public class readCSV {
         list.remove(0);
 
         for (String[] participant_String : list) {
+
             String ID = participant_String[1];
             String name = participant_String[2];
             String foodPreference = participant_String[3];

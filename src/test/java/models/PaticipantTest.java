@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PaticipantTest {
 
-    //Participant pError = new Participant("13","p4","none","-1","other","no","","","");
+    /**
+     * create test participants for testing
+     * each participant have different preference and information
+     */
     Participant p0 = new Participant("13","p4","none","0","other","no","","","");
     Participant p1 = new Participant("10","P1","meat","17","male","yes","2.0","1.1","51.2");
     Participant p2 = new Participant("11","P2","meat","23","female","yes","1.0","7.0","50.0");
@@ -90,19 +93,33 @@ public class PaticipantTest {
 
     /**
      * Test for assignFoodPreference
+     * p1 has meat as Food Preference
      */
     @Test
     public void assignFoodPreferenceTest_returnFOOD_PREFERENCEmeat(){
         assertEquals(FOOD_PREFERENCE.meat,p1.getFoodPreference());
     }
+
+    /**
+     * Test for assignFoodPreference
+     * p0 has none as Food Preference
+     */
     @Test
     public void assignFoodPreferenceTest_returnFOOD_PREFERENCEnone(){
         assertEquals(FOOD_PREFERENCE.none,p0.getFoodPreference());
     }
+    /**
+     * Test for assignFoodPreference
+     * p3 has veggie as Food Preference
+     */
     @Test
     public void assignFoodPreferenceTest_returnFOOD_PREFERENCEveggie(){
         assertEquals(FOOD_PREFERENCE.veggie,p3.getFoodPreference());
     }
+    /**
+     * Test for assignFoodPreference
+     * p5 has vegan as Food Preference
+     */
     @Test
     public void assignFoodPreferenceTest_returnFOOD_PREFERENCEvegan(){
         assertEquals(FOOD_PREFERENCE.vegan,p5.getFoodPreference());

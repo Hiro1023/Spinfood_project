@@ -49,7 +49,10 @@ public class Event {
     }
 
     public boolean isFull() {
-        return isFull;
+        if (dataList.getPairList().size()>maxParticipant){
+            return true;
+        }
+        return false;
     }
     public void setFull(boolean full){
         isFull = full;

@@ -213,13 +213,13 @@ public class  Pair implements Calculation, Utility {
     public void setHasCooked(int course) {
         switch (course) {
             case 1:
-                this.hasCooked.put(COURSE.Starter, true);
+                this.hasCooked.put(COURSE.first, true);
                 break;
             case 2:
-                this.hasCooked.put(COURSE.mainCourse, true);
+                this.hasCooked.put(COURSE.main, true);
                 break;
             case 3:
-                this.hasCooked.put(COURSE.Dessert, true);
+                this.hasCooked.put(COURSE.dessert, true);
                 break;
         }
     }

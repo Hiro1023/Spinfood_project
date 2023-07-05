@@ -209,8 +209,7 @@ public class ListManagement{
                         unCookedPairCourse3.remove(p);
                     }
                     if(bestGroup == null){
-                        System.out.println("error");
-
+                        //System.out.println("error");
                     }
 
                 }
@@ -231,7 +230,7 @@ public class ListManagement{
         if (courseCounter == 3) {
             for (Group g : dataList.getGroupListCourse03()) {
                 for (Pair p : g.getPairs()) {
-                    if (p.getHasCooked().containsKey(COURSE.Dessert)) {
+                    if (p.getHasCooked().containsKey(COURSE.dessert)) {
                         g.setCookingPair(p);
                         g.setGroupKitchen(p.getPairKitchen());
                     }
@@ -520,7 +519,7 @@ public class ListManagement{
 
         if (courseCounter == 3 && !allCooked(group)) {
             for (Pair p : group.getPairs()) {
-                if(p.getHasCooked().containsKey(COURSE.Dessert)){
+                if(p.getHasCooked().containsKey(COURSE.dessert)){
                     p.clearHasCooked();
                 }
                 unmatchedPairCourse3.add(p);
