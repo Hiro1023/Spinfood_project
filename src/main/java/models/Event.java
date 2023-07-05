@@ -11,11 +11,11 @@ import java.util.Date;
  */
 public class Event {
     private final int Event_ID;
-    private final Date Date;
+    private  Date Date;
     private double partyLongitude;
     private double partyLatitude;
     private boolean isFull;
-    private final int maxParticipant;
+    private  int maxParticipant;
     private DataList dataList;
 
     public Event(int event_ID, java.util.Date date, double partyLongitude,double partyLatitude, int maxParticipant) {
@@ -54,6 +54,9 @@ public class Event {
         }
         return false;
     }
+
+
+
     public void setFull(boolean full){
         isFull = full;
     }
@@ -76,4 +79,13 @@ public class Event {
     public void setPartyLatitude(double partyLatitude) {
         this.partyLatitude = partyLatitude;
     }
+
+    public void setDate(Date date) {
+        this.Date = date;
+    }
+
+    public void setMaxParticipant(int maxParticipant) {
+        this.maxParticipant = maxParticipant;
+    }
+
 }
