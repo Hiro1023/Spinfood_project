@@ -50,7 +50,6 @@ public class Group implements Calculation, Utility {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("course",this.getCourse().toString());
         jsonObject.put("foodType", this.getFoodPreference().toString());
-        jsonObject.put("kitchen", this.getGroupKitchen()); // If there's a kitchen associated with the group, replace JSONObject.NULL with this.getKitchen().toJson()
         jsonObject.put("cookingPair", this.getPairs().get(0).toJson());
         jsonObject.put("secondPair", this.getPairs().get(1).toJson());
         jsonObject.put("thirdPair", this.getPairs().get(2).toJson());
