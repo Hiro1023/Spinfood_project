@@ -146,12 +146,12 @@ public class Main {
         File selectedFile = fileChooser.getSelectedFile();
          */
         GenerateSolutions GS = new GenerateSolutions(lm);
-        GS.generateSolutionFirstCondition();
+        //GS.generateSolutionFirstCondition();
         //GS.generateSolutionSecondCondition();
-        //GS.generateSolutionThirdCondition();
+        GS.generateSolutionThirdCondition();
 
 
-        System.out.println("size:"+lm.dataList.getGroupListCourse01().size()+""+lm.dataList.getGroupListCourse02().size()+""+lm.dataList.getGroupListCourse03().size());
+        //System.out.println("size:"+lm.dataList.getGroupListCourse01().size()+""+lm.dataList.getGroupListCourse02().size()+""+lm.dataList.getGroupListCourse03().size());
 
         showParticipantSuccessorList();
 
